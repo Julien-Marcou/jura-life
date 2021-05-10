@@ -1,0 +1,112 @@
+@font-face {
+  font-family: 'Map Icons';
+  font-style: normal;
+  font-weight: 400;
+  src: url('/assets/fonts/map-icons.eot');
+  src: url('/assets/fonts/map-icons.eot#iefix') format('embedded-opentype'),
+       url('/assets/fonts/map-icons.ttf') format('truetype'),
+       url('/assets/fonts/map-icons.woff') format('woff'),
+       url('/assets/fonts/map-icons.svg?#map-icons') format('svg');
+}
+
+:host {
+  display: block;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.map {
+  // height: 100vh;
+  // width: 100vw;
+  width: 100%;
+  height: 100%;
+}
+
+.photosphere {
+  position: absolute;
+  z-index: 100;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #fff;
+
+  .iframe {
+    width: 100%;
+    height: 100%;
+  }
+
+  .close-button {
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 0 2px 2px rgba(0, 0, 0, 0.2);
+  }
+}
+
+::ng-deep {
+
+  .content {
+    max-width: 350px;
+    min-height: 19px;
+
+    .title {
+      margin: 0;
+      margin-top: 2px;
+      font-size: 1.2em;
+    }
+
+    .description {
+      margin: 0;
+      margin-top: 1.2rem;
+    }
+
+    .trails {
+      margin-top: 1.2rem;
+
+      .trail:not(:last-child) {
+        margin-bottom: 4px;
+      }
+
+      h3 {
+        font-size: 1em;
+        margin: 0;
+      }
+
+      .select-trail {
+        min-width: 30px;
+        padding: 2px;
+        line-height: 19px;
+      }
+
+      p {
+        margin: 0;
+      }
+    }
+
+    .photospheres {
+      margin-top: 1.2rem;
+
+      .photosphere:not(:last-child) {
+        margin-bottom: 4px;
+      }
+
+      h3 {
+        font-size: 1em;
+        margin: 0;
+      }
+
+      .select-photosphere {
+        min-width: 30px;
+        padding: 2px;
+        line-height: 19px;
+      }
+    }
+  }
+}

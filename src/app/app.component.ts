@@ -1,10 +1,444 @@
-import { Component } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { ActivatedRoute } from '@angular/router';
+import { JuraPointsOfInterest } from './models/jura-points-of-interest';
+import { Pins } from './models/pins';
+import { PointOfInterest } from './models/point-of-interest';
+import { SerializedPointOfInterest } from './models/serialized-point-of-interest';
+import { SerializedTrail } from './models/serialized-trail';
+import { Trail } from './models/trail';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
 })
-export class AppComponent {
-  title = 'jura-poi';
+export class AppComponent implements AfterViewInit {
+
+  @ViewChild('mapElement') mapElement?: ElementRef<HTMLElement>;
+
+  private map?: google.maps.Map;
+  private pointsOfInterest: Array<PointOfInterest> = [];
+  private contentTemplate = document.createElement('template');
+  private descriptionTemplate = document.createElement('template');
+  private trailsTemplate = document.createElement('template');
+  private trailTemplate = document.createElement('template');
+  private photospheresTemplate = document.createElement('template');
+  private photosphereTemplate = document.createElement('template');
+  public photosphere?: SafeResourceUrl;
+
+  constructor(private readonly route: ActivatedRoute, private readonly sanitizer: DomSanitizer) {
+    this.contentTemplate.innerHTML = `
+      <div class="content">
+        <h2 class="title"></h2>
+      </div>`;
+    this.descriptionTemplate.innerHTML = `
+      <p class="description"></p>`;
+    this.trailsTemplate.innerHTML = `
+      <ul class="trails"></ul>`;
+    this.trailTemplate.innerHTML = `
+      <li class="trail">
+        <h3>
+          <span class="starting-point"></span>
+          <button class="select-trail">Voir</button>
+        </h3>
+        <p class="topology"></p>
+      </li>`;
+    this.photospheresTemplate.innerHTML = `
+      <ul class="photospheres"></ul>`;
+    this.photosphereTemplate.innerHTML = `
+      <li class="photosphere">
+        <h3>
+          <span class="label"></span>
+          <button class="select-photosphere">Voir</button>
+        </h3>
+      </li>`;
+  }
+
+  async ngAfterViewInit(): Promise<void> {
+    this.map = new google.maps.Map(this.mapElement!.nativeElement, {
+      center: { lat: 46.4675751, lng: 5.8919042 },
+      zoom: 11,
+      clickableIcons: false,
+      gestureHandling: 'greedy',
+      styles: [
+        {
+          featureType: 'poi.business',
+          elementType: 'labels',
+          stylers: [
+            { visibility: 'off' },
+          ],
+        },
+        {
+          featureType: 'poi.government',
+          elementType: 'labels',
+          stylers: [
+            { visibility: 'off' },
+          ],
+        },
+        {
+          featureType: 'poi.medical',
+          elementType: 'labels',
+          stylers: [
+            { visibility: 'off' },
+          ],
+        },
+        {
+          featureType: 'poi.school',
+          elementType: 'labels',
+          stylers: [
+            { visibility: 'off' },
+          ],
+        },
+        {
+          featureType: 'transit.station',
+          elementType: 'labels',
+          stylers: [
+            { visibility: 'off' },
+          ],
+        },
+      ],
+    });
+
+    for (const poi of JuraPointsOfInterest) {
+      await this.addPointOfInterest(poi);
+    };
+
+    this.route.queryParams.subscribe(params => {
+      if (params.poi && params.poi in this.pointsOfInterest) {
+        const poi = this.pointsOfInterest[params.poi];
+        if (params.trail && poi.trails && params.trail in poi.trails) {
+          this.openPointOfInterest(poi, true, params.trail);
+        }
+        else {
+          this.openPointOfInterest(poi, true);
+        }
+      }
+    });
+  }
+
+  async addPointOfInterest(serializedPoi: SerializedPointOfInterest): Promise<void> {
+    let trails;
+    if (serializedPoi.trails) {
+      trails = [];
+      for (const serializedTrail of serializedPoi.trails) {
+        trails.push(await this.createTrail(serializedTrail));
+      }
+    }
+
+    const poi: PointOfInterest = {
+      index: this.pointsOfInterest.length,
+      name: serializedPoi.name,
+      content: this.createContent(serializedPoi, trails),
+      marker: this.createMarker(serializedPoi),
+      infoWindow: new google.maps.InfoWindow(),
+      trails: trails,
+    };
+    poi.marker.addListener('click', () => {
+      if (poi.infoWindow.get('map')) {
+        this.closePointOfInterst(poi);
+      }
+      else {
+        this.openPointOfInterest(poi);
+      }
+    });
+    poi.infoWindow.addListener('closeclick', () => {
+      this.closePointOfInterst(poi);
+    });
+    this.pointsOfInterest.push(poi);
+  }
+
+  openPointOfInterest(poi: PointOfInterest, centerViewport: boolean = false, trailIndex: number = 0): void {
+    poi.infoWindow.setContent(poi.content);
+    poi.infoWindow.open(this.map, poi.marker);
+    if (poi.trails) {
+      this.displayTrail(poi.trails[trailIndex]);
+      const selectTrailElement = poi.content.querySelectorAll('.select-trail')[trailIndex];
+      if (selectTrailElement) {
+        selectTrailElement.textContent = '☑';
+      }
+    }
+    if (centerViewport) {
+      const bounds = new window.google.maps.LatLngBounds();
+      bounds.extend(poi.marker.getPosition()!);
+      const center = bounds.getCenter();
+      bounds.extend(new google.maps.LatLng(center.lat() - 0.002, center.lng() - 0.002));
+      bounds.extend(new google.maps.LatLng(center.lat() + 0.002, center.lng() + 0.002));
+      if (poi.trails) {
+        poi.trails[trailIndex].masterPolyline.getPath().forEach(point => bounds.extend(point));
+      }
+      this.map!.fitBounds(bounds);
+    }
+  }
+
+  closePointOfInterst(poi: PointOfInterest): void {
+    poi.infoWindow.close();
+    if (poi.trails) {
+      poi.trails.forEach(trail => {
+        poi.content.querySelectorAll('.select-trail').forEach(_selectTrailElement => _selectTrailElement.textContent = 'Voir');
+        this.hideTrail(trail);
+      });
+      const selectedTrailElement = poi.content.querySelector('.select-trail');
+      if (selectedTrailElement) {
+        selectedTrailElement.textContent = '☑';
+      }
+    }
+  }
+
+  displayTrail(trail: Trail): void {
+    trail.masterPolyline.setMap(this.map!);
+    trail.elevationPolylines.forEach(polyline => {
+      polyline.setMap(this.map!);
+    });
+  }
+
+  hideTrail(trail: Trail): void {
+    trail.masterPolyline.setMap(null);
+    trail.elevationPolylines.forEach(polyline => {
+      polyline.setMap(null);
+    });
+  }
+
+  createContent(serializedPoi: SerializedPointOfInterest, trails?: Array<Trail>): Element {
+    const contentTemplate = this.contentTemplate.content.cloneNode(true) as DocumentFragment;
+    const contentElement = contentTemplate.querySelector('.content')!;
+    const titleElement = contentElement.querySelector('.title')!;
+    titleElement.textContent = serializedPoi.name;
+
+    if (serializedPoi.description) {
+      const descriptionTemplate = this.descriptionTemplate.content.cloneNode(true) as DocumentFragment;
+      const descriptionElement = descriptionTemplate.querySelector('.description')!;
+      descriptionElement.innerHTML = serializedPoi.description;
+      contentElement.appendChild(descriptionElement);
+    }
+
+    if (trails) {
+      const trailsTemplate = this.trailsTemplate.content.cloneNode(true) as DocumentFragment;
+      const trailsElement = trailsTemplate.querySelector('.trails')!;
+      for (let i = 0; i < trails.length; i++) {
+        const trail = trails[i];
+        const trailTemplate = this.trailTemplate.content.cloneNode(true) as DocumentFragment;
+        const trailElement = trailTemplate.querySelector('.trail')!;
+        const startingPointElement = trailElement.querySelector('.starting-point')!;
+        const selectTrailElement = trailElement.querySelector('.select-trail')!;
+        const topologyElement = trailElement.querySelector('.topology')!;
+        if (trails.length === 1) {
+          selectTrailElement.remove();
+        }
+        else {
+          selectTrailElement.addEventListener('click', () => {
+            trails.forEach(_trail => {
+              trailsElement.querySelectorAll('.select-trail').forEach(_selectTrailElement => _selectTrailElement.textContent = 'Voir');
+              this.hideTrail(_trail);
+            });
+            selectTrailElement.textContent = '☑';
+            this.displayTrail(trail);
+          });
+        }
+        startingPointElement.textContent = `${trail.startingPoint}`;
+        topologyElement.innerHTML = `
+          Distance ${Math.round(trail.length * 100) / 100}km - Durée ${trail.duration}
+          <br>
+          Altitude min ${Math.round(trail.minElevation)}m - Altitude max ${Math.round(trail.maxElevation)}m
+          <br>
+          Dénivelé positif ${Math.round(trail.inverted ? trail.negativeElevation : trail.positiveElevation)}m - Dénivelé négatif ${Math.round(trail.inverted ? trail.positiveElevation : trail.negativeElevation)}m`;
+        trailsElement.appendChild(trailElement);
+      }
+      contentElement.appendChild(trailsElement);
+    }
+
+    if (serializedPoi.photospheres) {
+      const photospheresTemplate = this.photospheresTemplate.content.cloneNode(true) as DocumentFragment;
+      const photospheresElement = photospheresTemplate.querySelector('.photospheres')!;
+      for (let i = 0; i < serializedPoi.photospheres.length; i++) {
+        const photosphere = serializedPoi.photospheres[i];
+        const photosphereTemplate = this.photosphereTemplate.content.cloneNode(true) as DocumentFragment;
+        const photosphereElement = photosphereTemplate.querySelector('.photosphere')!;
+        const labelElement = photosphereElement.querySelector('.label')!;
+        const selectPhotosphereElement = photosphereElement.querySelector('.select-photosphere')!;
+        selectPhotosphereElement.addEventListener('click', () => {
+          this.photosphere = this.sanitizer.bypassSecurityTrustResourceUrl(`https://www.google.com/maps/embed?pb=${photosphere}`);
+        });
+        labelElement.textContent = `Photo ${i + 1}`;
+        photospheresElement.appendChild(photosphereElement);
+      }
+      contentElement.appendChild(photospheresElement);
+    }
+
+    return contentElement;
+  }
+
+  createMarker(serializedPoi: SerializedPointOfInterest): google.maps.Marker {
+    const pin = Pins[serializedPoi.type];
+    return new google.maps.Marker({
+      zIndex: 1000000 - Math.trunc(serializedPoi.latitude * 10000),
+      title: serializedPoi.name,
+      label: {
+        fontFamily: 'Map Icons',
+        color: pin.textColor,
+        fontSize: pin.fontSize,
+        text: pin.icon,
+      },
+      icon: {
+        url: `/assets/pins/${pin.color}.svg`,
+        size: new google.maps.Size(33, 52),
+        anchor: new google.maps.Point(16.5, 52),
+        labelOrigin: new google.maps.Point(16.5, 16.5),
+        // path: 'M4.538 12.368C4.525 12.333 4.465 12.106 4.405 11.865C4.216 11.101 3.885 10.281 3.439 9.453C3.181 8.976 3.134 8.903 2.383 7.735C1.172 5.851.957 5.318 1 4.305C1.043 3.374 1.356 2.678 2.039 2.004C2.606 1.442 3.233 1.12 3.997 1C5.89.691 7.727 1.936 8.096 3.782C8.187 4.211 8.165 4.949 8.058 5.353C7.938 5.791 7.461 6.684 6.787 7.727C5.572 9.607 5.113 10.547 4.765 11.848C4.632 12.355 4.576 12.479 4.538 12.368ZM4.538 12.368',
+        // strokeColor: pin.strokeColor,
+        // strokeWeight: 1,
+        // strokeOpacity: 1,
+        // fillColor: pin.fillColor,
+        // fillOpacity: 1,
+        // scale: 4.2,
+        // anchor: new google.maps.Point(4.7, 12.5),
+        // labelOrigin: new google.maps.Point(4.6, 4.6),
+      },
+      position: new google.maps.LatLng(serializedPoi.latitude, serializedPoi.longitude),
+      map: this.map,
+      draggable: false,
+    });
+  }
+
+  async createTrail(serializedTrail: SerializedTrail): Promise<Trail> {
+    const gpxString = await (await fetch(`/assets/trails/${serializedTrail.gpxFile}`)).text();
+    const gpxDocument = new DOMParser().parseFromString(gpxString, 'text/xml');
+    const trackPoints = gpxDocument.getElementsByTagName('trkpt');
+
+    const gradient = [
+      // {
+      //   red: 190,
+      //   green: 240,
+      //   blue: 255,
+      //   step: 0,
+      // },
+      {
+        red: 0,
+        green: 198,
+        blue: 255,
+        step: 0,
+      },
+      {
+        red: 147,
+        green: 85,
+        blue: 255,
+        step: 33,
+      },
+      {
+        red: 255,
+        green: 0,
+        blue: 0,
+        step: 66,
+      },
+      {
+        red: 0,
+        green: 0,
+        blue: 0,
+        step: 100,
+      },
+    ];
+    let minElevation = Number.POSITIVE_INFINITY;
+    let maxElevation = Number.NEGATIVE_INFINITY;
+    const masterPolyline = new google.maps.Polyline({
+      zIndex: 0,
+      geodesic: true,
+      clickable: false,
+      strokeColor: '#fff',
+      strokeOpacity: 1.0,
+      strokeWeight: 7,
+    })
+    const trailPoints = [];
+    for (let i = 0; i < trackPoints.length; i++) {
+      const trackPoint = trackPoints[i];
+      const latitude = parseFloat(trackPoint.getAttribute('lat')!);
+      const longitude = parseFloat(trackPoint.getAttribute('lon')!);
+      const elevation = parseFloat(trackPoint.querySelector('ele')!.textContent!);
+      const point = new google.maps.LatLng(latitude, longitude);
+      if (elevation < minElevation) {
+        minElevation = elevation;
+      }
+      else if (elevation > maxElevation) {
+        maxElevation = elevation;
+      }
+      trailPoints.push({
+        elevation: elevation,
+        point: point,
+      });
+      masterPolyline.getPath().push(point);
+    }
+
+    let length = 0;
+    let positiveElevation = 0;
+    let negativeElevation = 0;
+    const elevationPolylines = [];
+    for (let i = 1; i < trailPoints.length; i++) {
+      length += this.distanceInKmBetweenEarthCoordinates(trailPoints[i].point.lat(), trailPoints[i].point.lng(), trailPoints[i - 1].point.lat(), trailPoints[i - 1].point.lng());
+      const elevation = trailPoints[i].elevation - trailPoints[i - 1].elevation;
+      if (elevation > 0) {
+        positiveElevation += elevation;
+      }
+      else {
+        negativeElevation -= elevation;
+      }
+      const step = (((trailPoints[i - 1].elevation + trailPoints[i].elevation) / 2) - minElevation) * (100 / (maxElevation - minElevation));
+      let minColor = gradient[0];
+      let maxColor = gradient[gradient.length - 1];
+      for (const color of gradient) {
+        if (color.step <= step && color.step > minColor.step) {
+          minColor = color;
+        }
+        if (color.step >= step && color.step < maxColor.step) {
+          maxColor = color;
+        }
+      }
+      let color = {
+        red: maxColor.red,
+        green: maxColor.green,
+        blue: maxColor.blue,
+      };
+      if (minColor !== maxColor) {
+        const multiplier = (step - minColor.step) * 100 / (maxColor.step - minColor.step);
+        color = {
+          red: Math.round(minColor.red + (maxColor.red - minColor.red) * multiplier / 100),
+          green: Math.round(minColor.green + (maxColor.green - minColor.green) * multiplier / 100),
+          blue: Math.round(minColor.blue + (maxColor.blue - minColor.blue) * multiplier / 100),
+        };
+      }
+      elevationPolylines.push(new google.maps.Polyline({
+        zIndex: 1,
+        path: [trailPoints[i - 1].point, trailPoints[i].point],
+        geodesic: true,
+        clickable: false,
+        strokeColor: `#${color.red.toString(16).padStart(2, '0')}${color.green.toString(16).padStart(2, '0')}${color.blue.toString(16).padStart(2, '0')}`,
+        strokeOpacity: 1.0,
+        strokeWeight: 3,
+      }));
+    }
+
+    return {
+      startingPoint: serializedTrail.startingPoint,
+      masterPolyline: masterPolyline,
+      elevationPolylines: elevationPolylines,
+      startingElevation: trailPoints[0].elevation,
+      endingElevation: trailPoints[trailPoints.length - 1].elevation,
+      minElevation: minElevation,
+      maxElevation: maxElevation,
+      positiveElevation: positiveElevation,
+      negativeElevation: negativeElevation,
+      length: length,
+      duration: serializedTrail.duration,
+      inverted: serializedTrail.inverted,
+    };
+  }
+
+  distanceInKmBetweenEarthCoordinates(lat1: number, lon1: number, lat2: number, lon2: number): number {
+    const earthRadiusKm = 6371;
+    const dLat = (lat2 - lat1) * Math.PI / 180;
+    const dLon = (lon2 - lon1) * Math.PI / 180;
+    lat1 = lat1 * Math.PI / 180;
+    lat2 = lat2 * Math.PI / 180;
+    const a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.sin(dLon/2) * Math.sin(dLon/2) * Math.cos(lat1) * Math.cos(lat2);
+    return earthRadiusKm * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+  }
+
 }
