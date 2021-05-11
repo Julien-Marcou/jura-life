@@ -1,5 +1,5 @@
-import { PinType } from "./pin-type";
-import { SerializedTrail } from "./serialized-trail";
+import { PinType } from './pin-type';
+import { SerializedTrail } from './serialized-trail';
 
 export type SerializedPointOfInterest = {
   name: string,
@@ -9,4 +9,9 @@ export type SerializedPointOfInterest = {
   description?: string,
   trails?: Array<SerializedTrail>,
   photospheres?: Array<string>,
+  isWinterExclusive: boolean,
+  isSummerExclusive: boolean,
+  isIndoor: boolean,
+  isLandscape: boolean,
+  isActivity: boolean,
 };

@@ -1,4 +1,5 @@
 export type Pin = {
+  label: string,
   icon: string,
   color: string,
   fillColor: string,

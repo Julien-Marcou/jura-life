@@ -1,8 +1,9 @@
-import { Pin } from "./pin";
-import { PinType } from "./pin-type";
+import { Pin } from './pin';
+import { PinType } from './pin-type';
 
 export const Pins: Record<PinType, Pin> = {
   [PinType.ViaFerrata]: {
+    label: 'Via Ferrata',
     icon: 'via-ferrata',
     color: 'costa-del-sol',
     fillColor: '#556b2f',
@@ -11,6 +12,7 @@ export const Pins: Record<PinType, Pin> = {
     fontSize: '20px',
   },
   [PinType.ZipLine]: {
+    label: 'Tyrolienne',
     icon: 'zip-line',
     color: 'red',
     fillColor: '#f00',
@@ -19,6 +21,7 @@ export const Pins: Record<PinType, Pin> = {
     fontSize: '20px',
   },
   [PinType.Beach]: {
+    label: 'Plage',
     icon: 'beach',
     color: 'amber',
     fillColor: '#ffc400',
@@ -27,6 +30,7 @@ export const Pins: Record<PinType, Pin> = {
     fontSize: '26px',
   },
   [PinType.CampSite]: {
+    label: 'Site de Campement',
     icon: 'tent',
     color: 'atlantis',
     fillColor: '#9acd32',
@@ -35,6 +39,7 @@ export const Pins: Record<PinType, Pin> = {
     fontSize: '21px',
   },
   [PinType.ClimbingSite]: {
+    label: "Site d'Escalade",
     icon: 'climbing',
     color: 'gray',
     fillColor: '#808080',
@@ -43,6 +48,7 @@ export const Pins: Record<PinType, Pin> = {
     fontSize: '20px',
   },
   [PinType.StargazingSite]: {
+    label: "Site d'Observation des Étoiles",
     icon: 'telescope',
     color: 'navy-blue',
     fillColor: '#000080',
@@ -51,6 +57,7 @@ export const Pins: Record<PinType, Pin> = {
     fontSize: '20px',
   },
   [PinType.SkiStation]: {
+    label: 'Station de Ski',
     icon: 'skiing',
     color: 'white',
     fillColor: '#fff',
@@ -59,6 +66,7 @@ export const Pins: Record<PinType, Pin> = {
     fontSize: '19px',
   },
   [PinType.HikingTrail]: {
+    label: 'Sentier de Randonnée',
     icon: 'hiking',
     color: 'copper-canyon',
     fillColor: '#8b4513',
@@ -67,6 +75,7 @@ export const Pins: Record<PinType, Pin> = {
     fontSize: '20px',
   },
   [PinType.Waterfall]: {
+    label: 'Cascade',
     icon: 'waterfall',
     color: 'cerulean',
     fillColor: '#00bfff',
@@ -75,6 +84,7 @@ export const Pins: Record<PinType, Pin> = {
     fontSize: '18px',
   },
   [PinType.Bridge]: {
+    label: 'Pont',
     icon: 'bridge',
     color: 'web-orange',
     fillColor: '#ffa500',
@@ -83,6 +93,7 @@ export const Pins: Record<PinType, Pin> = {
     fontSize: '20px',
   },
   [PinType.Pond]: {
+    label: "Point d'Eau",
     icon: 'reeds',
     color: 'norway',
     fillColor: '#8fbc8f',
@@ -91,6 +102,7 @@ export const Pins: Record<PinType, Pin> = {
     fontSize: '20px',
   },
   [PinType.OrientationSite]: {
+    label: "Table d'Orientation",
     icon: 'signs',
     color: 'persian-rose',
     fillColor: '#ff1493',
@@ -99,6 +111,7 @@ export const Pins: Record<PinType, Pin> = {
     fontSize: '22px',
   },
   [PinType.Mountain]: {
+    label: 'Montagne',
     icon: 'mountains',
     color: 'blaze-orange',
     fillColor: '#ff6600',
@@ -107,6 +120,7 @@ export const Pins: Record<PinType, Pin> = {
     fontSize: '19px',
   },
   [PinType.Museum]: {
+    label: 'Musée',
     icon: 'museum',
     color: 'purple-heart',
     fillColor: '#8a2be2',
@@ -115,6 +129,7 @@ export const Pins: Record<PinType, Pin> = {
     fontSize: '20px',
   },
   [PinType.ScenicViewpoint]: {
+    label: 'Belvédère',
     icon: 'viewing',
     color: 'hibiscus',
     fillColor: '#b03060',
@@ -123,6 +138,7 @@ export const Pins: Record<PinType, Pin> = {
     fontSize: '19px',
   },
   [PinType.Cave]: {
+    label: 'Grotte',
     icon: 'cave',
     color: 'black',
     fillColor: '#000',
@@ -131,6 +147,7 @@ export const Pins: Record<PinType, Pin> = {
     fontSize: '18px',
   },
   [PinType.Lake]: {
+    label: 'Lac',
     icon: 'lake',
     color: 'blue',
     fillColor: '#0000ff',
@@ -139,6 +156,7 @@ export const Pins: Record<PinType, Pin> = {
     fontSize: '18px',
   },
   [PinType.Canyon]: {
+    label: 'Canyon',
     icon: 'canyon',
     color: 'whiskey',
     fillColor: '#cfa569',
@@ -147,6 +165,7 @@ export const Pins: Record<PinType, Pin> = {
     fontSize: '18px',
   },
   [PinType.RollerCoaster]: {
+    label: 'Montagne Russe',
     icon: 'roller-coaster',
     color: 'crimson',
     fillColor: '#dc143c',
@@ -155,6 +174,7 @@ export const Pins: Record<PinType, Pin> = {
     fontSize: '20px',
   },
   [PinType.Park]: {
+    label: 'Parc',
     icon: 'park',
     color: 'japanese-laurel',
     fillColor: '#009900',
@@ -163,6 +183,7 @@ export const Pins: Record<PinType, Pin> = {
     fontSize: '19px',
   },
   [PinType.Bowling]: {
+    label: 'Bowling',
     icon: 'bowling',
     color: 'khaki',
     fillColor: '#f0e68c',
@@ -171,6 +192,7 @@ export const Pins: Record<PinType, Pin> = {
     fontSize: '20px',
   },
   [PinType.Casino]: {
+    label: 'Casino',
     icon: 'casino',
     color: 'lavender-magenta',
     fillColor: '#ee82ee',
@@ -179,6 +201,7 @@ export const Pins: Record<PinType, Pin> = {
     fontSize: '19px',
   },
   [PinType.ParaglidingTakeOff]: {
+    label: 'Piste de Décollage de Parapente',
     icon: 'hang-gliding',
     color: 'yellow-sunshine',
     fillColor: '#ffee00',
@@ -187,6 +210,7 @@ export const Pins: Record<PinType, Pin> = {
     fontSize: '22px',
   },
   [PinType.Rink]: {
+    label: 'Patinoire',
     icon: 'ice-skating',
     color: 'aquamarine',
     fillColor: '#55eeff',
@@ -195,6 +219,7 @@ export const Pins: Record<PinType, Pin> = {
     fontSize: '20px',
   },
   [PinType.BikePark]: {
+    label: 'Bike Park',
     icon: 'bicycling',
     color: 'hot-toddy',
     fillColor: '#a67808',
@@ -203,6 +228,7 @@ export const Pins: Record<PinType, Pin> = {
     fontSize: '21px',
   },
   [PinType.Ferry]: {
+    label: 'Bateau de Croisière',
     icon: 'ferry',
     color: 'bittersweet',
     fillColor: '#fa8072',
@@ -211,6 +237,7 @@ export const Pins: Record<PinType, Pin> = {
     fontSize: '20px',
   },
   [PinType.CrossCountrySkiTrail]: {
+    label: 'Domaine Nordique',
     icon: 'cross-country-skiing',
     color: 'alto',
     fillColor: '#d5d5d5',
@@ -219,6 +246,7 @@ export const Pins: Record<PinType, Pin> = {
     fontSize: '20px',
   },
   [PinType.NauticBase]: {
+    label: 'Base Nautique',
     icon: 'wind-surfing',
     color: 'oyster-bay',
     fillColor: '#d4fbff',
@@ -227,6 +255,7 @@ export const Pins: Record<PinType, Pin> = {
     fontSize: '20px',
   },
   [PinType.Cinema]: {
+    label: 'Cinéma',
     icon: 'movie-theater',
     color: 'crusoe',
     fillColor: '#024700',
@@ -235,6 +264,7 @@ export const Pins: Record<PinType, Pin> = {
     fontSize: '17px',
   },
   [PinType.SwimmingPool]: {
+    label: 'Piscine',
     icon: 'swimming',
     color: 'teal',
     fillColor: '#008b8b',
@@ -243,6 +273,7 @@ export const Pins: Record<PinType, Pin> = {
     fontSize: '20px',
   },
   [PinType.Karting]: {
+    label: 'Karting',
     icon: 'karting',
     color: 'cosmos',
     fillColor: '#ffdbdb',

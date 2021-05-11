@@ -1,5 +1,88 @@
-<div class="map" #mapElement></div>
+<form class="filters" [class.displayed]="displayFilters" [formGroup]="filtersForm">
+  <ng-container>
+
+    <div class="seasons">
+      <h2>À faire :</h2>
+      <label>
+        <input type="radio" formControlName="season" value="none">
+        <span class="label">Peu importe</span>
+      </label>
+      <label>
+        <input type="radio" formControlName="season" value="not-winter">
+        <span class="label">En Été</span>
+      </label>
+      <label>
+        <input type="radio" formControlName="season" value="summer">
+        <span class="label">Uniquement en Été</span>
+      </label>
+      <label>
+        <input type="radio" formControlName="season" value="not-summer">
+        <span class="label">En Hiver</span>
+      </label>
+      <label>
+        <input type="radio" formControlName="season" value="winter">
+        <span class="label">Uniquement en Hiver</span>
+      </label>
+      <label>
+        <input type="radio" formControlName="season" value="all-year">
+        <span class="label">Toute l'Année</span>
+      </label>
+    </div>
+
+    <div class="features">
+      <h2>Caractéristiques :</h2>
+      <label>
+        <input type="checkbox" formControlName="isLandscape">
+        <span class="label">Paysage à voir</span>
+      </label>
+      <label>
+        <input type="checkbox" formControlName="isActivity">
+        <span class="label">Activité à faire</span>
+      </label>
+      <label>
+        <input type="checkbox" formControlName="isIndoor">
+        <span class="label">En intérieur</span>
+      </label>
+      <label>
+        <input type="checkbox" formControlName="hasTrail">
+        <span class="label">Avec randonnée</span>
+      </label>
+      <label>
+        <input type="checkbox" formControlName="hasNoTrail">
+        <span class="label">Sans randonnée</span>
+      </label>
+      <label>
+        <input type="checkbox" formControlName="hasPhotosphere">
+        <span class="label">Aperçu photosphère</span>
+      </label>
+    </div>
+
+    <div class="categories" formGroupName="categories">
+      <h2>Catégories :</h2>
+      <label *ngFor="let pin of pins | keyvalue:comparePin">
+        <input type="checkbox" [formControlName]="pin.key">
+        <span class="icon" [style.backgroundColor]="pin.value.fillColor" [style.color]="pin.value.textColor">{{ pin.value.icon }}</span>
+        <span class="label">{{ pin.value.label }}</span>
+        <span class="count">({{ pointOfInterestCountByPinType[pin.key] }})</span>
+      </label>
+    </div>
+
+  </ng-container>
+</form>
+
+<div class="map-container">
+  <div class="map" #mapElement></div>
+  <button class="filters-button" (click)="toggleFilters()">
+    <span class="material-icons" *ngIf="!displayFilters; else closeFiltersTemplate">search</span>
+    <ng-template #closeFiltersTemplate><span class="material-icons">chevron_left</span></ng-template>
+    Filtres
+  </button>
+</div>
+
 <div class="photosphere" *ngIf="photosphere">
   <iframe class="iframe" [src]="photosphere" allowfullscreen></iframe>
-  <button class="close-button" (click)="photosphere = undefined">Fermer ❌</button>
+  <button class="close-button" (click)="closePhotosphere()">
+    Fermer
+    <span class="material-icons">close</span>
+  </button>
 </div>

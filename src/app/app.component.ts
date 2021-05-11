@@ -1,36 +1,67 @@
-import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
+import { KeyValue } from '@angular/common';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { JuraPointsOfInterest } from './models/jura-points-of-interest';
+import { Pin } from './models/pin';
+import { PinType } from './models/pin-type';
 import { Pins } from './models/pins';
 import { PointOfInterest } from './models/point-of-interest';
 import { SerializedPointOfInterest } from './models/serialized-point-of-interest';
 import { SerializedTrail } from './models/serialized-trail';
 import { Trail } from './models/trail';
 
+type PinFilters = {
+  season: 'none' | 'winter' | 'not-winter' | 'summer' | 'not-summer' | 'all-year',
+  isIndoor: boolean,
+  isLandscape: boolean,
+  isActivity: boolean,
+  hasTrail: boolean,
+  hasNoTrail: boolean,
+  hasPhotosphere: boolean,
+  categories: Record<PinType, boolean>,
+};
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
-export class AppComponent implements AfterViewInit {
+export class AppComponent implements OnInit {
 
-  @ViewChild('mapElement') mapElement?: ElementRef<HTMLElement>;
+  @ViewChild('mapElement', {static: true}) mapElement?: ElementRef<HTMLElement>;
 
   private map?: google.maps.Map;
-  private pointsOfInterest: Array<PointOfInterest> = [];
+  private pointsOfInterest: Map<string, PointOfInterest> = new Map();
   private contentTemplate = document.createElement('template');
   private descriptionTemplate = document.createElement('template');
   private trailsTemplate = document.createElement('template');
   private trailTemplate = document.createElement('template');
   private photospheresTemplate = document.createElement('template');
   private photosphereTemplate = document.createElement('template');
+
   public photosphere?: SafeResourceUrl;
+  public displayFilters = false;
+  public filtersForm = new FormGroup({
+    season: new FormControl('none'),
+    isIndoor: new FormControl(false),
+    isLandscape: new FormControl(false),
+    isActivity: new FormControl(false),
+    hasTrail: new FormControl(false),
+    hasNoTrail: new FormControl(false),
+    hasPhotosphere: new FormControl(false),
+    categories: new FormGroup({}),
+  });
+  public pointOfInterestCountByPinType: Record<string, number>;
+  public pins = Pins;
 
   constructor(private readonly route: ActivatedRoute, private readonly sanitizer: DomSanitizer) {
     this.contentTemplate.innerHTML = `
       <div class="content">
-        <h2 class="title"></h2>
+        <h2 class="title">
+          <a class="permalink"></a>
+        </h2>
       </div>`;
     this.descriptionTemplate.innerHTML = `
       <p class="description"></p>`;
@@ -53,9 +84,30 @@ export class AppComponent implements AfterViewInit {
           <button class="select-photosphere">Voir</button>
         </h3>
       </li>`;
+    this.pointOfInterestCountByPinType = Object.fromEntries(Object.keys(Pins).map(pinType => [pinType, 0]));
+    Object.keys(Pins).forEach(pinType => {
+      (this.filtersForm.controls.categories as FormGroup).addControl(pinType, new FormControl(true));
+    });
   }
 
-  async ngAfterViewInit(): Promise<void> {
+  async ngOnInit(): Promise<void> {
+    this.initFormControls();
+    this.initGoogleMap();
+    await this.initAllPointsOfInterest();
+    this.route.queryParams.subscribe(params => {
+      if (params.poi && this.pointsOfInterest.has(params.poi)) {
+        const poi = this.pointsOfInterest.get(params.poi)!;
+        if (params.trail && poi.trails && params.trail in poi.trails) {
+          this.openPointOfInterest(poi, true, params.trail);
+        }
+        else {
+          this.openPointOfInterest(poi, true);
+        }
+      }
+    });
+  }
+
+  initGoogleMap(): void {
     this.map = new google.maps.Map(this.mapElement!.nativeElement, {
       center: { lat: 46.4675751, lng: 5.8919042 },
       zoom: 11,
@@ -99,25 +151,78 @@ export class AppComponent implements AfterViewInit {
         },
       ],
     });
+  }
 
-    for (const poi of JuraPointsOfInterest) {
-      await this.addPointOfInterest(poi);
-    };
+  async initAllPointsOfInterest(): Promise<void> {
+    await Promise.all(Object.entries(JuraPointsOfInterest).map(([id, poi]) => this.addPointOfInterest(id, poi)));
+  }
 
-    this.route.queryParams.subscribe(params => {
-      if (params.poi && params.poi in this.pointsOfInterest) {
-        const poi = this.pointsOfInterest[params.poi];
-        if (params.trail && poi.trails && params.trail in poi.trails) {
-          this.openPointOfInterest(poi, true, params.trail);
-        }
-        else {
-          this.openPointOfInterest(poi, true);
+  initFormControls(): void {
+    const isLandscapeControl = this.filtersForm.get('isLandscape')!;
+    const isActivityControl = this.filtersForm.get('isActivity')!;
+    const isIndoorControl = this.filtersForm.get('isIndoor')!;
+    const hasTrailControl = this.filtersForm.get('hasTrail')!;
+    const hasNoTrailControl = this.filtersForm.get('hasNoTrail')!;
+
+    this.filtersForm.valueChanges.subscribe((filters: PinFilters) => {
+      if (filters.isActivity || filters.isIndoor) {
+        if (isLandscapeControl.enabled) {
+          isLandscapeControl.disable();
         }
       }
+      else if (isLandscapeControl.disabled) {
+        isLandscapeControl.enable();
+      }
+
+      if (filters.isLandscape) {
+        if (isActivityControl.enabled) {
+          isActivityControl.disable();
+        }
+      }
+      else if (isActivityControl.disabled) {
+        isActivityControl.enable();
+      }
+
+      if (filters.isLandscape || filters.hasTrail) {
+        if (isIndoorControl.enabled) {
+          isIndoorControl.disable();
+        }
+      }
+      else if (isIndoorControl.disabled) {
+        isIndoorControl.enable();
+      }
+
+      if (filters.isIndoor || filters.hasNoTrail) {
+        if (hasTrailControl.enabled) {
+          hasTrailControl.disable();
+        }
+      }
+      else if (hasTrailControl.disabled) {
+        hasTrailControl.enable();
+      }
+
+      if (filters.hasTrail) {
+        if (hasNoTrailControl.enabled) {
+          hasNoTrailControl.disable();
+        }
+      }
+      else if (hasNoTrailControl.disabled) {
+        hasNoTrailControl.enable();
+      }
+
+      this.pointsOfInterest.forEach(poi => {
+        if (!this.isPoiMatchingFilters(poi, filters)) {
+          this.closePointOfInterst(poi);
+          poi.marker.setMap(null);
+        }
+        else {
+          poi.marker.setMap(this.map!);
+        }
+      });
     });
   }
 
-  async addPointOfInterest(serializedPoi: SerializedPointOfInterest): Promise<void> {
+  async addPointOfInterest(id: string, serializedPoi: SerializedPointOfInterest): Promise<void> {
     let trails;
     if (serializedPoi.trails) {
       trails = [];
@@ -127,12 +232,18 @@ export class AppComponent implements AfterViewInit {
     }
 
     const poi: PointOfInterest = {
-      index: this.pointsOfInterest.length,
       name: serializedPoi.name,
-      content: this.createContent(serializedPoi, trails),
+      type: serializedPoi.type,
+      content: this.createContent(id, serializedPoi, trails),
       marker: this.createMarker(serializedPoi),
       infoWindow: new google.maps.InfoWindow(),
       trails: trails,
+      photospheres: serializedPoi.photospheres,
+      isWinterExclusive: serializedPoi.isWinterExclusive,
+      isSummerExclusive: serializedPoi.isSummerExclusive,
+      isIndoor: serializedPoi.isIndoor,
+      isLandscape: serializedPoi.isLandscape,
+      isActivity: serializedPoi.isActivity,
     };
     poi.marker.addListener('click', () => {
       if (poi.infoWindow.get('map')) {
@@ -145,7 +256,8 @@ export class AppComponent implements AfterViewInit {
     poi.infoWindow.addListener('closeclick', () => {
       this.closePointOfInterst(poi);
     });
-    this.pointsOfInterest.push(poi);
+    this.pointsOfInterest.set(id, poi);
+    this.pointOfInterestCountByPinType[poi.type]++;
   }
 
   openPointOfInterest(poi: PointOfInterest, centerViewport: boolean = false, trailIndex: number = 0): void {
@@ -199,11 +311,13 @@ export class AppComponent implements AfterViewInit {
     });
   }
 
-  createContent(serializedPoi: SerializedPointOfInterest, trails?: Array<Trail>): Element {
+  createContent(id: string, serializedPoi: SerializedPointOfInterest, trails?: Array<Trail>): Element {
     const contentTemplate = this.contentTemplate.content.cloneNode(true) as DocumentFragment;
     const contentElement = contentTemplate.querySelector('.content')!;
     const titleElement = contentElement.querySelector('.title')!;
-    titleElement.textContent = serializedPoi.name;
+    const permalinkElement = titleElement.querySelector('.permalink')! as HTMLLinkElement;
+    permalinkElement.href = `/?poi=${id}`;
+    permalinkElement.textContent = serializedPoi.name;
 
     if (serializedPoi.description) {
       const descriptionTemplate = this.descriptionTemplate.content.cloneNode(true) as DocumentFragment;
@@ -284,6 +398,7 @@ export class AppComponent implements AfterViewInit {
         size: new google.maps.Size(33, 52),
         anchor: new google.maps.Point(16.5, 52),
         labelOrigin: new google.maps.Point(16.5, 16.5),
+        // Using icons with a path make Google Maps lag
         // path: 'M4.538 12.368C4.525 12.333 4.465 12.106 4.405 11.865C4.216 11.101 3.885 10.281 3.439 9.453C3.181 8.976 3.134 8.903 2.383 7.735C1.172 5.851.957 5.318 1 4.305C1.043 3.374 1.356 2.678 2.039 2.004C2.606 1.442 3.233 1.12 3.997 1C5.89.691 7.727 1.936 8.096 3.782C8.187 4.211 8.165 4.949 8.058 5.353C7.938 5.791 7.461 6.684 6.787 7.727C5.572 9.607 5.113 10.547 4.765 11.848C4.632 12.355 4.576 12.479 4.538 12.368ZM4.538 12.368',
         // strokeColor: pin.strokeColor,
         // strokeWeight: 1,
@@ -306,12 +421,6 @@ export class AppComponent implements AfterViewInit {
     const trackPoints = gpxDocument.getElementsByTagName('trkpt');
 
     const gradient = [
-      // {
-      //   red: 190,
-      //   green: 240,
-      //   blue: 255,
-      //   step: 0,
-      // },
       {
         red: 0,
         green: 198,
@@ -431,6 +540,46 @@ export class AppComponent implements AfterViewInit {
     };
   }
 
+  isPoiMatchingFilters(poi: PointOfInterest, filters: PinFilters): boolean {
+    if (!filters.categories[poi.type]) {
+      return false;
+    }
+    if (filters.hasPhotosphere && !poi.photospheres) {
+      return false;
+    }
+    if (filters.hasTrail && (!poi.trails || poi.type === PinType.ViaFerrata)) {
+      return false;
+    }
+    if (filters.hasNoTrail && poi.trails) {
+      return false;
+    }
+    if (filters.isIndoor && !poi.isIndoor) {
+      return false;
+    }
+    if (filters.isLandscape && !poi.isLandscape) {
+      return false;
+    }
+    if (filters.isActivity && !poi.isActivity) {
+      return false;
+    }
+    if (filters.season === 'winter' && !poi.isWinterExclusive) {
+      return false;
+    }
+    if (filters.season === 'not-winter' && poi.isWinterExclusive) {
+      return false;
+    }
+    if (filters.season === 'summer' && !poi.isSummerExclusive) {
+      return false;
+    }
+    if (filters.season === 'not-summer' && poi.isSummerExclusive) {
+      return false;
+    }
+    if (filters.season === 'all-year' && (poi.isSummerExclusive || poi.isWinterExclusive)) {
+      return false;
+    }
+    return true;
+  }
+
   distanceInKmBetweenEarthCoordinates(lat1: number, lon1: number, lat2: number, lon2: number): number {
     const earthRadiusKm = 6371;
     const dLat = (lat2 - lat1) * Math.PI / 180;
@@ -439,6 +588,18 @@ export class AppComponent implements AfterViewInit {
     lat2 = lat2 * Math.PI / 180;
     const a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.sin(dLon/2) * Math.sin(dLon/2) * Math.cos(lat1) * Math.cos(lat2);
     return earthRadiusKm * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+  }
+
+  comparePin(pinA: KeyValue<string, Pin>, pinB: KeyValue<string, Pin>): number {
+    return pinA.value.label.localeCompare(pinB.value.label);
+  }
+
+  toggleFilters(): void {
+    this.displayFilters = !this.displayFilters;
+  }
+
+  closePhotosphere(): void {
+    this.photosphere = undefined;
   }
 
 }
