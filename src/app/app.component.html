@@ -67,12 +67,17 @@
       </label>
     </div>
 
+    <button class="close-filters-button" (click)="toggleFilters()">
+      Valider
+      <span class="material-icons">done</span>
+    </button>
+
   </ng-container>
 </form>
 
 <div class="map-container">
   <div class="map" #mapElement></div>
-  <button class="filters-button" (click)="toggleFilters()">
+  <button class="toggle-filters-button" (click)="toggleFilters()">
     <span class="material-icons" *ngIf="!displayFilters; else closeFiltersTemplate">search</span>
     <ng-template #closeFiltersTemplate><span class="material-icons">chevron_left</span></ng-template>
     Filtres
@@ -81,7 +86,7 @@
 
 <div class="photosphere" *ngIf="photosphere">
   <iframe class="iframe" [src]="photosphere" allowfullscreen></iframe>
-  <button class="close-button" (click)="closePhotosphere()">
+  <button class="close-photosphere-button" (click)="closePhotosphere()">
     Fermer
     <span class="material-icons">close</span>
   </button>

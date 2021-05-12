@@ -10,17 +10,18 @@
 }
 
 :host {
-  display: grid;
+  display: flex;
   position: fixed;
   overflow: hidden;
   top: 0;
   bottom: 0;
   left: 0;
   right: 0;
-  grid-template-columns: max-content 1fr;
 }
 
 .filters {
+  display: none;
+  flex: 0 0 370px;
   position: relative;
   z-index: 1;
   overflow: auto;
@@ -31,7 +32,15 @@
   box-shadow: 0 0 2px 2px rgba(0, 0, 0, 0.2);
 
   &.displayed {
-    width: 370px;
+    display: block;
+
+    @media (max-width: 750px) {
+      flex: 1 1 100%;
+
+      + .map-container {
+        display: none;
+      }
+    }
   }
 
   h2 {
@@ -54,28 +63,19 @@
     }
   }
 
-  > * {
-    padding: 10px 20px;
-
-    &:first-child {
-      padding-top: 20px;
-    }
-
-    &:last-child {
-      padding-bottom: 20px;
-    }
-  }
-
   .seasons {
     grid-area: seasons;
+    padding: 20px 20px 10px;
   }
 
   .features {
     grid-area: features;
+    padding: 10px 20px;
   }
 
   .categories {
     grid-area: categories;
+    padding: 10px 20px 20px;
 
     .icon {
       font-family: 'Map Icons';
@@ -157,6 +157,7 @@
 }
 
 .map-container {
+  flex: 1 1 auto;
   position: relative;
   width: 100%;
   height: 100%;
@@ -167,7 +168,7 @@
   height: 100%;
 }
 
-.filters-button {
+.toggle-filters-button {
   position: absolute;
   bottom: 24px;
   left: 10px;
@@ -181,6 +182,33 @@
   &:hover, &:active {
     background-color: #ebebeb;
     color: #000;
+  }
+
+  .material-icons {
+    vertical-align: middle;
+    margin-top: -2px;
+    line-height: 15px;
+  }
+}
+
+.close-filters-button {
+  display: none;
+  position: sticky;
+  bottom: 0;
+  width: 100%;
+  font-size: 18px;
+  background-color: #fff;
+  padding: 15px;
+  padding-left: 13px;
+  border-top: 1px solid rgb(0 0 0 / 30%);
+
+  &:hover, &:active {
+    background-color: #ebebeb;
+    color: #000;
+  }
+
+  @media (max-width: 750px) {
+    display: block;
   }
 
   .material-icons {
@@ -204,7 +232,7 @@
     height: 100%;
   }
 
-  .close-button {
+  .close-photosphere-button {
     position: absolute;
     top: 10px;
     left: 50%;
