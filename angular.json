@@ -52,6 +52,7 @@
             "tsConfig": "tsconfig.app.json",
             "aot": true,
             "assets": [
+              "src/.htaccess",
               "src/favicon.png",
               "src/assets"
             ],
