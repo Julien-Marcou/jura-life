@@ -301,10 +301,18 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
   },
   'cascade-moulin-aval': {
     name: "Cascade du Moulin d'Aval",
-    latitude: 46.35579748820804,
-    longitude: 5.904230730433588,
+    latitude: 46.35591140420291,
+    longitude: 5.904118515327781,
     type: PinType.Waterfall,
+    trails: [
+      {
+        startingPoint: "Depuis le Belvédère du Saut du Chien",
+        gpxFile: 'cascade-du-moulin-aval.gpx',
+        duration: '5min',
+      },
+    ],
     photospheres: [
+      '!4v1620849658422!6m8!1m7!1sCAoSLEFGMVFpcFBPYmZHSWJaUHY1RjhFUi1xTDVzbkQwc0NlcW5KVDdFandsWjRK!2m2!1d46.355946!2d5.904138499999999!3f162.98980423906508!4f2.2116722827988156!5f0.7820865974627469',
       '!4v1620388799834!6m8!1m7!1sCAoSLEFGMVFpcFBTUGtWUFU3Y1I2UFRhWHQ4NzlOYmZGcG1BSi1VWEhid191Z2U5!2m2!1d46.356033!2d5.904081499999999!3f161.75499432812444!4f3.0432548811173348!5f0.7820865974627469',
     ],
     isWinterExclusive: false,
@@ -781,5 +789,73 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     isIndoor: true,
     isLandscape: false,
     isActivity: true,
+  },
+  'cascade-chapeau-gendarme': {
+    name: "Cascade du Chapeau de Gendarme",
+    latitude: 46.35891866166526,
+    longitude: 5.906130996409802,
+    type: PinType.Waterfall,
+    trails: [
+      {
+        startingPoint: "Depuis le Belvédère du Saut du Chien",
+        gpxFile: 'chapeau-de-gendarme-chien.gpx',
+        duration: '20min',
+        inverted: true,
+      },
+      {
+        startingPoint: "Depuis la route sous le chapeau",
+        gpxFile: 'chapeau-de-gendarme-route.gpx',
+        duration: '5min',
+        inverted: true,
+      },
+    ],
+    photospheres: [
+      '!4v1620849553544!6m8!1m7!1sCAoSLEFGMVFpcE9QbmdIdzJ2VmltM0JJVnJIZTctNGpHSl9DVG9CMXROSUFhdW5D!2m2!1d46.35889299999999!2d5.9059731!3f49.44810884121242!4f15.837551236768519!5f0.7820865974627469',
+      '!4v1620849582474!6m8!1m7!1sCAoSLEFGMVFpcE9waElGMURyMHhmR2hFd1c2aXVlOFNsWk9PUWFFcE0zQWpxeVNz!2m2!1d46.3586091!2d5.9054166!3f65.56969242668431!4f22.956926978251957!5f0.7820865974627469',
+    ],
+    isWinterExclusive: false,
+    isSummerExclusive: false,
+    isIndoor: false,
+    isLandscape: true,
+    isActivity: false,
+  },
+  'cascade-moulin-amont': {
+    name: "Cascade du Moulin d'Amont",
+    latitude: 46.35298685291105,
+    longitude: 5.907207305866242,
+    type: PinType.Waterfall,
+    trails: [
+      {
+        startingPoint: "Depuis le Belvédère du Saut du Chien",
+        gpxFile: 'cascade-du-moulin-amont.gpx',
+        duration: '25min',
+      },
+    ],
+    photospheres: [
+      '!4v1620849706125!6m8!1m7!1sCAoSLEFGMVFpcE5Ua3dmTnNFSFV1NzBYOV9BYXQ2QnJRek95TFBmVU5qcjh4Yy1r!2m2!1d46.3529053!2d5.907388699999999!3f140.20648000742133!4f13.059285078623347!5f0.7820865974627469',
+    ],
+    isWinterExclusive: false,
+    isSummerExclusive: false,
+    isIndoor: false,
+    isLandscape: true,
+    isActivity: false,
+  },
+  'cascades-flumen': {
+    name: "Cascades du Flumen",
+    latitude: 46.35811225694381,
+    longitude: 5.896421970696242,
+    type: PinType.Waterfall,
+    trails: [
+      {
+        startingPoint: "Depuis l'Usine Électrique",
+        gpxFile: 'cascades-du-flumen.gpx',
+        duration: '25min',
+      },
+    ],
+    isWinterExclusive: false,
+    isSummerExclusive: false,
+    isIndoor: false,
+    isLandscape: true,
+    isActivity: false,
   },
 };
