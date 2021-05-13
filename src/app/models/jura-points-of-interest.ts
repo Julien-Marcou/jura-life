@@ -852,6 +852,9 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
         duration: '25min',
       },
     ],
+    photospheres: [
+      '!4v1620937889906!6m8!1m7!1sCAoSLEFGMVFpcE1wWFZTeUpiY1RVXy1YNXdMelRCN3VuMUh4SGRzR1dkZjhLSWZI!2m2!1d46.3578987!2d5.8960252!3f102.90381313204855!4f19.918982054577725!5f0.7820865974627469',
+    ],
     isWinterExclusive: false,
     isSummerExclusive: false,
     isIndoor: false,
@@ -869,6 +872,9 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
         gpxFile: 'cascade-de-la-queue-de-cheval.gpx',
         duration: '25min',
       },
+    ],
+    photospheres: [
+      '!4v1620937980646!6m8!1m7!1sCAoSLEFGMVFpcE9ndkNlT3ZpNld5X1lkY2E0LUpBRy1wUkpYSHJSRS16dHljQS13!2m2!1d46.3899992!2d5.895200399999999!3f9.000228173644782!4f15.4272117850077!5f0.7820865974627469',
     ],
     isWinterExclusive: false,
     isSummerExclusive: false,
