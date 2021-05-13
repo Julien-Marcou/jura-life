@@ -858,4 +858,22 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     isLandscape: true,
     isActivity: false,
   },
+  'cascades-cheval': {
+    name: "Cascades de la Queue de Cheval",
+    latitude: 46.39015502334763,
+    longitude: 5.895178412090032,
+    type: PinType.Waterfall,
+    trails: [
+      {
+        startingPoint: "Depuis le parking de la Cascade de la Queue de Cheval",
+        gpxFile: 'cascade-de-la-queue-de-cheval.gpx',
+        duration: '25min',
+      },
+    ],
+    isWinterExclusive: false,
+    isSummerExclusive: false,
+    isIndoor: false,
+    isLandscape: true,
+    isActivity: false,
+  },
 };
