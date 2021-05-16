@@ -660,7 +660,7 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     type: PinType.Pond,
     trails: [
       {
-        startingPoint: "Départ du Sentier de Découverte de la Bienne",
+        startingPoint: "Depuis le départ du Sentier de Découverte de la Bienne",
         gpxFile: 'le-trou-bleu.gpx',
         duration: '20min',
         inverted: true,

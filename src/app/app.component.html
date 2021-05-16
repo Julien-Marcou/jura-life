@@ -2,7 +2,10 @@
   <ng-container>
 
     <div class="seasons">
-      <h2>À faire :</h2>
+      <h2 class="title">
+        <span class="material-icons">thermostat</span>
+        Saison :
+      </h2>
       <label>
         <input type="radio" formControlName="season" value="none">
         <span class="label">Peu importe</span>
@@ -30,7 +33,10 @@
     </div>
 
     <div class="features">
-      <h2>Caractéristiques :</h2>
+      <h2>
+        <span class="material-icons">auto_awesome</span>
+        Caractéristiques :
+      </h2>
       <label>
         <input type="checkbox" formControlName="isLandscape">
         <span class="label">Paysage à voir</span>
@@ -58,7 +64,18 @@
     </div>
 
     <div class="categories" formGroupName="categories">
-      <h2>Catégories :</h2>
+      <h2>
+        <span class="material-icons">sell</span>
+        Catégories :
+      </h2>
+      <button type="button" class="check-all" (click)="checkAllCategories(true)">
+        Tout cocher
+        <span class="material-icons">check_box</span>
+      </button>
+      <button type="button" class="uncheck-all" (click)="checkAllCategories(false)">
+        Tout décocher
+        <span class="material-icons">check_box_outline_blank</span>
+      </button>
       <label *ngFor="let pin of pins | keyvalue:comparePin">
         <input type="checkbox" [formControlName]="pin.key">
         <span class="icon" [style.backgroundColor]="pin.value.fillColor" [style.color]="pin.value.textColor">{{ pin.value.icon }}</span>

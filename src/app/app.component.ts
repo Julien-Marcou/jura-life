@@ -59,9 +59,10 @@ export class AppComponent implements OnInit {
   constructor(private readonly route: ActivatedRoute, private readonly sanitizer: DomSanitizer) {
     this.contentTemplate.innerHTML = `
       <div class="content">
-        <h2 class="title">
-          <a class="permalink"></a>
-        </h2>
+        <a class="permalink">
+          <span class="material-icons">link</span>
+          <h2 class="title"></h2>
+        </a>
       </div>`;
     this.descriptionTemplate.innerHTML = `
       <p class="description"></p>`;
@@ -69,17 +70,17 @@ export class AppComponent implements OnInit {
       <ul class="trails"></ul>`;
     this.trailTemplate.innerHTML = `
       <li class="trail">
-        <h3>
+        <h3 class="name">
           <span class="starting-point"></span>
           <button class="select-trail">Voir</button>
         </h3>
-        <p class="topology"></p>
+        <div class="topology"></div>
       </li>`;
     this.photospheresTemplate.innerHTML = `
       <ul class="photospheres"></ul>`;
     this.photosphereTemplate.innerHTML = `
       <li class="photosphere">
-        <h3>
+        <h3 class="name">
           <span class="label"></span>
           <button class="select-photosphere">Voir</button>
         </h3>
@@ -231,12 +232,13 @@ export class AppComponent implements OnInit {
       }
     }
 
+    const zIndex = 1000000 - Math.trunc(serializedPoi.latitude * 10000);
     const poi: PointOfInterest = {
       name: serializedPoi.name,
       type: serializedPoi.type,
       content: this.createContent(id, serializedPoi, trails),
       marker: this.createMarker(serializedPoi),
-      infoWindow: new google.maps.InfoWindow(),
+      infoWindow: this.createInfoWindow(serializedPoi),
       trails: trails,
       photospheres: serializedPoi.photospheres,
       isWinterExclusive: serializedPoi.isWinterExclusive,
@@ -274,8 +276,8 @@ export class AppComponent implements OnInit {
       const bounds = new window.google.maps.LatLngBounds();
       bounds.extend(poi.marker.getPosition()!);
       const center = bounds.getCenter();
-      bounds.extend(new google.maps.LatLng(center.lat() - 0.002, center.lng() - 0.002));
-      bounds.extend(new google.maps.LatLng(center.lat() + 0.002, center.lng() + 0.002));
+      bounds.extend(new google.maps.LatLng(center.lat() - 0.003, center.lng() - 0.003));
+      bounds.extend(new google.maps.LatLng(center.lat() + 0.003, center.lng() + 0.003));
       if (poi.trails) {
         poi.trails[trailIndex].masterPolyline.getPath().forEach(point => bounds.extend(point));
       }
@@ -314,10 +316,12 @@ export class AppComponent implements OnInit {
   createContent(id: string, serializedPoi: SerializedPointOfInterest, trails?: Array<Trail>): Element {
     const contentTemplate = this.contentTemplate.content.cloneNode(true) as DocumentFragment;
     const contentElement = contentTemplate.querySelector('.content')!;
-    const titleElement = contentElement.querySelector('.title')!;
-    const permalinkElement = titleElement.querySelector('.permalink')! as HTMLLinkElement;
+
+    const permalinkElement = contentElement.querySelector('.permalink')! as HTMLLinkElement;
     permalinkElement.href = `/?poi=${id}`;
-    permalinkElement.textContent = serializedPoi.name;
+
+    const titleElement = contentElement.querySelector('.title')!;
+    titleElement.textContent = serializedPoi.name;
 
     if (serializedPoi.description) {
       const descriptionTemplate = this.descriptionTemplate.content.cloneNode(true) as DocumentFragment;
@@ -351,11 +355,30 @@ export class AppComponent implements OnInit {
         }
         startingPointElement.textContent = `${trail.startingPoint}`;
         topologyElement.innerHTML = `
-          Distance ${Math.round(trail.length * 100) / 100}km - Durée ${trail.duration}
-          <br>
-          Altitude min ${Math.round(trail.minElevation)}m - Altitude max ${Math.round(trail.maxElevation)}m
-          <br>
-          Dénivelé positif ${Math.round(trail.inverted ? trail.negativeElevation : trail.positiveElevation)}m - Dénivelé négatif ${Math.round(trail.inverted ? trail.positiveElevation : trail.negativeElevation)}m`;
+          <div class="length">
+            <span class="material-icons">straighten</span>
+            Distance ${Math.round(trail.length * 100) / 100}km
+          </div>
+          <div class="duration">
+            <span class="material-icons">timer</span>
+            Durée ${trail.duration}
+          </div>
+          <div class="min-elevation">
+            <span class="material-icons">arrow_downward</span>
+            Altitude min ${Math.round(trail.minElevation)}m
+          </div>
+          <div class="max-elevation">
+            <span class="material-icons">arrow_upward</span>
+            Altitude max ${Math.round(trail.maxElevation)}m
+          </div>
+          <div class="positive-elevation">
+            <span class="material-icons">trending_up</span>
+            Dénivelé positif ${Math.round(trail.inverted ? trail.negativeElevation : trail.positiveElevation)}m
+          </div>
+          <div class="negative-elevation">
+            <span class="material-icons">trending_down</span>
+            Dénivelé négatif ${Math.round(trail.inverted ? trail.positiveElevation : trail.negativeElevation)}m
+          </div>`;
         trailsElement.appendChild(trailElement);
       }
       contentElement.appendChild(trailsElement);
@@ -412,6 +435,12 @@ export class AppComponent implements OnInit {
       position: new google.maps.LatLng(serializedPoi.latitude, serializedPoi.longitude),
       map: this.map,
       draggable: false,
+    });
+  }
+
+  createInfoWindow(serializedPoi: SerializedPointOfInterest): google.maps.InfoWindow {
+    return new google.maps.InfoWindow({
+      zIndex: 1000000 - Math.trunc(serializedPoi.latitude * 10000),
     });
   }
 
@@ -600,6 +629,15 @@ export class AppComponent implements OnInit {
 
   closePhotosphere(): void {
     this.photosphere = undefined;
+  }
+
+  checkAllCategories(check: boolean): void {
+    const categoriesGroup = (this.filtersForm.controls.categories as FormGroup);
+    const categories = categoriesGroup.value as Record<string, boolean>;
+    for (let pinType in categories) {
+      categories[pinType] = check;
+    }
+    categoriesGroup.setValue(categories);
   }
 
 }
