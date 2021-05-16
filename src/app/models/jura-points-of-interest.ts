@@ -861,8 +861,8 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     isLandscape: true,
     isActivity: false,
   },
-  'cascades-cheval': {
-    name: "Cascades de la Queue de Cheval",
+  'cascade-cheval': {
+    name: "Cascade de la Queue de Cheval",
     latitude: 46.39015502334763,
     longitude: 5.895178412090032,
     type: PinType.Waterfall,
