@@ -32,7 +32,7 @@ export class AppComponent implements OnInit {
 
   @ViewChild('mapElement', {static: true}) mapElement?: ElementRef<HTMLElement>;
 
-  private map?: google.maps.Map;
+  private map!: google.maps.Map;
   private pointsOfInterest: Map<string, PointOfInterest> = new Map();
   private contentTemplate = document.createElement('template');
   private descriptionTemplate = document.createElement('template');
@@ -104,6 +104,12 @@ export class AppComponent implements OnInit {
         else {
           this.openPointOfInterest(poi, true);
         }
+      }
+      if (params.lat && params.lng) {
+        this.map.setCenter(new google.maps.LatLng(parseFloat(params.lat), parseFloat(params.lng)));
+      }
+      if (params.zoom) {
+        this.map.setZoom(parseInt(params.zoom, 10));
       }
     });
   }
@@ -197,7 +203,7 @@ export class AppComponent implements OnInit {
           poi.marker.setMap(null);
         }
         else {
-          poi.marker.setMap(this.map!);
+          poi.marker.setMap(this.map);
         }
       });
     });
@@ -260,7 +266,7 @@ export class AppComponent implements OnInit {
       if (poi.trails) {
         poi.trails[trailIndex].masterPolyline.getPath().forEach(point => bounds.extend(point));
       }
-      this.map!.fitBounds(bounds);
+      this.map.fitBounds(bounds);
     }
   }
 
@@ -279,9 +285,9 @@ export class AppComponent implements OnInit {
   }
 
   displayTrail(trail: Trail): void {
-    trail.masterPolyline.setMap(this.map!);
+    trail.masterPolyline.setMap(this.map);
     trail.elevationPolylines.forEach(polyline => {
-      polyline.setMap(this.map!);
+      polyline.setMap(this.map);
     });
   }
 
