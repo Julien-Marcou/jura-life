@@ -10,7 +10,6 @@ export const enum PinType {
   Waterfall = 'waterfall',
   Bridge = 'bridge',
   Pond = 'pond',
-  OrientationSite = 'orientation-site',
   Mountain = 'mountain',
   Museum = 'museum',
   ScenicViewpoint = 'scenic-viewpoint',
@@ -30,4 +29,5 @@ export const enum PinType {
   Cinema = 'cinema',
   SwimmingPool = 'swimming-pool',
   Karting = 'karting',
+  Monument = 'monument',
 }

@@ -101,15 +101,6 @@ export const Pins: Record<PinType, Pin> = {
     textColor: '#fff',
     fontSize: '20px',
   },
-  [PinType.OrientationSite]: {
-    label: "Table d'Orientation",
-    icon: 'signs',
-    color: 'persian-rose',
-    fillColor: '#ff1493',
-    strokeColor: '#fff',
-    textColor: '#fff',
-    fontSize: '22px',
-  },
   [PinType.Mountain]: {
     label: 'Montagne',
     icon: 'mountains',
@@ -280,5 +271,14 @@ export const Pins: Record<PinType, Pin> = {
     strokeColor: '#000',
     textColor: '#000',
     fontSize: '22px',
+  },
+  [PinType.Monument]: {
+    label: 'Monument',
+    icon: 'monument',
+    color: 'persian-rose',
+    fillColor: '#ff1493',
+    strokeColor: '#fff',
+    textColor: '#fff',
+    fontSize: '21px',
   },
 };
