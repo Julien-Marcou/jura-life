@@ -110,41 +110,21 @@ export class AppComponent implements OnInit {
 
   initGoogleMap(): void {
     this.map = new google.maps.Map(this.mapElement!.nativeElement, {
-      center: { lat: 46.4675751, lng: 5.8919042 },
+      center: { lat: 46.4789051, lng: 5.8939042 },
       zoom: 11,
+      mapTypeId: google.maps.MapTypeId.TERRAIN,
       clickableIcons: false,
       gestureHandling: 'greedy',
       styles: [
         {
-          featureType: 'poi.business',
+          featureType: 'poi',
           elementType: 'labels',
           stylers: [
             { visibility: 'off' },
           ],
         },
         {
-          featureType: 'poi.government',
-          elementType: 'labels',
-          stylers: [
-            { visibility: 'off' },
-          ],
-        },
-        {
-          featureType: 'poi.medical',
-          elementType: 'labels',
-          stylers: [
-            { visibility: 'off' },
-          ],
-        },
-        {
-          featureType: 'poi.school',
-          elementType: 'labels',
-          stylers: [
-            { visibility: 'off' },
-          ],
-        },
-        {
-          featureType: 'transit.station',
+          featureType: 'transit',
           elementType: 'labels',
           stylers: [
             { visibility: 'off' },
@@ -232,7 +212,6 @@ export class AppComponent implements OnInit {
       }
     }
 
-    const zIndex = 1000000 - Math.trunc(serializedPoi.latitude * 10000);
     const poi: PointOfInterest = {
       name: serializedPoi.name,
       type: serializedPoi.type,
@@ -408,7 +387,7 @@ export class AppComponent implements OnInit {
   createMarker(serializedPoi: SerializedPointOfInterest): google.maps.Marker {
     const pin = Pins[serializedPoi.type];
     return new google.maps.Marker({
-      zIndex: 1000000 - Math.trunc(serializedPoi.latitude * 10000),
+      zIndex: 1000000 - Math.round(serializedPoi.latitude * 10000),
       title: serializedPoi.name,
       label: {
         fontFamily: 'Map Icons',
@@ -440,7 +419,7 @@ export class AppComponent implements OnInit {
 
   createInfoWindow(serializedPoi: SerializedPointOfInterest): google.maps.InfoWindow {
     return new google.maps.InfoWindow({
-      zIndex: 1000000 - Math.trunc(serializedPoi.latitude * 10000),
+      zIndex: 1000000 - Math.round(serializedPoi.latitude * 10000),
     });
   }
 
