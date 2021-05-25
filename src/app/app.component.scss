@@ -156,6 +156,25 @@
     > .description {
       margin: 0;
       margin-top: 16px;
+
+      .material-icons {
+        font-size: 14px;
+        vertical-align: middle;
+        margin-top: -1px;
+      }
+
+      a {
+        color: #1a0dab;
+
+        &:hover {
+          text-decoration: underline;
+        }
+
+        .material-icons {
+          color: #d7d3ff;
+          margin-left: 4px;
+        }
+      }
     }
 
     > .trails {
