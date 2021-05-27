@@ -245,7 +245,7 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     isActivity: false,
   },
   'pont-longchaumois': {
-    name: "Le Pont de Longchaumois",
+    name: "Pont de Longchaumois",
     latitude: 46.470071784585095,
     longitude: 5.904846264084158,
     type: PinType.Bridge,
@@ -257,6 +257,19 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     photospheres: [
       '!4v1621981950275!6m8!1m7!1sCAoSLEFGMVFpcE5jV29PSmZ3cGpTamE3NDFZTFFhRkREMkhFWWxheV9VdWpqeDhk!2m2!1d46.4699866!2d5.9047246!3f45.14944395441509!4f11.760917592686766!5f0.49636942910297',
       '!4v1621982039658!6m8!1m7!1sCAoSLEFGMVFpcE0zTzdmX3hOS2lZYUtBRi1NTGczZXFWOGttVlhGbER3SFYzcXI3!2m2!1d46.4700688!2d5.9048302!3f200!4f0!5f0.7820865974627469',
+    ],
+    trails: [
+      {
+        startingPoint: "Depuis Longchaumois",
+        gpxFile: 'pont-de-longchaumois.gpx',
+        duration: '1h30',
+      },
+      {
+        startingPoint: "Depuis la Cascade de Pissevieille",
+        gpxFile: 'cascade-de-pissevieille-depuis-pont-longchaumois.gpx',
+        duration: '1h',
+        inverted: true,
+      },
     ],
   },
   'fort-rousses': {
@@ -668,7 +681,7 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     trails: [
       {
         startingPoint: "Depuis le départ du Sentier de Découverte de la Bienne",
-        gpxFile: 'le-trou-bleu.gpx',
+        gpxFile: 'trou-bleu.gpx',
         duration: '20min',
         inverted: true,
       },
@@ -1111,6 +1124,18 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
       '!4v1621982465650!6m8!1m7!1sCAoSLEFGMVFpcE1BdDVvTHdlYm9POFBkOF9XaUhRVU5yblFvWUVnWmVtdnRTVU95!2m2!1d46.6147024!2d5.9020055!3f293.3469099613643!4f-13.704581174351915!5f0.7820865974627469',
       '!4v1621982419460!6m8!1m7!1sCAoSLEFGMVFpcE1MRkVDbV9VRzR6V2RpSklHOS1ZNnVWSWtCbWl2VHR1bldUVjJv!2m2!1d46.614777!2d5.902251199999999!3f250.81920632241196!4f-12.43841017685385!5f0.7820865974627469',
     ],
+    trails: [
+      {
+        startingPoint: "Depuis le parking du Pic de l'Aigle",
+        gpxFile: 'pic-de-l-aigle.gpx',
+        duration: '20min',
+      },
+      {
+        startingPoint: "Depuis le parking du Belvédère des 4 Lacs",
+        gpxFile: 'pic-de-l-aigle-par-belvedere-4-lacs.gpx',
+        duration: '1h',
+      },
+    ],
   },
   'belvedere-3-lacs': {
     name: "Belvédère des 3 Lacs",
@@ -1125,6 +1150,18 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     photospheres: [
       '!4v1621982195421!6m8!1m7!1sCAoSLEFGMVFpcE1KZ1FkakJFTWlicjU0RG9WbFg1MU13azBZbm5MUl9WYkFhbWRi!2m2!1d46.6235181!2d5.9096598!3f286.07172710157!4f-19.156203092571772!5f0.7820865974627469',
     ],
+    trails: [
+      {
+        startingPoint: "Depuis le parking du Pic de l'Aigle",
+        gpxFile: 'belvedere-des-3-lacs-par-pic-de-l-aigle.gpx',
+        duration: '50min',
+      },
+      {
+        startingPoint: "Depuis le parking du Belvédère des 4 Lacs",
+        gpxFile: 'belvedere-des-3-lacs-par-belvedere-4-lacs.gpx',
+        duration: '30min',
+      },
+    ],
   },
   'belvedere-4-lacs': {
     name: "Belvédère des 4 Lacs",
@@ -1138,6 +1175,18 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     isActivity: false,
     photospheres: [
       '!4v1621982332126!6m8!1m7!1sCAoSLEFGMVFpcE1zcHlSNmZYb09IdHN5NU5NemdTbmZ0MGxpbGlUNDB4TkEtWkJo!2m2!1d46.62633779999999!2d5.9129811!3f322.67436456121146!4f-15.028808238149125!5f0.7820865974627469',
+    ],
+    trails: [
+      {
+        startingPoint: "Depuis le parking du Pic de l'Aigle",
+        gpxFile: 'belvedere-des-4-lacs-par-pic-de-l-aigle.gpx',
+        duration: '1h10',
+      },
+      {
+        startingPoint: "Depuis le parking du Belvédère des 4 Lacs",
+        gpxFile: 'belvedere-des-4-lacs.gpx',
+        duration: '5min',
+      },
     ],
   },
   'pont-roche-blanche': {
@@ -1155,8 +1204,8 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
       '!4v1621982594299!6m8!1m7!1sCAoSLEFGMVFpcE9oWWZQNExZLWZ6UUY3VHFwbmpJM3VNYUIyU1p1Mkh2d0hIZ2w2!2m2!1d46.45501609999999!2d5.890584!3f213.33009606220773!4f-20.368780292024894!5f0.7820865974627469',
     ],
   },
-  'cascade-pissevielle': {
-    name: "Cascade de Pissevielle",
+  'cascade-pissevieille': {
+    name: "Cascade de Pissevieille",
     latitude: 46.453411515747746,
     longitude: 5.893577731926016,
     type: PinType.Waterfall,
@@ -1169,9 +1218,26 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
       '!4v1621982700279!6m8!1m7!1sCAoSLEFGMVFpcE9GTUpuX0kxT2dvMm1iZUtSNUNVSHVKQkxxY0ZKNzljNmFjcXdU!2m2!1d46.4534343!2d5.8936246!3f131.64431649796546!4f32.12698154597348!5f0.4000000000000002',
       '!4v1621981659997!6m8!1m7!1sCAoSLEFGMVFpcFA2alB3N2JhT2JETnpUdUxVVEVRLXc4dnItLU11dHpXemRzS1Zy!2m2!1d46.4537381!2d5.893349!3f140.7684458473495!4f7.806788774696855!5f0.4460869358148803',
     ],
+    trails: [
+      {
+        startingPoint: "Depuis le Pont de Roche Blanche",
+        gpxFile: 'cascade-de-pissevieille.gpx',
+        duration: '10min',
+      },
+      {
+        startingPoint: "Depuis le Pont de Longchaumois",
+        gpxFile: 'cascade-de-pissevieille-depuis-pont-longchaumois.gpx',
+        duration: '1h',
+      },
+      {
+        startingPoint: "Depuis Longchaumois",
+        gpxFile: 'cascade-de-pissevieille-depuis-longchaumois.gpx',
+        duration: '1h50',
+      },
+    ],
   },
-  'cascade-sous-pissevielle': {
-    name: "Cascade sous Pissevielle",
+  'cascade-sous-pissevieille': {
+    name: "Cascade sous Pissevieille",
     latitude: 46.45414895366772,
     longitude: 5.892983724792895,
     type: PinType.Waterfall,
@@ -1183,9 +1249,17 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     photospheres: [
       '!4v1621982657657!6m8!1m7!1sCAoSLEFGMVFpcE85ZTd1cUxVREVPYjQyTVVBMnlQX0xzUERUMV9wdGRkOVJVbGgx!2m2!1d46.4539039!2d5.8932568!3f118.0122007331285!4f10.960909774822966!5f0.7820865974627469',
     ],
+    trails: [
+      {
+        startingPoint: "Depuis le Pont de Roche Blanche",
+        gpxFile: 'cascade-sous-pissevieille.gpx',
+        duration: '5min',
+        inverted: true,
+      },
+    ],
   },
-  'cascade-sur-pissevielle': {
-    name: "Cascade sur Pissevielle",
+  'cascade-sur-pissevieille': {
+    name: "Cascade sur Pissevieille",
     latitude: 46.45287930587765,
     longitude: 5.894495250789982,
     type: PinType.Waterfall,
@@ -1198,6 +1272,13 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
       '!4v1621981825958!6m8!1m7!1sCAoSLEFGMVFpcE1BbzlnSkI2T0JTWWlBSmk0S1RRNTRNRHdvMzRyNW1UVTJCTU44!2m2!1d46.4529797!2d5.8942646!3f137.91177207542242!4f8.883738691557!5f0.5636966850102322',
       '!4v1621981893613!6m8!1m7!1sCAoSLEFGMVFpcE1fNlVCX2tvbTJnaEh3NzF5TVJpd01CUWl5Nnc3TGsxZkZaQ09V!2m2!1d46.4531742!2d5.8939689!3f124.8635741320387!4f7.3935747289714016!5f1.186438170810002',
     ],
+    trails: [
+      {
+        startingPoint: "Depuis le Pont de Roche Blanche",
+        gpxFile: 'cascade-sur-pissevieille.gpx',
+        duration: '20min',
+      },
+    ]
   },
   'belvedere-cuvet': {
     name: "Belvédère du Cuvet",
@@ -1212,6 +1293,13 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     photospheres: [
       '!4v1621982543920!6m8!1m7!1sCAoSLEFGMVFpcE9pYmhQbXFwWjJodi1jYkVKTjVkWHJzaUdtSFRHZEdkdjVfTkNv!2m2!1d46.4559708!2d5.9022779!3f291.1960798940867!4f-0.8755658859130193!5f0.7820865974627469',
     ],
+    trails: [
+      {
+        startingPoint: "Depuis Orcières",
+        gpxFile: 'belvedere-du-cuvet.gpx',
+        duration: '20min',
+      },
+    ],
   },
   'belvedere-corbiere': {
     name: "Belvédère de la Corbière",
@@ -1225,6 +1313,13 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     isActivity: false,
     photospheres: [
       '!4v1621982511021!6m8!1m7!1sCAoSLEFGMVFpcFBwSzljMU1UZ09idXV6Rk5EQTZRMU9vcVNrMEJKWWdiN2d3ZTVf!2m2!1d46.4708153!2d5.9198311!3f314.827499163387!4f-7.6498984088601105!5f0.7820865974627469',
+    ],
+    trails: [
+      {
+        startingPoint: "Depuis Longchaumois",
+        gpxFile: 'belvedere-de-la-corbiere.gpx',
+        duration: '25min',
+      },
     ],
   },
   'maison-flore': {
