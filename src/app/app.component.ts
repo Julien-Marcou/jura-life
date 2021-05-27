@@ -400,7 +400,7 @@ export class AppComponent implements OnInit {
   createMarker(serializedPoi: SerializedPointOfInterest): google.maps.Marker {
     const pin = Pins[serializedPoi.type];
     return new google.maps.Marker({
-      zIndex: 1000000 - Math.round(serializedPoi.latitude * 10000),
+      zIndex: 10000000 - Math.round(serializedPoi.latitude * 100000) + Math.round(serializedPoi.longitude * 1000),
       title: serializedPoi.name,
       label: {
         fontFamily: 'Map Icons',
@@ -432,7 +432,7 @@ export class AppComponent implements OnInit {
 
   createInfoWindow(serializedPoi: SerializedPointOfInterest): google.maps.InfoWindow {
     return new google.maps.InfoWindow({
-      zIndex: 1000000 - Math.round(serializedPoi.latitude * 10000),
+      zIndex: 10000000 - Math.round(serializedPoi.latitude * 100000) + Math.round(serializedPoi.longitude * 1000),
     });
   }
 
