@@ -1278,7 +1278,7 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
         gpxFile: 'cascade-sur-pissevieille.gpx',
         duration: '20min',
       },
-    ]
+    ],
   },
   'belvedere-cuvet': {
     name: "Belvédère du Cuvet",

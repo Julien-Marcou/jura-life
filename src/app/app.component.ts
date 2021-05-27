@@ -136,6 +136,13 @@ export class AppComponent implements OnInit {
             { visibility: 'off' },
           ],
         },
+        {
+          featureType: 'landscape',
+          elementType: 'labels',
+          stylers: [
+            { visibility: 'off' },
+          ],
+        },
       ],
     });
   }
