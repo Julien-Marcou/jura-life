@@ -3,7 +3,9 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
+import { InfoWindow } from './models/info-window';
 import { JuraPointsOfInterest } from './models/jura-points-of-interest';
+import { Marker } from './models/marker';
 import { Pin } from './models/pin';
 import { PinType } from './models/pin-type';
 import { Pins } from './models/pins';
@@ -205,12 +207,12 @@ export class AppComponent implements OnInit {
       }
 
       this.pointsOfInterest.forEach(poi => {
-        if (!this.isPoiMatchingFilters(poi, filters)) {
-          this.closePointOfInterst(poi);
-          poi.marker.setMap(null);
+        if (this.isPoiMatchingFilters(poi, filters)) {
+          poi.marker.display();
         }
         else {
-          poi.marker.setMap(this.map);
+          poi.marker.hide();
+          this.closePointOfInterst(poi);
         }
       });
     });
@@ -225,12 +227,18 @@ export class AppComponent implements OnInit {
       }
     }
 
+    const zIndex = 10000000 - Math.round(serializedPoi.latitude * 100000) + Math.round(serializedPoi.longitude * 1000);;
+    const position = new google.maps.LatLng(serializedPoi.latitude, serializedPoi.longitude);
+    const marker = new Marker(zIndex, position, this.map, serializedPoi.name, serializedPoi.type);
+    const content = this.createContent(id, serializedPoi, trails);
+    const infoWindow = new InfoWindow(zIndex, position, this.map, content);
     const poi: PointOfInterest = {
       name: serializedPoi.name,
       type: serializedPoi.type,
-      content: this.createContent(id, serializedPoi, trails),
-      marker: this.createMarker(serializedPoi),
-      infoWindow: this.createInfoWindow(serializedPoi),
+      position: position,
+      content: content,
+      marker: marker,
+      infoWindow: infoWindow,
       trails: trails,
       photospheres: serializedPoi.photospheres,
       isWinterExclusive: serializedPoi.isWinterExclusive,
@@ -239,24 +247,25 @@ export class AppComponent implements OnInit {
       isLandscape: serializedPoi.isLandscape,
       isActivity: serializedPoi.isActivity,
     };
-    poi.marker.addListener('click', () => {
-      if (poi.infoWindow.get('map')) {
+    this.pointsOfInterest.set(id, poi);
+    this.pointOfInterestCountByPinType[poi.type]++;
+
+    marker.onClick.subscribe(() => {
+      if (infoWindow.isOpen()) {
         this.closePointOfInterst(poi);
       }
       else {
         this.openPointOfInterest(poi);
       }
     });
-    poi.infoWindow.addListener('closeclick', () => {
+
+    infoWindow.onClose.subscribe(() => {
       this.closePointOfInterst(poi);
     });
-    this.pointsOfInterest.set(id, poi);
-    this.pointOfInterestCountByPinType[poi.type]++;
   }
 
   openPointOfInterest(poi: PointOfInterest, centerViewport: boolean = false, trailIndex: number = 0): void {
-    poi.infoWindow.setContent(poi.content);
-    poi.infoWindow.open(this.map, poi.marker);
+    poi.infoWindow.open();
     if (poi.trails) {
       this.displayTrail(poi.trails[trailIndex]);
       const selectTrailElement = poi.content.querySelectorAll('.select-trail')[trailIndex];
@@ -264,17 +273,25 @@ export class AppComponent implements OnInit {
         selectTrailElement.textContent = '☑';
       }
     }
-    if (centerViewport) {
-      const bounds = new window.google.maps.LatLngBounds();
-      bounds.extend(poi.marker.getPosition()!);
-      const center = bounds.getCenter();
-      bounds.extend(new google.maps.LatLng(center.lat() - 0.003, center.lng() - 0.003));
-      bounds.extend(new google.maps.LatLng(center.lat() + 0.003, center.lng() + 0.003));
-      if (poi.trails) {
-        poi.trails[trailIndex].masterPolyline.getPath().forEach(point => bounds.extend(point));
+    requestAnimationFrame(() => {
+      if (centerViewport) {
+        const bounds = new google.maps.LatLngBounds(poi.position);
+        const center = bounds.getCenter();
+        bounds.extend(new google.maps.LatLng(center.lat() - 0.006, center.lng() - 0.006));
+        bounds.extend(new google.maps.LatLng(center.lat() + 0.006, center.lng() + 0.006));
+        if (poi.trails) {
+          poi.trails[trailIndex].masterPolyline.getPath().forEach(point => bounds.extend(point));
+        }
+        const boundsListener = this.map.addListener('idle', () => {
+          boundsListener.remove();
+          this.map.panToBounds(poi.infoWindow.getBounds());
+        });
+        this.map.fitBounds(bounds);
       }
-      this.map.fitBounds(bounds);
-    }
+      else {
+        this.map.panToBounds(poi.infoWindow.getBounds());
+      }
+    });
   }
 
   closePointOfInterst(poi: PointOfInterest): void {
@@ -305,9 +322,9 @@ export class AppComponent implements OnInit {
     });
   }
 
-  createContent(id: string, serializedPoi: SerializedPointOfInterest, trails?: Array<Trail>): Element {
+  createContent(id: string, serializedPoi: SerializedPointOfInterest, trails?: Array<Trail>): HTMLElement {
     const contentTemplate = this.contentTemplate.content.cloneNode(true) as DocumentFragment;
-    const contentElement = contentTemplate.querySelector('.content')!;
+    const contentElement = contentTemplate.querySelector('.content') as HTMLElement;
 
     const permalinkElement = contentElement.querySelector('.permalink')! as HTMLLinkElement;
     permalinkElement.href = `/?poi=${id}`;
@@ -395,45 +412,6 @@ export class AppComponent implements OnInit {
     }
 
     return contentElement;
-  }
-
-  createMarker(serializedPoi: SerializedPointOfInterest): google.maps.Marker {
-    const pin = Pins[serializedPoi.type];
-    return new google.maps.Marker({
-      zIndex: 10000000 - Math.round(serializedPoi.latitude * 100000) + Math.round(serializedPoi.longitude * 1000),
-      title: serializedPoi.name,
-      label: {
-        fontFamily: 'Map Icons',
-        color: pin.textColor,
-        fontSize: pin.fontSize,
-        text: pin.icon,
-      },
-      icon: {
-        url: `/assets/pins/${pin.color}.svg`,
-        size: new google.maps.Size(33, 52),
-        anchor: new google.maps.Point(16.5, 52),
-        labelOrigin: new google.maps.Point(16.5, 16.5),
-        // Using icons with a path make Google Maps lag
-        // path: 'M4.538 12.368C4.525 12.333 4.465 12.106 4.405 11.865C4.216 11.101 3.885 10.281 3.439 9.453C3.181 8.976 3.134 8.903 2.383 7.735C1.172 5.851.957 5.318 1 4.305C1.043 3.374 1.356 2.678 2.039 2.004C2.606 1.442 3.233 1.12 3.997 1C5.89.691 7.727 1.936 8.096 3.782C8.187 4.211 8.165 4.949 8.058 5.353C7.938 5.791 7.461 6.684 6.787 7.727C5.572 9.607 5.113 10.547 4.765 11.848C4.632 12.355 4.576 12.479 4.538 12.368ZM4.538 12.368',
-        // strokeColor: pin.strokeColor,
-        // strokeWeight: 1,
-        // strokeOpacity: 1,
-        // fillColor: pin.fillColor,
-        // fillOpacity: 1,
-        // scale: 4.2,
-        // anchor: new google.maps.Point(4.7, 12.5),
-        // labelOrigin: new google.maps.Point(4.6, 4.6),
-      },
-      position: new google.maps.LatLng(serializedPoi.latitude, serializedPoi.longitude),
-      map: this.map,
-      draggable: false,
-    });
-  }
-
-  createInfoWindow(serializedPoi: SerializedPointOfInterest): google.maps.InfoWindow {
-    return new google.maps.InfoWindow({
-      zIndex: 10000000 - Math.round(serializedPoi.latitude * 100000) + Math.round(serializedPoi.longitude * 1000),
-    });
   }
 
   async createTrail(serializedTrail: SerializedTrail): Promise<Trail> {

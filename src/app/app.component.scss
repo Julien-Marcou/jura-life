@@ -94,6 +94,7 @@
       margin-bottom: 5px;
       line-height: 24px;
       border-radius: 4px;
+      color: #565656;
 
       &:hover, &:active {
         background-color: #ebebeb;
@@ -124,10 +125,110 @@
 
 ::ng-deep {
 
+  .info-window-container {
+    cursor: auto;
+    position: absolute;
+    width: 100%;
+    height: 0;
+
+    &.minimized {
+      opacity: 0.8;
+      .minimize-button {
+        display: none;
+      }
+      .maximize-button {
+        display: block;
+      }
+      .content {
+        > * {
+          display: none;
+        }
+        > .permalink {
+          display: block;
+          .title {
+            font-size: 14px;
+          }
+        }
+      }
+    }
+  }
+
+  .info-window-anchor {
+    position: absolute;
+    width: 100%;
+    bottom: 63px;
+    left: 0;
+
+    &:after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 15px;
+      width: 15px;
+      transform: translate(-50%, -50%) rotate(-45deg);
+      background: linear-gradient(45deg, rgba(255, 255, 255, 1) 11px, rgba(255, 255, 255, 0) 12px);
+      box-shadow: -2px 2px 2px 0 rgba(0, 0, 0, 0.2);
+    }
+  }
+
+  .info-window {
+    position: absolute;
+    box-sizing: border-box;
+    top: 0;
+    left: 0;
+    min-width: 50px;
+    overflow: hidden;
+    transform: translate(-50%,-100%);
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 7px 1px rgba(0, 0, 0, 0.3);
+
+    .button {
+      position: absolute;
+      z-index: 10;
+      top: 0;
+      right: 2px;
+      background-color: transparent;
+      color: #888;
+      text-align: center;
+
+      .material-icons {
+        font-size: 18px;
+        display: block;
+        width: 20px;
+        height: 20px;
+        padding: 2px 0;
+      }
+
+      &:hover, &:focus {
+        color: #000;
+      }
+    }
+
+    .minimize-button, .maximize-button {
+      right: 22px;
+
+      .material-icons {
+        font-size: 20px;
+        line-height: 18px;
+      }
+    }
+
+    .maximize-button {
+      display: none;
+    }
+  }
+
+  .info-window-viewport {
+    --scrollbar-width: 14px;
+    --content-padding: 15px;
+  }
+
   .content {
     max-width: 350px;
-    min-height: 19px;
     font-size: 13px;
+    font-weight: 300;
 
     > .permalink {
       display: block;
@@ -148,8 +249,10 @@
         font-size: 20px;
       }
 
-      &:hover .material-icons {
-        opacity: 1;
+      &:hover, &:focus {
+        .material-icons {
+          opacity: 1;
+        }
       }
     }
 
@@ -166,7 +269,7 @@
       a {
         color: #1a0dab;
 
-        &:hover {
+        &:hover, &:focus {
           text-decoration: underline;
         }
 
@@ -291,6 +394,7 @@
   padding-left: 13px;
   border-radius: 4px;
   box-shadow: 0 1px 4px -1px rgb(0 0 0 / 30%);
+  color: #565656;
 
   &:hover, &:active {
     background-color: #ebebeb;
@@ -314,6 +418,7 @@
   padding: 15px;
   padding-left: 13px;
   border-top: 1px solid rgb(0 0 0 / 30%);
+  color: #565656;
 
   &:hover, &:active {
     background-color: #ebebeb;
