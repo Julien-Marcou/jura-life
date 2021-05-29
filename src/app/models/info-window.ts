@@ -87,6 +87,7 @@ export class InfoWindow extends google.maps.OverlayView {
       return;
     }
     this._isOpen = false;
+    this.containerElement.classList.remove('minimized');
     this.onClose.next();
     requestAnimationFrame(() => {
       this.draw();
