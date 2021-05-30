@@ -17,4 +17,5 @@ export type PointOfInterest = {
   isIndoor: boolean,
   isLandscape: boolean,
   isActivity: boolean,
+  isAccessibleWithoutWalkingMuch?: boolean,
 };

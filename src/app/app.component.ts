@@ -247,6 +247,9 @@ export class AppComponent implements OnInit {
       isLandscape: serializedPoi.isLandscape,
       isActivity: serializedPoi.isActivity,
     };
+    if (serializedPoi.isAccessibleWithoutWalkingMuch !== undefined) {
+      poi.isAccessibleWithoutWalkingMuch = serializedPoi.isAccessibleWithoutWalkingMuch;
+    }
     this.pointsOfInterest.set(id, poi);
     this.pointOfInterestCountByPinType[poi.type]++;
 
@@ -546,10 +549,10 @@ export class AppComponent implements OnInit {
     if (filters.hasPhotosphere && !poi.photospheres) {
       return false;
     }
-    if (filters.hasTrail && (!poi.trails || poi.type === PinType.ViaFerrata)) {
+    if (filters.hasTrail && (!poi.trails && poi.isAccessibleWithoutWalkingMuch !== false || poi.type === PinType.ViaFerrata)) {
       return false;
     }
-    if (filters.hasNoTrail && poi.trails) {
+    if (filters.hasNoTrail && (poi.trails && poi.isAccessibleWithoutWalkingMuch === undefined || poi.isAccessibleWithoutWalkingMuch === false)) {
       return false;
     }
     if (filters.isIndoor && !poi.isIndoor) {

@@ -173,6 +173,7 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     isIndoor: false,
     isLandscape: false,
     isActivity: true,
+    isAccessibleWithoutWalkingMuch: true,
   },
   'escalade-mont-robert': {
     name: "Site d'escalade du Mont Robert",
@@ -337,6 +338,7 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     isIndoor: false,
     isLandscape: true,
     isActivity: false,
+    isAccessibleWithoutWalkingMuch: true,
   },
   'belvedere-saut-chien': {
     name: "Belvédère du Saut du Chien",
@@ -549,6 +551,7 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     isIndoor: false,
     isLandscape: true,
     isActivity: false,
+    isAccessibleWithoutWalkingMuch: false,
   },
   'ruisseau-abime': {
     name: "Ruisseau de l'Abîme",
@@ -790,7 +793,7 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
   },
   'longchaumois': {
     name: "Longchaumois",
-    latitude: 46.46182410111024,
+    latitude: 46.45923581126969,
     longitude: 5.933146944002905,
     type: PinType.StargazingSite,
     description: "La commune de Longchaumois en plus d'être à l'écart des lumières des villes, coupe son éclairage public la nuit, ce qui en fait un coin idéal pour l'observation des étoiles.",
@@ -839,6 +842,7 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     isIndoor: false,
     isLandscape: true,
     isActivity: false,
+    isAccessibleWithoutWalkingMuch: true,
   },
   'cascade-moulin-amont': {
     name: "Cascade du Moulin d'Amont",
@@ -916,6 +920,7 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     photospheres: [
       '!4v1621984552189!6m8!1m7!1sCAoSLEFGMVFpcE0wZWRRb1hqQkk3anJhV28zem8xWlBTUl84SXVod2FoeEoxNV80!2m2!1d46.6136426!2d5.852335999999999!3f149.39199596262193!4f14.591670532453236!5f1.6715533031636123',
     ],
+    isAccessibleWithoutWalkingMuch: false,
   },
   'cascade-eventail': {
     name: "Cascade de l'Éventail",
@@ -931,6 +936,7 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
       '!4v1621983676086!6m8!1m7!1sCAoSLEFGMVFpcE9LSnU3b3B3NURmcHExYXVpd0hvSXZXQXY5eTRBM0RzRHIzVVhE!2m2!1d46.61395050000001!2d5.8545394!3f96.73443531215462!4f14.527554871250501!5f0.7820865974627469',
       '!4v1621983713557!6m8!1m7!1sCAoSLEFGMVFpcE5CU3ZXeWwwN0FYVl9scHVZOUFTZE9KSnRsajBNTkd1N2FjcW1K!2m2!1d46.6139601!2d5.855271999999999!3f241.99280834184637!4f-31.842214685623503!5f0.4000000000000002',
     ],
+    isAccessibleWithoutWalkingMuch: false,
   },
   'belvedere-eventail': {
     name: "Belvédère de l'Éventail",
@@ -945,6 +951,7 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     photospheres: [
       '!4v1621983755362!6m8!1m7!1sCAoSLEFGMVFpcE9NbHhlc1pTWEdiaEpiSWlTeVRjWERjSThWZE5ScDFQZlJhc3It!2m2!1d46.6134984!2d5.854489099999999!3f53.68036661529538!4f-30.421599333624016!5f0.7820865974627469',
     ],
+    isAccessibleWithoutWalkingMuch: false,
   },
   'cascade-grand-saut': {
     name: "Cascade du Grand Saut",
@@ -960,6 +967,7 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
       '!4v1621983916256!6m8!1m7!1sCAoSLEFGMVFpcE9Ob19zN2RhN1Fmek54UkJzYlhsZHRlUTVpTUUzbEFFVnAyajRI!2m2!1d46.6148685!2d5.8604135!3f106.42452018418977!4f13.023778808065885!5f0.4000000000000002',
       '!4v1621983958986!6m8!1m7!1sCAoSLEFGMVFpcE9OQUJDUFNwWDVUUnJaZmVNUm9VWmFpU3psTkhfdVg5djJpSmFY!2m2!1d46.6142869!2d5.858710299999999!3f74.77896584961036!4f12.835349246230905!5f0.7820865974627469',
     ],
+    isAccessibleWithoutWalkingMuch: false,
   },
   'belvedere-grand-saut': {
     name: "Belvédère du Grand Saut",
@@ -974,6 +982,7 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     photospheres: [
       '!4v1621983888587!6m8!1m7!1sCAoSLEFGMVFpcFBuMW1vS09XMnk5eG15Vm9CWE0xVXhvb1lNQ1RmYlNNNGc4ZHQ3!2m2!1d46.6141207!2d5.859467!3f59.579442121341415!4f1.9615127913715042!5f0.7820865974627469',
     ],
+    isAccessibleWithoutWalkingMuch: false,
   },
   'grotte-lacuzon': {
     name: "Grotte Lacuzon",
@@ -988,6 +997,7 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     photospheres: [
       '!4v1621984078513!6m8!1m7!1sCAoSLEFGMVFpcFBoQ0FOd3RPZ0lLUU8xMmFnbVRjcWtYWjBXZHZzNk90cXNVM1Vz!2m2!1d46.61506259999999!2d5.859666499999999!3f161.66053249137295!4f27.419460480077788!5f0.4000000000000002',
     ],
+    isAccessibleWithoutWalkingMuch: false,
   },
   'cascade-gour-bleu': {
     name: "Cascade du Gour Bleu",
@@ -1002,6 +1012,7 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     photospheres: [
       '!4v1621984017351!6m8!1m7!1sCAoSLEFGMVFpcE9sTklEWXRxY0laNmZRTHJUbHpuaTZqWVo3ckxuOERIY1U0bUN3!2m2!1d46.6149871!2d5.8621063!3f53.41347182862487!4f5.259469035987948!5f1.1379824968465506',
     ],
+    isAccessibleWithoutWalkingMuch: false,
   },
   'cascade-chateau-garnier': {
     name: "Cascade du Château Garnier",
@@ -1013,6 +1024,7 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     isIndoor: false,
     isLandscape: true,
     isActivity: false,
+    isAccessibleWithoutWalkingMuch: false,
   },
   'cascade-saut-forge': {
     name: "Cascade du Saut de la Forge",
@@ -1027,6 +1039,7 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     photospheres: [
       '!4v1621983786590!6m8!1m7!1sCAoSLEFGMVFpcE9nNkcxSmxNYjItdmd2VkQyRUMwanpKT0V4cWswemhzSzJ1Vklh!2m2!1d46.61416029999999!2d5.8685204!3f77.4407592010558!4f6.152889836653756!5f0.7820865974627469',
     ],
+    isAccessibleWithoutWalkingMuch: false,
   },
   'cascade-moulin-jeunet': {
     name: "Cascade du Moulin Jeunet",
@@ -1041,6 +1054,7 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     photospheres: [
       '!4v1621983819495!6m8!1m7!1sCAoSLEFGMVFpcE82ZmtIS2tSWlV6NnNITDNyaUQ2ZU52YWdyM2U0U2hBLWdEVFdl!2m2!1d46.6135074!2d5.8747774!3f35.50691487268526!4f-14.297465491308898!5f0.7820865974627469',
     ],
+    isAccessibleWithoutWalkingMuch: false,
   },
   'ruine-clouterie': {
     name: "Ruine de la Clouterie",
@@ -1055,6 +1069,7 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     photospheres: [
       '!4v1621984111915!6m8!1m7!1sCAoSLEFGMVFpcFBfVXBBSEExYl9YME1vNEhFR21Nem1FanR1d2kyakdTMW50LVZi!2m2!1d46.6107309!2d5.8811795!3f213.79082382946237!4f4.626894173255835!5f0.8744563968442107',
     ],
+    isAccessibleWithoutWalkingMuch: false,
   },
   'cascade-saut-girard': {
     name: "Cascade du Saut Girard",
@@ -1070,6 +1085,7 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
       '!4v1621983590240!6m8!1m7!1sCAoSLEFGMVFpcE1ZaXkwT1VlRlA1Y0ZWNFA1NkJWdmNMY3BVWnJ2bFZUSDRpVDNO!2m2!1d46.61184309999999!2d5.8839545!3f88.83295498108811!4f20.118001843800144!5f0.7820865974627469',
       '!4v1621983640396!6m8!1m7!1sCAoSLEFGMVFpcE92RzVJOElaUVNqZVN2ZUgwdlVKanZRYlBBVFpPcGs1b25fTUJG!2m2!1d46.6117453!2d5.8841762!3f295.6474536381387!4f19.13351682913735!5f0.4000000000000002',
     ],
+    isAccessibleWithoutWalkingMuch: false,
   },
   'belvedere-saut-girard': {
     name: "Belvédère du Saut Girard",
@@ -1098,6 +1114,7 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     photospheres: [
       '!4v1621983519319!6m8!1m7!1sCAoSLEFGMVFpcE5nRWZidEk5dzFWeWVXWC0yWTNtSTF3eUtZSVVkcmJySzJmbUd6!2m2!1d46.6120612!2d5.8830694!3f186.54825974283193!4f-16.223703170397258!5f0.7820865974627469',
     ],
+    isAccessibleWithoutWalkingMuch: false,
   },
   'scuplture-lynx': {
     name: "Scuplture de Lynx",
@@ -1109,6 +1126,7 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     isIndoor: false,
     isLandscape: false,
     isActivity: false,
+    isAccessibleWithoutWalkingMuch: false,
   },
   'pic-aigle': {
     name: "Pic de l'Aigle",
@@ -1188,6 +1206,7 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
         duration: '5min',
       },
     ],
+    isAccessibleWithoutWalkingMuch: true,
   },
   'pont-roche-blanche': {
     name: "Pont de Roche Blanche",
@@ -1235,6 +1254,7 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
         duration: '1h50',
       },
     ],
+    isAccessibleWithoutWalkingMuch: true,
   },
   'cascade-sous-pissevieille': {
     name: "Cascade sous Pissevieille",
@@ -1257,6 +1277,7 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
         inverted: true,
       },
     ],
+    isAccessibleWithoutWalkingMuch: true,
   },
   'cascade-sur-pissevieille': {
     name: "Cascade sur Pissevieille",
@@ -1321,6 +1342,7 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
         duration: '25min',
       },
     ],
+    isAccessibleWithoutWalkingMuch: true,
   },
   'maison-flore': {
     name: "Maison de la Flore",
