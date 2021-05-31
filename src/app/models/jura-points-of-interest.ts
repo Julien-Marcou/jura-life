@@ -87,6 +87,7 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     photospheres: [
       '!4v1620389296693!6m8!1m7!1sCAoSLEFGMVFpcE82YmFIQW81VlRFX1VnZ3ZMaXlRVV9pNnF1dk1ObHVKdVprazAz!2m2!1d46.4021504!2d5.877988300000001!3f73.80652947606!4f16.740779286838745!5f0.7820865974627469',
       '!4v1620389332734!6m8!1m7!1sCAoSLEFGMVFpcE1WMUhCX3dLSVpKTDF6bS1jZ2RwSXdjOU8zXzEyLXhBNmtrWl92!2m2!1d46.4020766!2d5.8776141!3f78.02780899417196!4f2.338113416426012!5f0.7820865974627469',
+      '!4v1622492790395!6m8!1m7!1sCAoSLEFGMVFpcE5NLTlSdFhLUHFnSVJIYnRPVzVBMlBoU1V6VlpqaXFlVmtJNWNY!2m2!1d46.40198849999999!2d5.8778294!3f83.0091940073256!4f-1.617532047787165!5f0.7820865974627469',
     ],
     isWinterExclusive: false,
     isSummerExclusive: false,
@@ -96,8 +97,8 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
   },
   'gorges-abime': {
     name: "Gorges de l'Abîme",
-    latitude: 46.40342328014523,
-    longitude: 5.87963063627019,
+    latitude: 46.40464764997662,
+    longitude: 5.880105758891276,
     type: PinType.Canyon,
     trails: [
       {
@@ -107,6 +108,11 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
       },
     ],
     photospheres: [
+      '!4v1622493281028!6m8!1m7!1sCAoSLEFGMVFpcE8tWFBGZExoMjBuRGJpREZEanFxZ2VBU2tNRWRRakpLZ1BEWnlR!2m2!1d46.4048094!2d5.8801441!3f204.093597723119!4f-14.471963182580652!5f0.7820865974627469',
+      '!4v1622493879189!6m8!1m7!1sCAoSLEFGMVFpcE9kMHRRWE1Zblg4Um1pVGdfY3Z4WkJWV2hOVTV1ODhDRV9XR2Yt!2m2!1d46.4048327!2d5.8802145!3f320.5077372317214!4f11.899908763310364!5f0.4000000000000002',
+      '!4v1622493573495!6m8!1m7!1sCAoSLEFGMVFpcE1fVzZXU1U1Smd0bTlJbGhOM2ZWampLbXFtNDk0bTNhV0dNM3Vj!2m2!1d46.4042957!2d5.879899!3f138.91066771858073!4f-25.82466119490587!5f0.7820865974627469',
+      '!4v1622493632853!6m8!1m7!1sCAoSLEFGMVFpcE1ocVNMSnNlSUlfYkhBN2NWQUpubllsQmRpdEIteS1TWFNNTWpF!2m2!1d46.404543!2d5.880007!3f35.37114777271044!4f-12.77121147374929!5f0.7820865974627469',
+      '!4v1622493778896!6m8!1m7!1sCAoSLEFGMVFpcFBxaWY5Z3pQN3RYUWJNZkwtQjhIMEZlNXVXMVB3MjFXNl9jdDYt!2m2!1d46.40366359999999!2d5.8797723!3f167.43629438199167!4f-7.058530089250041!5f0.7820865974627469',
       '!4v1620389168689!6m8!1m7!1sCAoSLEFGMVFpcFBQQkR3MWEyYjRwY1ROcnhLRUZiUEdJZU1rZVducDBaV2Y3UXRq!2m2!1d46.40481769908943!2d5.880170948803425!3f197.4573322602514!4f-9.669866665465847!5f0.7820865974627469',
       '!4v1620389242796!6m8!1m7!1sCAoSLEFGMVFpcFBTTTFtVEdVR0ZTeFFsVjVadWVwQ2lPNldIM2h3Nnc4YzlOdko0!2m2!1d46.4051927!2d5.8803966!3f51.31593507048082!4f-23.472534573146348!5f0.7820865974627469',
     ],
@@ -348,6 +354,9 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     isIndoor: false,
     isLandscape: true,
     isActivity: false,
+    photospheres: [
+      '!4v1622492040765!6m8!1m7!1sCAoSLEFGMVFpcE9jZnhWMXZrYlNWUUt5WlItWTEwcnJid0N0Sk1Ma0RGRDJZVmhw!2m2!1d46.3571037!2d5.9020598!3f298.3265847714505!4f0.24277182513793605!5f0.7820865974627469',
+    ],
   },
   'plage-surchauffant': {
     name: "Plage du Surchauffant",
@@ -561,6 +570,9 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     isIndoor: false,
     isLandscape: false,
     isActivity: false,
+    photospheres: [
+      '!4v1622492393788!6m8!1m7!1sCAoSLEFGMVFpcE9Gam1PYWl1dUFheFVGOWh3eFoxYTg4UGJTZXpaZm84YjlkdU1r!2m2!1d46.40155360000001!2d5.8754814!3f97.64949988815097!4f-3.024240477835747!5f0.5970117501821992',
+    ],
   },
   'bateau-louisiane': {
     name: "Bateau de Croisière le Louisiane",
@@ -1444,6 +1456,20 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     isActivity: false,
     photospheres: [
       '!4v1622403360935!6m8!1m7!1sCAoSLEFGMVFpcE94UFJTZTgzcE5EVWNWTk91b01ZTERuSGZ5azBmaWhvMDUtY29h!2m2!1d46.4557515!2d5.7022064!3f294.03!4f-0.21999999999999886!5f1.6715533031636123',
+    ],
+  },
+  'belvedere-roche-blanche': {
+    name: "Belvédère de la Roche Blanche",
+    latitude: 46.35126731111936,
+    longitude: 5.891665519800693,
+    type: PinType.ScenicViewpoint,
+    isWinterExclusive: false,
+    isSummerExclusive: false,
+    isIndoor: false,
+    isLandscape: true,
+    isActivity: false,
+    photospheres: [
+      '!4v1622492203157!6m8!1m7!1sCAoSLEFGMVFpcFA4SE5jSDFERy1jN1FmLXdOMnMySjVqc09FdEYySW8xVW9yU0py!2m2!1d46.3512671!2d5.891681!3f21.86196147532636!4f-3.1357749732489992!5f0.7820865974627469',
     ],
   },
 };
