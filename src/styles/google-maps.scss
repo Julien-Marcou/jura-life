@@ -18,11 +18,11 @@
     .content {
 
       > * {
-        display: none;
+        display: none !important;
       }
 
       > .permalink {
-        display: block;
+        display: block !important;
 
         .title {
           font-size: 14px;
@@ -176,7 +176,7 @@
       .topology {
         margin: 0;
         display: grid;
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: repeat(2, 1fr);
         grid-gap: 2px 6px;
       }
 
@@ -225,9 +225,12 @@
 
     > .photospheres {
       margin-top: 16px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-gap: 8px 12px;
 
-      .photosphere:not(:last-child) {
-        margin-bottom: 6px;
+      @media (max-width: 375px) {
+        grid-template-columns: repeat(2, 1fr);
       }
 
       .name {
