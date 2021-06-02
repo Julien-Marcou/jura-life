@@ -6,4 +6,5 @@ export type Pin = {
   strokeColor: string,
   textColor: string,
   fontSize: string,
+  lineHeight: string,
 };
