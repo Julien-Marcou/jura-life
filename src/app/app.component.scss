@@ -3,12 +3,7 @@
   font-style: normal;
   font-weight: 400;
   font-display: block;
-  src: url('/assets/fonts/map-icons.eot');
-  src: url('/assets/fonts/map-icons.eot#iefix') format('embedded-opentype'),
-       url('/assets/fonts/map-icons.woff2') format('woff2'),
-       url('/assets/fonts/map-icons.woff') format('woff'),
-       url('/assets/fonts/map-icons.ttf') format('truetype'),
-       url('/assets/fonts/map-icons.svg?#map-icons') format('svg');
+  src: url('/assets/fonts/map-icons.woff2') format('woff2');
 }
 
 :host {
@@ -20,6 +15,45 @@
   left: 0;
   right: 0;
 }
+
+// TODO : use this to transform "svg pin + icon font" markers to simple "webp" markers
+// .pins {
+//   display: grid;
+//   grid-template-columns: repeat(auto-fit, 40px);
+//   grid-template-rows: repeat(auto-fit, 60px);
+//   flex: 0 0 50%;
+
+//   .pin {
+//     position: relative;
+//     width: 33px;
+//     height: 52px;
+
+//     .marker {
+//       display: block;
+//       width: 100%;
+//       height: 100%;
+//     }
+
+//     .label {
+//       font-family: 'Map Icons';
+//       position: absolute;
+//       top: 0;
+//       left: 0;
+//       text-align: center;
+//       width: 33px;
+//       height: 33px;
+//       font-size: 20px;
+//       line-height: 33px;
+//       white-space: nowrap;
+//       letter-spacing: 0;
+//       -webkit-font-feature-settings: "liga";
+//       font-feature-settings: "liga";
+//       -webkit-font-variant-ligatures: discretionary-ligatures;
+//       font-variant-ligatures: discretionary-ligatures;
+//       -webkit-font-smoothing: antialiased;
+//     }
+//   }
+// }
 
 .filters {
   display: none;
@@ -57,17 +91,23 @@
   label {
     cursor: pointer;
     display: block;
-    line-height: 1.5em;
+    line-height: 1.55em;
   }
 
   input {
     display: inline-block;
+    vertical-align: middle;
     width: auto;
     margin-right: 0.4em;
 
     &:disabled + .label {
       opacity: 0.5;
     }
+  }
+
+  .label {
+    display: inline-block;
+    vertical-align: middle;
   }
 
   .seasons {
@@ -108,9 +148,14 @@
     }
 
     .icon {
+      display: inline-block;
+      width: 22px;
+      height: 22px;
+      line-height: 22px;
+      vertical-align: middle;
       font-family: 'Map Icons';
+      text-align: center;
       border: 1px solid #000;
-      padding: 2px;
       margin: 0 4px 0 2px;
       border-radius: 4px;
     }

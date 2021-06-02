@@ -14,6 +14,9 @@ import { SerializedPointOfInterest } from './models/serialized-point-of-interest
 import { SerializedTrail } from './models/serialized-trail';
 import { Trail } from './models/trail';
 
+// TODO : use this to transform "svg pin + icon font" markers to simple "webp" markers
+// import html2canvas from 'html2canvas';
+
 type PinFilters = {
   season: 'none' | 'winter' | 'not-winter' | 'summer' | 'not-summer' | 'all-year',
   isIndoor: boolean,
@@ -114,6 +117,27 @@ export class AppComponent implements OnInit {
         this.map.setZoom(parseInt(params.zoom, 10));
       }
     });
+
+    // TODO : use this to transform "svg pin + icon font" markers to simple "webp" markers
+    // setTimeout(async () => {
+    //   const sourcePins = document.querySelectorAll<HTMLElement>('.pins.source > .pin');
+    //   const targetPins = document.querySelector('.pins.target')!;
+    //   for (let pinElement of Array.from(sourcePins)) {
+    //     const canvas = await html2canvas(pinElement, {backgroundColor: null});
+    //     targetPins.appendChild(canvas);
+    //     const webpUrl = canvas.toDataURL('image/webp', 1);
+    //     const downloadLink = document.createElement('a');
+    //     downloadLink.setAttribute('href', webpUrl);
+    //     downloadLink.setAttribute('download', `${pinElement.getAttribute('data-name')}.webp`);
+    //     downloadLink.style.display = 'none';
+    //     document.body.appendChild(downloadLink);
+    //     downloadLink.click();
+    //     document.body.removeChild(downloadLink);
+    //     await new Promise((resolve) => {
+    //       setTimeout(resolve, 80);
+    //     });
+    //   }
+    // }, 1000);
   }
 
   initGoogleMap(): void {
