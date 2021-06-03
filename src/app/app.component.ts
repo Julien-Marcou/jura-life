@@ -65,7 +65,7 @@ export class AppComponent implements OnInit {
     this.contentTemplate.innerHTML = `
       <div class="content">
         <a class="permalink">
-          <span class="material-icons">link</span>
+          <span class="material-icons">tag</span>
           <h2 class="title"></h2>
         </a>
       </div>`;
