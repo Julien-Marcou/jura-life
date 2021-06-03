@@ -1,4 +1,4 @@
-import { Subject, zip } from 'rxjs';
+import { Subject } from 'rxjs';
 import { PinType } from './pin-type';
 
 export class Marker extends google.maps.OverlayView {

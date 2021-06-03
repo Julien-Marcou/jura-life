@@ -100,22 +100,24 @@ export class AppComponent implements OnInit {
     this.initFormControls();
     this.initGoogleMap();
     await this.initAllPointsOfInterest();
-    this.route.queryParams.subscribe(params => {
-      if (params.poi && this.pointsOfInterest.has(params.poi)) {
-        const poi = this.pointsOfInterest.get(params.poi)!;
-        if (params.trail && poi.trails && params.trail in poi.trails) {
-          this.openPointOfInterest(poi, true, params.trail);
+      this.route.queryParams.subscribe(params => {
+        requestAnimationFrame(() => {
+        if (params.poi && this.pointsOfInterest.has(params.poi)) {
+          const poi = this.pointsOfInterest.get(params.poi)!;
+          if (params.trail && poi.trails && params.trail in poi.trails) {
+            this.openPointOfInterest(poi, true, params.trail);
+          }
+          else {
+            this.openPointOfInterest(poi, true);
+          }
         }
-        else {
-          this.openPointOfInterest(poi, true);
+        if (params.lat && params.lng) {
+          this.map.setCenter(new google.maps.LatLng(parseFloat(params.lat), parseFloat(params.lng)));
         }
-      }
-      if (params.lat && params.lng) {
-        this.map.setCenter(new google.maps.LatLng(parseFloat(params.lat), parseFloat(params.lng)));
-      }
-      if (params.zoom) {
-        this.map.setZoom(parseInt(params.zoom, 10));
-      }
+        if (params.zoom) {
+          this.map.setZoom(parseInt(params.zoom, 10));
+        }
+      });
     });
 
     // TODO : use this to transform "svg pin + icon font" markers to simple "webp" markers
@@ -286,7 +288,7 @@ export class AppComponent implements OnInit {
       }
     });
 
-    infoWindow.onClose.subscribe(() => {
+    infoWindow.onSelfClose.subscribe(() => {
       this.closePointOfInterst(poi);
     });
   }
@@ -297,7 +299,7 @@ export class AppComponent implements OnInit {
       this.displayTrail(poi.trails[trailIndex]);
       const selectTrailElement = poi.content.querySelectorAll('.select-trail')[trailIndex];
       if (selectTrailElement) {
-        selectTrailElement.textContent = '☑';
+        selectTrailElement.innerHTML = '<span class="material-icons">check_box</span>';
       }
     }
     requestAnimationFrame(() => {
@@ -328,9 +330,9 @@ export class AppComponent implements OnInit {
         poi.content.querySelectorAll('.select-trail').forEach(_selectTrailElement => _selectTrailElement.textContent = 'Voir');
         this.hideTrail(trail);
       });
-      const selectedTrailElement = poi.content.querySelector('.select-trail');
-      if (selectedTrailElement) {
-        selectedTrailElement.textContent = '☑';
+      const selectTrailElement = poi.content.querySelector('.select-trail');
+      if (selectTrailElement) {
+        selectTrailElement.innerHTML = '<span class="material-icons">check_box</span>';
       }
     }
   }
@@ -385,7 +387,7 @@ export class AppComponent implements OnInit {
               trailsElement.querySelectorAll('.select-trail').forEach(_selectTrailElement => _selectTrailElement.textContent = 'Voir');
               this.hideTrail(_trail);
             });
-            selectTrailElement.textContent = '☑';
+            selectTrailElement.innerHTML = '<span class="material-icons">check_box</span>';
             this.displayTrail(trail);
           });
         }
