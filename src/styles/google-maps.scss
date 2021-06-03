@@ -1,3 +1,22 @@
+.marker-container {
+  cursor: auto;
+  position: absolute;
+  width: 0;
+  height: 0;
+
+  .marker {
+    display: block;
+    background-color: transparent;
+    transform: translate(-50%, -100%);
+
+    .pin {
+      display: block;
+      width: 33px;
+      height: 52px;
+    }
+  }
+}
+
 .info-window-container {
   cursor: auto;
   position: absolute;

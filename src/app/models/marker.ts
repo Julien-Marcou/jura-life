@@ -1,75 +1,81 @@
-import { Subject } from 'rxjs';
+import { Subject, zip } from 'rxjs';
 import { PinType } from './pin-type';
-import { Pins } from './pins';
 
-export class Marker {
+export class Marker extends google.maps.OverlayView {
 
   public readonly onClick: Subject<void> = new Subject();
-  private marker: google.maps.Marker;
+  private _isVisible: boolean = true;
+  private zIndex: number;
+  private position: google.maps.LatLng;
   private map: google.maps.Map;
+  private containerElement: HTMLElement;
+  private markerElement: HTMLButtonElement;
 
   constructor(zIndex: number, position: google.maps.LatLng, map: google.maps.Map, title: string, type: PinType) {
-    const pin = Pins[type];
+    super();
+    this.zIndex = zIndex;
+    this.position = position;
     this.map = map;
-    this.marker = new google.maps.Marker({
-      zIndex: zIndex,
-      title: title,
-      position: position,
-      map: map,
-      draggable: false,
-      // optimized: true
-      icon: {
-        url: `/assets/markers/${type}.webp`,
-        size: new google.maps.Size(33, 52),
-        scaledSize: new google.maps.Size(33, 52),
-      },
 
-      // Using markers with a label make Google Maps lag
-      // label: {
-      //   fontFamily: 'Map Icons',
-      //   color: pin.textColor,
-      //   fontSize: pin.fontSize,
-      //   text: pin.icon,
-      // },
-
-      // Using markers with an svg icon make Google Maps lag
-      // icon: {
-      //   url: `/assets/pins/${pin.color}.svg`,
-      //   size: new google.maps.Size(33, 52),
-      //   anchor: new google.maps.Point(16.5, 52),
-      //   labelOrigin: new google.maps.Point(16.5, 16.5),
-      // },
-
-      // Using markers with an icon path make Google Maps lag
-      // icon: {
-      //   path: 'M4.538 12.368C4.525 12.333 4.465 12.106 4.405 11.865C4.216 11.101 3.885 10.281 3.439 9.453C3.181 8.976 3.134 8.903 2.383 7.735C1.172 5.851.957 5.318 1 4.305C1.043 3.374 1.356 2.678 2.039 2.004C2.606 1.442 3.233 1.12 3.997 1C5.89.691 7.727 1.936 8.096 3.782C8.187 4.211 8.165 4.949 8.058 5.353C7.938 5.791 7.461 6.684 6.787 7.727C5.572 9.607 5.113 10.547 4.765 11.848C4.632 12.355 4.576 12.479 4.538 12.368ZM4.538 12.368',
-      //   strokeColor: pin.strokeColor,
-      //   strokeWeight: 1,
-      //   strokeOpacity: 1,
-      //   fillColor: pin.fillColor,
-      //   fillOpacity: 1,
-      //   scale: 4.2,
-      //   anchor: new google.maps.Point(4.7, 12.5),
-      //   labelOrigin: new google.maps.Point(4.6, 4.6),
-      // },
-    });
-
-    this.marker.addListener('click', () => {
+    this.containerElement = document.createElement('div');
+    this.containerElement.classList.add('marker-container');
+    this.containerElement.innerHTML = `
+      <button class="marker" type="button" title="${title}">
+        <img class="pin" src="/assets/markers/${type}.webp">
+      </button>`;
+    this.markerElement = this.containerElement.querySelector('.marker')!;
+    this.markerElement.addEventListener('click', () => {
       this.onClick.next();
     });
+
+    Marker.preventMapHitsFrom(this.containerElement);
+    this.setMap(this.map);
+  }
+
+  onAdd(): void {
+    this.getPanes()!.floatPane.appendChild(this.containerElement);
+  }
+
+  onRemove(): void {
+    if (this.containerElement.parentElement) {
+      this.containerElement.parentElement.removeChild(this.containerElement);
+    }
+  }
+
+  isVisible(): boolean {
+    return this._isVisible;
   }
 
   display(): void {
-    if (this.marker.getMap() === this.map) {
+    if (this._isVisible) {
       return;
     }
-    this.marker.setMap(this.map);
+    this._isVisible = true;
+    requestAnimationFrame(() => {
+      this.draw();
+    });
   }
 
   hide(): void {
-    if (this.marker.getMap() === null) {
+    if (!this._isVisible) {
       return;
     }
-    this.marker.setMap(null);
+    this._isVisible = false;
+    requestAnimationFrame(() => {
+      this.draw();
+    });
+  }
+
+  draw(): void {
+    if (this._isVisible) {
+      const containerPosition = this.getProjection().fromLatLngToDivPixel(this.position);
+      this.containerElement.style.display = 'block';
+      this.containerElement.style.zIndex = `${this.zIndex}`;
+      this.containerElement.style.left = `${containerPosition.x}px`;
+      this.containerElement.style.top = `${containerPosition.y}px`;
+    }
+    else {
+      this.containerElement.style.display = 'none';
+    }
   }
 }
