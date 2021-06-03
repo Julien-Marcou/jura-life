@@ -312,4 +312,14 @@ export const Pins: Record<PinType, Pin> = {
     fontSize: '20px',
     lineHeight: '34px',
   },
+  [PinType.EquestrianCenter]: {
+    label: 'Centre Équestre',
+    icon: 'horse_riding',
+    color: 'pale-purple',
+    fillColor: '#ac95cc',
+    strokeColor: '#fff',
+    textColor: '#fff',
+    fontSize: '20px',
+    lineHeight: '33px',
+  },
 };

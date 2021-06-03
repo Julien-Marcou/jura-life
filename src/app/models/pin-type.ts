@@ -30,4 +30,5 @@ export const enum PinType {
   SwimmingPool = 'swimming-pool',
   Karting = 'karting',
   Monument = 'monument',
+  EquestrianCenter = 'equestrian-center',
 }
