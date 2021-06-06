@@ -1,4 +1,4 @@
-<div class="photosphere" [hidden]="!photosphere">
+<div class="photosphere" [hidden]="!photosphere" (keydown)="keyPressPhotosphere($event)">
   <button class="close-photosphere-button" type="button" (click)="closePhotosphere()" aria-label="Fermer la photo">
     Fermer
     <span class="material-icons" aria-hidden="true">close</span>

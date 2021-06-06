@@ -686,4 +686,10 @@ export class AppComponent implements OnInit {
       this.toggleFilters();
     }
   }
+
+  keyPressPhotosphere(event: KeyboardEvent): void {
+    if (event.key.toLowerCase() === 'escape' && this.photosphere) {
+      this.closePhotosphere();
+    }
+  }
 }
