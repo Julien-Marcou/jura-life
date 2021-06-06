@@ -65,7 +65,7 @@ export class AppComponent implements OnInit {
     this.contentTemplate.innerHTML = `
       <div class="content">
         <a class="permalink">
-          <span class="material-icons">tag</span>
+          <span class="material-icons" aria-hidden="true">tag</span>
           <h2 class="title"></h2>
         </a>
       </div>`;
@@ -77,7 +77,7 @@ export class AppComponent implements OnInit {
       <li class="trail">
         <h3 class="name">
           <span class="starting-point"></span>
-          <button class="select-trail">Voir</button>
+          <button class="select-trail" type="button">Voir</button>
         </h3>
         <div class="topology"></div>
       </li>`;
@@ -87,7 +87,7 @@ export class AppComponent implements OnInit {
       <li class="photosphere">
         <h3 class="name">
           <span class="label"></span>
-          <button class="select-photosphere">Voir</button>
+          <button class="select-photosphere" type="button">Voir</button>
         </h3>
       </li>`;
     this.pointOfInterestCountByPinType = Object.fromEntries(Object.keys(Pins).map(pinType => [pinType, 0]));
@@ -238,7 +238,9 @@ export class AppComponent implements OnInit {
         }
         else {
           poi.marker.hide();
-          this.closePointOfInterst(poi);
+          if (poi.infoWindow.isOpen()) {
+            this.closePointOfInterst(poi);
+          }
         }
       });
     });
@@ -279,6 +281,10 @@ export class AppComponent implements OnInit {
     this.pointsOfInterest.set(id, poi);
     this.pointOfInterestCountByPinType[poi.type]++;
 
+    marker.onFocus.subscribe(() => {
+      this.focusPointOfInterest(poi);
+    });
+
     marker.onClick.subscribe(() => {
       if (infoWindow.isOpen()) {
         this.closePointOfInterst(poi);
@@ -293,13 +299,24 @@ export class AppComponent implements OnInit {
     });
   }
 
+  focusPointOfInterest(poi: PointOfInterest): void {
+    requestAnimationFrame(() => {
+      const bounds = new google.maps.LatLngBounds(poi.position);
+      const center = bounds.getCenter();
+      bounds.extend(new google.maps.LatLng(center.lat() - 0.01, center.lng() - 0.01));
+      bounds.extend(new google.maps.LatLng(center.lat() + 0.01, center.lng() + 0.01));
+      this.map.panToBounds(bounds);
+    });
+  }
+
   openPointOfInterest(poi: PointOfInterest, centerViewport: boolean = false, trailIndex: number = 0): void {
     poi.infoWindow.open();
     if (poi.trails) {
       this.displayTrail(poi.trails[trailIndex]);
       const selectTrailElement = poi.content.querySelectorAll('.select-trail')[trailIndex];
       if (selectTrailElement) {
-        selectTrailElement.innerHTML = '<span class="material-icons">check_box</span>';
+        selectTrailElement.setAttribute('disabled', 'true');
+        selectTrailElement.innerHTML = '<span class="material-icons" aria-hidden="true">check_box</span>';
       }
     }
     requestAnimationFrame(() => {
@@ -314,6 +331,7 @@ export class AppComponent implements OnInit {
         const boundsListener = this.map.addListener('idle', () => {
           boundsListener.remove();
           this.map.panToBounds(poi.infoWindow.getBounds());
+          poi.infoWindow.focus();
         });
         this.map.fitBounds(bounds);
       }
@@ -327,12 +345,16 @@ export class AppComponent implements OnInit {
     poi.infoWindow.close();
     if (poi.trails) {
       poi.trails.forEach(trail => {
-        poi.content.querySelectorAll('.select-trail').forEach(_selectTrailElement => _selectTrailElement.textContent = 'Voir');
+        poi.content.querySelectorAll('.select-trail').forEach(_selectTrailElement => {
+          _selectTrailElement.removeAttribute('disabled');
+          _selectTrailElement.textContent = 'Voir';
+        });
         this.hideTrail(trail);
       });
       const selectTrailElement = poi.content.querySelector('.select-trail');
       if (selectTrailElement) {
-        selectTrailElement.innerHTML = '<span class="material-icons">check_box</span>';
+        selectTrailElement.setAttribute('disabled', 'true');
+        selectTrailElement.innerHTML = '<span class="material-icons" aria-hidden="true">check_box</span>';
       }
     }
   }
@@ -384,36 +406,42 @@ export class AppComponent implements OnInit {
         else {
           selectTrailElement.addEventListener('click', () => {
             trails.forEach(_trail => {
-              trailsElement.querySelectorAll('.select-trail').forEach(_selectTrailElement => _selectTrailElement.textContent = 'Voir');
+              trailsElement.querySelectorAll('.select-trail').forEach(_selectTrailElement => {
+                _selectTrailElement.removeAttribute('disabled');
+                _selectTrailElement.textContent = 'Voir';
+              });
               this.hideTrail(_trail);
             });
-            selectTrailElement.innerHTML = '<span class="material-icons">check_box</span>';
+            selectTrailElement.setAttribute('disabled', 'true');
+            selectTrailElement.innerHTML = '<span class="material-icons" aria-hidden="true">check_box</span>';
             this.displayTrail(trail);
           });
         }
         startingPointElement.textContent = `${trail.startingPoint}`;
+        selectTrailElement.setAttribute('title', 'Voir la tracé GPS');
+        selectTrailElement.setAttribute('aria-label', `Voir la tracé GPS : ${trail.startingPoint}`);
         topologyElement.innerHTML = `
           <div class="length">
-            <span class="material-icons">straighten</span>
+            <span class="material-icons" aria-hidden="true">straighten</span>
             Distance ${Math.round(trail.length * 100) / 100}km
           </div>
           <div class="duration">
-            <span class="material-icons">timer</span>
+            <span class="material-icons" aria-hidden="true">timer</span>
             Durée ${trail.duration}
           </div>
           <div class="min-elevation">
-            <span class="material-icons">arrow_downward</span>
+            <span class="material-icons" aria-hidden="true">arrow_downward</span>
             Altitude min ${Math.round(trail.minElevation)}m
           </div>
           <div class="max-elevation">
-            <span class="material-icons">arrow_upward</span>
+            <span class="material-icons" aria-hidden="true">arrow_upward</span>
             Altitude max ${Math.round(trail.maxElevation)}m
           </div>
-          <div class="positive-elevation">
+          <div class="positive-elevation" aria-hidden="true">
             <span class="material-icons">trending_up</span>
             Dénivelé positif ${Math.round(trail.inverted ? trail.negativeElevation : trail.positiveElevation)}m
           </div>
-          <div class="negative-elevation">
+          <div class="negative-elevation" aria-hidden="true">
             <span class="material-icons">trending_down</span>
             Dénivelé négatif ${Math.round(trail.inverted ? trail.positiveElevation : trail.negativeElevation)}m
           </div>`;
@@ -433,8 +461,14 @@ export class AppComponent implements OnInit {
         const selectPhotosphereElement = photosphereElement.querySelector('.select-photosphere')!;
         selectPhotosphereElement.addEventListener('click', () => {
           this.photosphere = this.sanitizer.bypassSecurityTrustResourceUrl(`https://www.google.com/maps/embed?pb=${photosphere}`);
+          requestAnimationFrame(() => {
+            const closePhotosphereButton = document.querySelector('.close-photosphere-button') as HTMLButtonElement;
+            closePhotosphereButton.focus();
+          });
         });
         labelElement.textContent = `Photo ${i + 1}`;
+        selectPhotosphereElement.setAttribute('title', 'Voir la photo');
+        selectPhotosphereElement.setAttribute('aria-label', `Voir la photo ${i + 1}`);
         photospheresElement.appendChild(photosphereElement);
       }
       contentElement.appendChild(photospheresElement);
@@ -624,6 +658,14 @@ export class AppComponent implements OnInit {
 
   toggleFilters(): void {
     this.displayFilters = !this.displayFilters;
+    const filtersForm = document.querySelector('.filters') as HTMLFormElement;
+    filtersForm.setAttribute('tabindex', '0');
+    if (this.displayFilters) {
+      requestAnimationFrame(() => {
+        filtersForm.focus();
+        filtersForm.removeAttribute('tabindex');
+      });
+    }
   }
 
   closePhotosphere(): void {
@@ -639,4 +681,9 @@ export class AppComponent implements OnInit {
     categoriesGroup.setValue(categories);
   }
 
+  keyPressForm(event: KeyboardEvent): void {
+    if (event.key.toLowerCase() === 'escape' && this.displayFilters) {
+      this.toggleFilters();
+    }
+  }
 }

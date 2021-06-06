@@ -1,9 +1,17 @@
-<form class="filters" [class.displayed]="displayFilters" [formGroup]="filtersForm">
+<div class="photosphere" [hidden]="!photosphere">
+  <button class="close-photosphere-button" type="button" (click)="closePhotosphere()" aria-label="Fermer la photo">
+    Fermer
+    <span class="material-icons" aria-hidden="true">close</span>
+  </button>
+  <iframe class="iframe" *ngIf="photosphere" [src]="photosphere" allowfullscreen></iframe>
+</div>
+
+<form class="filters" [hidden]="!displayFilters || !!photosphere" [formGroup]="filtersForm" (keydown)="keyPressForm($event)">
   <ng-container>
 
     <div class="seasons">
       <h2 class="title">
-        <span class="material-icons">thermostat</span>
+        <span class="material-icons" aria-hidden="true">thermostat</span>
         Saison :
       </h2>
       <label>
@@ -34,7 +42,7 @@
 
     <div class="features">
       <h2>
-        <span class="material-icons">auto_awesome</span>
+        <span class="material-icons" aria-hidden="true">auto_awesome</span>
         Caractéristiques :
       </h2>
       <label>
@@ -65,48 +73,40 @@
 
     <div class="categories" formGroupName="categories">
       <h2>
-        <span class="material-icons">sell</span>
+        <span class="material-icons" aria-hidden="true">sell</span>
         Catégories :
       </h2>
-      <button type="button" class="check-all" (click)="checkAllCategories(true)">
+      <button class="check-all" type="button" (click)="checkAllCategories(true)">
         Tout cocher
-        <span class="material-icons">check_box</span>
+        <span class="material-icons" aria-hidden="true">check_box</span>
       </button>
-      <button type="button" class="uncheck-all" (click)="checkAllCategories(false)">
+      <button class="uncheck-all" type="button" (click)="checkAllCategories(false)">
         Tout décocher
-        <span class="material-icons">check_box_outline_blank</span>
+        <span class="material-icons" aria-hidden="true">check_box_outline_blank</span>
       </button>
       <label *ngFor="let pin of pins | keyvalue:comparePin">
         <input type="checkbox" [formControlName]="pin.key">
-        <span class="icon" [style.backgroundColor]="pin.value.fillColor" [style.color]="pin.value.textColor">{{ pin.value.icon }}</span>
+        <span class="icon" aria-hidden="true" [style.backgroundColor]="pin.value.fillColor" [style.color]="pin.value.textColor">{{ pin.value.icon }}</span>
         <span class="label">{{ pin.value.label }}</span>
         <span class="count">({{ pointOfInterestCountByPinType[pin.key] }})</span>
       </label>
     </div>
 
-    <button class="close-filters-button" (click)="toggleFilters()">
+    <button class="close-filters-button" type="button" (click)="toggleFilters()" aria-label="Masquer les filtres des Points d'Intérêts">
       Valider
-      <span class="material-icons">done</span>
+      <span class="material-icons" aria-hidden="true">done</span>
     </button>
 
   </ng-container>
 </form>
 
-<div class="map-container">
-  <div class="map" #mapElement></div>
-  <button class="toggle-filters-button" (click)="toggleFilters()">
-    <span class="material-icons" *ngIf="!displayFilters; else closeFiltersTemplate">search</span>
-    <ng-template #closeFiltersTemplate><span class="material-icons">chevron_left</span></ng-template>
+<div class="map-container" [hidden]="!!photosphere">
+  <button class="toggle-filters-button" type="button" (click)="toggleFilters()" [attr.aria-label]="displayFilters ? 'Masquer les filtres des Points d\'Intérêts' : 'Afficher les filtres des Points d\'Intérêts'">
+    <span class="material-icons" aria-hidden="true" *ngIf="!displayFilters; else closeFiltersTemplate">search</span>
+    <ng-template #closeFiltersTemplate><span class="material-icons" aria-hidden="true">chevron_left</span></ng-template>
     Filtres
   </button>
-</div>
-
-<div class="photosphere" *ngIf="photosphere">
-  <iframe class="iframe" [src]="photosphere" allowfullscreen></iframe>
-  <button class="close-photosphere-button" (click)="closePhotosphere()">
-    Fermer
-    <span class="material-icons">close</span>
-  </button>
+  <div class="map" #mapElement></div>
 </div>
 
 <!-- TODO : use this to transform "svg pin + icon font" markers to simple "webp" markers -->

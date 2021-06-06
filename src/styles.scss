@@ -1,7 +1,23 @@
+:root {
+  --accessibility-shadow-marker: 0 0 0 3px #fff, 0 0 0 7px #000, 0 0 0 9px #fff;
+  --accessibility-shadow-info-window: 0 0 0 2px #fff, 0 0 0 4px #000, 0 0 0 5px #fff;
+  --accessibility-shadow-button: 0 0 0 3px #000, 0 0 0 6px #fff;
+  --accessibility-shadow-input: 0 0 0 2px #fff, 0 0 0 5px #000;
+}
+
 @import "styles/reset";
 @import "styles/google-maps";
 
 body {
   color: #1f1f1f;
   background-color: #e5e3df;
+}
+
+button {
+  background-color: #eee;
+  color: #1f1f1f;
+
+  &:disabled {
+    background-color: #eee;
+  }
 }

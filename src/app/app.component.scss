@@ -67,7 +67,7 @@
   background-color: #fff;
   box-shadow: 0 0 2px 2px rgba(0, 0, 0, 0.2);
 
-  &.displayed {
+  &:not([hidden]) {
     display: block;
 
     @media (max-width: 750px) {
@@ -79,7 +79,7 @@
     }
   }
 
-  h2 {
+  .title {
     margin-bottom: 0.5em;
 
     .material-icons {
@@ -99,9 +99,14 @@
     vertical-align: middle;
     width: auto;
     margin-right: 0.4em;
+    border-radius: 2px;
 
     &:disabled + .label {
       opacity: 0.5;
+    }
+
+    &:focus-visible {
+      box-shadow: var(--accessibility-shadow-input);
     }
   }
 
@@ -141,6 +146,10 @@
         color: #000;
       }
 
+      &:focus-visible {
+        box-shadow: var(--accessibility-shadow-button);
+      }
+
       .material-icons {
         vertical-align: middle;
         margin-top: -1px;
@@ -171,6 +180,7 @@
 .map-container {
   flex: 1 1 auto;
   position: relative;
+  z-index: 0;
   width: 100%;
   height: 100%;
 }
@@ -182,6 +192,7 @@
 
 .toggle-filters-button {
   position: absolute;
+  z-index: 10;
   bottom: 24px;
   left: 10px;
   font-size: 18px;
@@ -195,6 +206,10 @@
   &:hover, &:active {
     background-color: #ebebeb;
     color: #000;
+  }
+
+  &:focus-visible {
+    box-shadow: var(--accessibility-shadow-button);
   }
 
   .material-icons {
@@ -221,6 +236,10 @@
     color: #000;
   }
 
+  &:focus-visible {
+    box-shadow: var(--accessibility-shadow-button);
+  }
+
   @media (max-width: 750px) {
     display: block;
   }
@@ -242,19 +261,31 @@
   background-color: #e5e3df;
 
   .iframe {
+    z-index: 0;
     width: 100%;
     height: 100%;
   }
 
   .close-photosphere-button {
     position: absolute;
+    z-index: 10;
     top: 10px;
     left: 50%;
     transform: translateX(-50%);
     padding: 15px;
     padding-right: 12px;
     border-radius: 4px;
-    box-shadow: 0 0 2px 2px rgba(0, 0, 0, 0.2);
+    background-color: #fff;
+    box-shadow: 0 1px 4px -1px rgba(0, 0, 0, 0.3);
+
+    &:hover, &:active {
+      background-color: #ebebeb;
+      color: #000;
+    }
+
+    &:focus-visible {
+      box-shadow: var(--accessibility-shadow-button);
+    }
 
     .material-icons {
       vertical-align: middle;

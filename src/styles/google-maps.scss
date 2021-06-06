@@ -8,6 +8,11 @@
     display: block;
     background-color: transparent;
     transform: translate(-50%, -100%);
+    border-radius: 6px;
+
+    &:focus-visible {
+      box-shadow: var(--accessibility-shadow-marker);
+    }
 
     .pin {
       display: block;
@@ -49,7 +54,6 @@
     top: 0;
     left: 0;
     min-width: 80px;
-    overflow: hidden;
     transform: translate(-50%, -100%);
     background-color: white;
     border-radius: 8px;
@@ -68,6 +72,7 @@
       background-color: transparent;
       color: #888;
       text-align: center;
+      border-radius: 4px;
 
       .material-icons {
         font-size: 18px;
@@ -79,6 +84,10 @@
 
       &:hover, &:focus {
         color: #000;
+      }
+
+      &:focus-visible {
+        box-shadow: var(--accessibility-shadow-info-window);
       }
     }
 
@@ -104,6 +113,11 @@
         display: block;
         margin: 2px 0;
         padding-right: 6px;
+        border-radius: 2px;
+
+        &:focus-visible {
+          box-shadow: var(--accessibility-shadow-info-window);
+        }
 
         .title {
           display: inline;
@@ -138,6 +152,11 @@
 
         a {
           color: #1a0dab;
+          border-radius: 2px;
+
+          &:focus-visible {
+            box-shadow: var(--accessibility-shadow-info-window);
+          }
 
           &:hover, &:focus {
             text-decoration: underline;
@@ -168,6 +187,10 @@
           padding: 2px;
           line-height: 19px;
           border-radius: 2px;
+
+          &:focus-visible {
+            box-shadow: var(--accessibility-shadow-info-window);
+          }
         }
 
         .topology {
@@ -240,6 +263,11 @@
           padding: 2px;
           line-height: 19px;
           border-radius: 2px;
+          border-radius: 2px;
+
+          &:focus-visible {
+            box-shadow: var(--accessibility-shadow-info-window);
+          }
         }
       }
     }
