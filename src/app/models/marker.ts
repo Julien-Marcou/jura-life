@@ -74,7 +74,7 @@ export class Marker extends google.maps.OverlayView {
 
   draw(): void {
     if (this._isVisible) {
-      const containerPosition = this.getProjection().fromLatLngToDivPixel(this.position);
+      const containerPosition = this.getProjection().fromLatLngToDivPixel(this.position)!;
       this.containerElement.style.display = 'block';
       this.containerElement.style.zIndex = `${this.zIndex}`;
       this.containerElement.style.left = `${containerPosition.x}px`;

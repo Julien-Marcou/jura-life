@@ -92,7 +92,7 @@ export class InfoWindow extends google.maps.OverlayView {
     if (this._isOpen) {
       const maxWidth = window.innerWidth - 60;
       const maxHeight = window.innerHeight - 90;
-      const containerPosition = this.getProjection().fromLatLngToDivPixel(this.position);
+      const containerPosition = this.getProjection().fromLatLngToDivPixel(this.position)!;
       this.containerElement.style.display = 'block';
       this.containerElement.style.zIndex = `${this.zIndex}`;
       this.containerElement.style.left = `${containerPosition.x}px`;
@@ -106,7 +106,7 @@ export class InfoWindow extends google.maps.OverlayView {
   }
 
   getBounds(): google.maps.LatLngBounds {
-    const containerPosition = this.getProjection().fromLatLngToDivPixel(this.position);
+    const containerPosition = this.getProjection().fromLatLngToDivPixel(this.position)!;
     const containerTopLeftPosition = this.getProjection().fromDivPixelToLatLng(
       new google.maps.Point(
         containerPosition.x - (this.infoWindowElement.clientWidth / 2) - 30,
