@@ -176,6 +176,10 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
         duration: '5min',
       },
     ],
+    photospheres: [
+      '!4v1625754686977!6m8!1m7!1sCAoSLEFGMVFpcE41MV96UzFNdXBzYXNEMjlVcDVYbnVSR0kxSXlibU1kOElyM0Fm!2m2!1d46.4466385!2d5.7068295!3f202.48418067029755!4f13.1689071587993!5f0.7820865974627469',
+      '!4v1625754818094!6m8!1m7!1sCAoSLEFGMVFpcE5UNTZvODAxbzJvY0hZLS1rZDZYWXFYX2tIZlVObjNJbVFkb2dl!2m2!1d46.4468792!2d5.707257299999999!3f204.72954619561654!4f5.815117879502097!5f0.7820865974627469',
+    ],
     isWinterExclusive: false,
     isSummerExclusive: true,
     isIndoor: false,
