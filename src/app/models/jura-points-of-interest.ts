@@ -1546,4 +1546,42 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     isLandscape: false,
     isActivity: true,
   },
+  'grotte-celary': {
+    name: "Grotte et Belvédère du Célary",
+    latitude: 46.40532224994907,
+    longitude: 5.940562837875971,
+    type: PinType.Cave,
+    trails: [
+      {
+        startingPoint: "Depuis le parking de Gaïa Loisirs",
+        gpxFile: 'grotte-du-celary.gpx',
+        duration: '35min',
+        inverted: true,
+      },
+    ],
+    photospheres: [
+      '!4v1626888464545!6m8!1m7!1sCAoSLEFGMVFpcE5IVkF3c0dFQ0lUc0xBNnc0ZWd1ay1VeFZkWS1pZjhjd2wxWDky!2m2!1d46.4052625!2d5.9405354!3f48.38195874068029!4f-15.058371127421125!5f0.7820865974627469',
+      '!4v1626888412292!6m8!1m7!1sCAoSLEFGMVFpcFBqR05sbXJlZ0lnSTljZzh1bDQ1TGE1aVJ0VTFOcE8zSGxwYnZw!2m2!1d46.4053335!2d5.9406598!3f203.78965782529!4f-32.91086180937711!5f0.7820865974627469',
+      '!4v1626888530460!6m8!1m7!1sCAoSLEFGMVFpcE1XYUhIbVJwaTlFazM0LVFXRlUwRTV0d213Zmg2akllZWlSOTNt!2m2!1d46.4053166!2d5.9405525!3f343.3867366142865!4f-7.7806095911336115!5f0.7820865974627469',
+    ],
+    isWinterExclusive: false,
+    isSummerExclusive: false,
+    isIndoor: false,
+    isLandscape: true,
+    isActivity: false,
+  },
+  'gaia-loisirs': {
+    name: "Gaïa Loisirs",
+    latitude: 46.3995830318417,
+    longitude: 5.949442692183995,
+    type: PinType.ViaFerrata,
+    description: `Parcours sur filets dans les arbres
+<br>
+<a href="https://www.gaialoisirs.fr/" target="_blank">gaialoisirs.fr<span class="material-icons" aria-hidden="true">open_in_new</span></a>`,
+    isWinterExclusive: false,
+    isSummerExclusive: false,
+    isIndoor: false,
+    isLandscape: false,
+    isActivity: true,
+  },
 };
