@@ -290,10 +290,7 @@ export class AppComponent implements OnInit {
   private async addPointOfInterest(id: string, serializedPoi: SerializedPointOfInterest): Promise<void> {
     let trails: Array<Trail> | undefined;
     if (serializedPoi.trails) {
-      trails = [];
-      for (const serializedTrail of serializedPoi.trails) {
-        trails.push(await this.createTrail(serializedTrail));
-      }
+      trails = await Promise.all(serializedPoi.trails.map((serializedTrail) => this.createTrail(serializedTrail)));
     }
 
     const zIndex = 10000000 - Math.round(serializedPoi.latitude * 100000) + Math.round(serializedPoi.longitude * 1000);
@@ -434,8 +431,8 @@ export class AppComponent implements OnInit {
     if (trails) {
       const trailsTemplate = this.trailsTemplate.content.cloneNode(true) as DocumentFragment;
       const trailsElement = trailsTemplate.querySelector('.trails') as HTMLElement;
-      trails.forEach(async (trailPromise) => {
-        const trail = await trailPromise;
+      trails.forEach((trailPromise) => {
+        const trail = trailPromise;
         const trailTemplate = this.trailTemplate.content.cloneNode(true) as DocumentFragment;
         const trailElement = trailTemplate.querySelector('.trail') as HTMLElement;
         const startingPointElement = trailElement.querySelector('.starting-point') as HTMLElement;
@@ -446,12 +443,12 @@ export class AppComponent implements OnInit {
         }
         else {
           selectTrailElement.addEventListener('click', () => {
-            trails.forEach(async (_trail) => {
+            trails.forEach((_trail) => {
               trailsElement.querySelectorAll('.select-trail').forEach((_selectTrailElement) => {
                 _selectTrailElement.removeAttribute('disabled');
                 _selectTrailElement.textContent = 'Voir';
               });
-              this.hideTrail(await _trail);
+              this.hideTrail(_trail);
             });
             selectTrailElement.setAttribute('disabled', 'true');
             selectTrailElement.innerHTML = '<span class="material-icons" aria-hidden="true">check_box</span>';
