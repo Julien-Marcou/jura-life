@@ -1,0 +1,161 @@
+{
+  "root": true,
+  "overrides": [
+    {
+      "files": ["*.ts"],
+      "parser": "@typescript-eslint/parser",
+      "parserOptions": {
+        "project": ["tsconfig.json"],
+        "createDefaultProgram": true
+      },
+      "settings": {
+        "import/resolver": {
+          "node": {
+            "extensions": [".ts", ".mjs"]
+          }
+        }
+      },
+      "extends": [
+        "eslint:recommended",
+        "plugin:import/recommended",
+        "plugin:import/typescript",
+        "plugin:@typescript-eslint/recommended",
+        "plugin:@angular-eslint/ng-cli-compat",
+        "plugin:@angular-eslint/ng-cli-compat--formatting-add-on",
+        "plugin:@angular-eslint/template/process-inline-templates"
+      ],
+      "rules": {
+        "arrow-parens": [
+          "warn",
+          "always"
+        ],
+        "brace-style": "off",
+        "comma-dangle": "off",
+        "dot-notation": "off",
+        "import/order": [
+          "warn",
+          {
+            "groups": ["builtin", "external", "internal", "parent", "sibling", "index", "object", "type"],
+            "newlines-between": "never",
+            "alphabetize": {
+              "order": "asc"
+            }
+          }
+        ],
+        "max-len": [
+          "warn",
+          {
+            "code": 180
+          }
+        ],
+        "no-unused-vars": "off",
+        "object-shorthand": ["warn", "never"],
+        "quotes": "off",
+        "semi": "off",
+        "space-before-function-paren": "off",
+        "@angular-eslint/component-class-suffix": [
+          "error",
+          {
+            "suffixes": ["Page", "Component"]
+          }
+        ],
+        "@angular-eslint/component-selector": [
+          "error",
+          {
+            "type": "element",
+            "prefix": "app",
+            "style": "kebab-case"
+          }
+        ],
+        "@angular-eslint/directive-selector": [
+          "error",
+          {
+            "type": "attribute",
+            "prefix": "app",
+            "style": "camelCase"
+          }
+        ],
+        "@typescript-eslint/array-type": [
+          "warn",
+          {
+            "default": "generic"
+          }
+        ],
+        "@typescript-eslint/brace-style": ["warn", "stroustrup"],
+        "@typescript-eslint/comma-dangle": ["warn", "always-multiline"],
+        "@typescript-eslint/dot-notation": [
+          "warn",
+          {
+            "allowIndexSignaturePropertyAccess": true
+          }
+        ],
+        "@typescript-eslint/explicit-function-return-type": [
+          "warn",
+          {
+            "allowTypedFunctionExpressions": true
+          }
+        ],
+        "@typescript-eslint/explicit-member-accessibility": [
+          "warn",
+          {
+            "accessibility": "explicit",
+            "overrides": {
+              "constructors": "no-public"
+            }
+          }
+        ],
+        "@typescript-eslint/member-delimiter-style": "warn",
+        "@typescript-eslint/naming-convention": [
+          "warn",
+          {
+            "selector": "default",
+            "format": ["camelCase", "snake_case", "PascalCase"],
+            "leadingUnderscore": "allow"
+          },
+          {
+            "selector": "variable",
+            "modifiers": ["const"],
+            "format": ["UPPER_CASE", "camelCase"]
+          },
+          {
+            "selector": "typeLike",
+            "format": ["PascalCase"]
+          },
+          {
+            "selector": "property",
+            "modifiers": ["static"],
+            "format": ["PascalCase"]
+          },
+          {
+            "selector": "enumMember",
+            "format": ["PascalCase"]
+          }
+        ],
+        "@typescript-eslint/no-explicit-any": "warn",
+        "@typescript-eslint/no-inferrable-types": [
+          "warn",
+          {
+            "ignoreParameters": true
+          }
+        ],
+        "@typescript-eslint/no-unused-vars": "warn",
+        "@typescript-eslint/quotes": ["error", "single"],
+        "@typescript-eslint/semi": ["error", "always"],
+        "@typescript-eslint/space-before-function-paren": [
+          "warn",
+          {
+            "anonymous": "always",
+            "named": "never",
+            "asyncArrow": "always"
+          }
+        ],
+        "@typescript-eslint/type-annotation-spacing": "warn"
+      }
+    },
+    {
+      "files": ["*.html"],
+      "extends": ["plugin:@angular-eslint/template/recommended"],
+      "rules": {}
+    }
+  ]
+}
