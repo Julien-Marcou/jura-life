@@ -3,6 +3,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
+import { filter, Subject, take, takeUntil } from 'rxjs';
 import { JURA_POINTS_OF_INTEREST } from './constants/jura-points-of-interest.constants';
 import { PinType } from './constants/pin-type.constants';
 import { PINS } from './constants/pins.constants';
@@ -61,6 +62,8 @@ export class AppComponent implements OnInit {
   private trailTemplate = document.createElement('template');
   private photospheresTemplate = document.createElement('template');
   private photosphereTemplate = document.createElement('template');
+  private readonly pointOfInterestAdded = new Subject<PointOfInterest>();
+  private readonly paramsChanged = new Subject<void>();
 
   constructor(private readonly route: ActivatedRoute, private readonly sanitizer: DomSanitizer) {
     this.filtersForm = new FormGroup(this.filtersFormControls);
@@ -98,29 +101,11 @@ export class AppComponent implements OnInit {
     });
   }
 
-  public async ngOnInit(): Promise<void> {
+  public ngOnInit(): void {
     this.initFormControls();
     this.initGoogleMap();
-    await this.initAllPointsOfInterest();
-    this.route.queryParams.subscribe((params) => {
-      requestAnimationFrame(() => {
-        const poi = this.pointsOfInterest.get(params['poi']);
-        if (poi) {
-          if (params['trail'] && poi.trails && params['trail'] in poi.trails) {
-            this.openPointOfInterest(poi, true, params['trail']);
-          }
-          else {
-            this.openPointOfInterest(poi, true);
-          }
-        }
-        if (params['lat'] && params['lng']) {
-          this.map.setCenter(new google.maps.LatLng(parseFloat(params['lat']), parseFloat(params['lng'])));
-        }
-        if (params['zoom']) {
-          this.map.setZoom(parseInt(params['zoom'], 10));
-        }
-      });
-    });
+    this.openPointOfInterestFromQueryParams();
+    this.initAllPointsOfInterest();
 
     // TODO : use this to transform "svg pin + icon font" markers to simple "webp" markers
     // setTimeout(async () => {
@@ -184,6 +169,45 @@ export class AppComponent implements OnInit {
     }
   }
 
+  private openPointOfInterestFromQueryParams(): void {
+    this.map.addListener('projection_changed', () => {
+      this.route.queryParams.subscribe((params) => {
+        this.paramsChanged.next();
+        const poiId: string | undefined = 'poi' in params ? params['poi'] : undefined;
+        const trailIndex: number = 'trail' in params ? parseInt(params['trail'], 10) : 0;
+        const latitude: number | undefined = 'lat' in params ? parseFloat(params['lat']) : undefined;
+        const longitude: number | undefined = 'lng' in params ? parseFloat(params['lng']) : undefined;
+        const zoom: number | undefined = 'zoom' in params ? parseInt(params['zoom'], 10) : undefined;
+
+        if (poiId !== undefined) {
+          const poi = this.pointsOfInterest.get(poiId);
+          // If the POI already exists, open it
+          if (poi) {
+            this.openPointOfInterest(poi, true, trailIndex);
+          }
+          // Otherwise, open it as soon as it has been added
+          else {
+            this.pointOfInterestAdded.pipe(
+              takeUntil(this.paramsChanged),
+              filter((addedPoi) => addedPoi.id === poiId),
+              take(1),
+            ).subscribe((addedPoi) => {
+              this.openPointOfInterest(addedPoi, true, trailIndex);
+            });
+          }
+        }
+
+        if (latitude !== undefined && longitude !== undefined) {
+          this.map.setCenter(new google.maps.LatLng(latitude, longitude));
+        }
+
+        if (zoom !== undefined) {
+          this.map.setZoom(zoom);
+        }
+      });
+    });
+  }
+
   private initGoogleMap(): void {
     this.map = new google.maps.Map(this.mapElement.nativeElement, {
       center: { lat: 46.4789051, lng: 5.8939042 },
@@ -220,6 +244,7 @@ export class AppComponent implements OnInit {
   private async initAllPointsOfInterest(): Promise<void> {
     try {
       await Promise.all(Object.entries(JURA_POINTS_OF_INTEREST).map(([id, poi]) => this.addPointOfInterest(id, poi)));
+      this.pointOfInterestAdded.complete();
     }
     catch (error) {
       console.error(error);
@@ -274,17 +299,27 @@ export class AppComponent implements OnInit {
       }
 
       this.pointsOfInterest.forEach((poi) => {
-        if (this.isPoiMatchingFilters(poi, filters)) {
-          poi.marker.display();
-        }
-        else {
-          poi.marker.hide();
-          if (poi.infoWindow.isOpen()) {
-            this.closePointOfInterst(poi);
-          }
-        }
+        this.displayOrHidePoiAccordingToFilters(poi, filters);
+      });
+
+      this.pointOfInterestAdded.pipe(
+        takeUntil(this.filtersForm.valueChanges),
+      ).subscribe((addedPoi) => {
+        this.displayOrHidePoiAccordingToFilters(addedPoi, filters);
       });
     });
+  }
+
+  private displayOrHidePoiAccordingToFilters(poi: PointOfInterest, filters: PinFilters): void {
+    if (this.isPoiMatchingFilters(poi, filters)) {
+      poi.marker.display();
+    }
+    else {
+      poi.marker.hide();
+      if (poi.infoWindow.isOpen()) {
+        this.closePointOfInterst(poi);
+      }
+    }
   }
 
   private async addPointOfInterest(id: string, serializedPoi: SerializedPointOfInterest): Promise<void> {
@@ -299,6 +334,7 @@ export class AppComponent implements OnInit {
     const content = this.createContent(id, serializedPoi, trails);
     const infoWindow = new InfoWindow(zIndex, position, this.map, content);
     const poi: PointOfInterest = {
+      id: id,
       name: serializedPoi.name,
       type: serializedPoi.type,
       position: position,
@@ -335,6 +371,8 @@ export class AppComponent implements OnInit {
     infoWindow.onSelfClose.subscribe(() => {
       this.closePointOfInterst(poi);
     });
+
+    this.pointOfInterestAdded.next(poi);
   }
 
   private focusPointOfInterest(poi: PointOfInterest): void {

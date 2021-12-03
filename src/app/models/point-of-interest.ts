@@ -4,6 +4,7 @@ import { Marker } from '../map-overlays/marker';
 import { Trail } from './trail';
 
 export type PointOfInterest = {
+  id: string;
   name: string;
   type: PinType;
   position: google.maps.LatLng;
