@@ -106,7 +106,7 @@
 
     .content {
       max-width: 350px;
-      font-size: 13px;
+      font-size: 15px;
       font-weight: 300;
 
       > .permalink {
@@ -122,7 +122,7 @@
         .title {
           display: inline;
           margin: 0;
-          font-size: 16px;
+          font-size: 18px;
         }
 
         .material-icons {
@@ -130,7 +130,7 @@
           color: #bbb;
           margin-top: -4px;
           vertical-align: middle;
-          font-size: 18px;
+          font-size: 20px;
         }
 
         &:hover, &:focus {
@@ -145,7 +145,7 @@
         margin-top: 16px;
 
         .material-icons {
-          font-size: 14px;
+          font-size: 16px;
           vertical-align: middle;
           margin-top: -1px;
         }
@@ -173,18 +173,18 @@
         margin-top: 16px;
 
         .trail:not(:last-child) {
-          margin-bottom: 6px;
+          margin-bottom: 10px;
         }
 
         .name {
-          font-size: 13px;
+          font-size: 15px;
           margin: 0 0 4px;
           line-height: 18px;
         }
 
         .select-trail {
           min-width: 30px;
-          padding: 2px;
+          padding: 2px 4px;
           line-height: 19px;
           border-radius: 2px;
 
@@ -203,7 +203,7 @@
         .material-icons {
           margin-top: -4px;
           vertical-align: middle;
-          font-size: 14px;
+          font-size: 16px;
         }
 
         .length {
@@ -254,13 +254,13 @@
         }
 
         .name {
-          font-size: 13px;
+          font-size: 15px;
           margin: 0;
         }
 
         .select-photosphere {
           min-width: 30px;
-          padding: 2px;
+          padding: 2px 4px;
           line-height: 19px;
           border-radius: 2px;
           border-radius: 2px;
@@ -296,11 +296,11 @@
           display: block;
 
           .title {
-            font-size: 14px;
+            font-size: 16px;
           }
 
           .material-icons {
-            font-size: 16px;
+            font-size: 18px;
           }
         }
       }
