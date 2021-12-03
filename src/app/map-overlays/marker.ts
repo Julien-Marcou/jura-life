@@ -12,6 +12,8 @@ export class Marker extends google.maps.OverlayView {
   private map: google.maps.Map;
   private containerElement: HTMLElement;
   private markerElement: HTMLButtonElement;
+  private click = false;
+  private dragListener?: google.maps.MapsEventListener;
 
   constructor(zIndex: number, position: google.maps.LatLng, map: google.maps.Map, title: string, type: PinType) {
     super();
@@ -27,10 +29,26 @@ export class Marker extends google.maps.OverlayView {
       </button>`;
     this.markerElement = this.containerElement.querySelector('.marker') as HTMLButtonElement;
     this.markerElement.addEventListener('focus', () => {
-      this.onFocus.next();
+      if (!this.click) {
+        this.onFocus.next();
+      }
     });
     this.markerElement.addEventListener('click', () => {
-      this.onClick.next();
+      if (this.click) {
+        this.click = false;
+        this.onClick.next();
+      }
+      if (this.dragListener) {
+        this.dragListener.remove();
+        this.dragListener = undefined;
+      }
+    });
+    this.markerElement.addEventListener('mousedown', () => {
+      this.click = true;
+      this.dragListener = google.maps.event.addListenerOnce(this.map, 'drag', () => {
+        this.dragListener = undefined;
+        this.click = false;
+      });
     });
 
     Marker.preventMapHitsFrom(this.containerElement);
