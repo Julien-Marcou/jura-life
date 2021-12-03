@@ -933,7 +933,7 @@ export const JURA_POINTS_OF_INTEREST: Record<string, SerializedPointOfInterest> 
     trails: [
       {
         startingPoint: 'Depuis le parking de la Cascade de la Queue de Cheval',
-        gpxFile: 'cascade-de-la-queue-de-cheval.gpx',
+        gpxFile: 'cascade-de-la-pony-tail.gpx',
         duration: '25min',
       },
     ],
