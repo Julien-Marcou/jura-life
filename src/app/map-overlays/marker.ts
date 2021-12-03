@@ -1,12 +1,12 @@
 import { Subject } from 'rxjs';
-import { PinType } from './pin-type';
-import { Pins } from './pins';
+import { PinType } from '../constants/pin-type.constants';
 
 export class Marker extends google.maps.OverlayView {
 
-  public readonly onFocus: Subject<void> = new Subject();
-  public readonly onClick: Subject<void> = new Subject();
-  private _isVisible: boolean = true;
+  public readonly onFocus = new Subject<void>();
+  public readonly onClick = new Subject<void>();
+
+  private isMarkerVisible = true;
   private zIndex: number;
   private position: google.maps.LatLng;
   private map: google.maps.Map;
@@ -19,14 +19,13 @@ export class Marker extends google.maps.OverlayView {
     this.position = position;
     this.map = map;
 
-    const pin = Pins[type];
     this.containerElement = document.createElement('div');
     this.containerElement.classList.add('marker-container');
     this.containerElement.innerHTML = `
       <button class="marker" type="button" title="${title}" aria-label="Afficher les informations pour : ${title}"">
         <img class="pin" alt="" aria-hidden="true" src="/assets/markers/${type}.webp" width="33" height="52">
       </button>`;
-    this.markerElement = this.containerElement.querySelector('.marker')!;
+    this.markerElement = this.containerElement.querySelector('.marker') as HTMLButtonElement;
     this.markerElement.addEventListener('focus', () => {
       this.onFocus.next();
     });
@@ -38,43 +37,22 @@ export class Marker extends google.maps.OverlayView {
     this.setMap(this.map);
   }
 
-  onAdd(): void {
-    this.getPanes()!.floatPane.appendChild(this.containerElement);
+  public override onAdd(): void {
+    const panes = this.getPanes();
+    if (panes) {
+      panes.floatPane.appendChild(this.containerElement);
+    }
   }
 
-  onRemove(): void {
+  public override onRemove(): void {
     if (this.containerElement.parentElement) {
       this.containerElement.parentElement.removeChild(this.containerElement);
     }
   }
 
-  isVisible(): boolean {
-    return this._isVisible;
-  }
-
-  display(): void {
-    if (this._isVisible) {
-      return;
-    }
-    this._isVisible = true;
-    requestAnimationFrame(() => {
-      this.draw();
-    });
-  }
-
-  hide(): void {
-    if (!this._isVisible) {
-      return;
-    }
-    this._isVisible = false;
-    requestAnimationFrame(() => {
-      this.draw();
-    });
-  }
-
-  draw(): void {
-    if (this._isVisible) {
-      const containerPosition = this.getProjection().fromLatLngToDivPixel(this.position)!;
+  public override draw(): void {
+    if (this.isMarkerVisible) {
+      const containerPosition = this.getProjection().fromLatLngToDivPixel(this.position) ?? new google.maps.Point(0, 0);
       this.containerElement.style.display = 'block';
       this.containerElement.style.zIndex = `${this.zIndex}`;
       this.containerElement.style.left = `${containerPosition.x}px`;
@@ -84,4 +62,29 @@ export class Marker extends google.maps.OverlayView {
       this.containerElement.style.display = 'none';
     }
   }
+
+  public isVisible(): boolean {
+    return this.isMarkerVisible;
+  }
+
+  public display(): void {
+    if (this.isMarkerVisible) {
+      return;
+    }
+    this.isMarkerVisible = true;
+    requestAnimationFrame(() => {
+      this.draw();
+    });
+  }
+
+  public hide(): void {
+    if (!this.isMarkerVisible) {
+      return;
+    }
+    this.isMarkerVisible = false;
+    requestAnimationFrame(() => {
+      this.draw();
+    });
+  }
+
 }

@@ -3,8 +3,9 @@ import { ScrollableComponentElement } from 'scrollable-component';
 
 export class InfoWindow extends google.maps.OverlayView {
 
-  public readonly onSelfClose: Subject<void> = new Subject();
-  private _isOpen: boolean = false;
+  public readonly onSelfClose = new Subject<void>();
+
+  private isWindowOpen = false;
   private zIndex: number;
   private position: google.maps.LatLng;
   private map: google.maps.Map;
@@ -38,13 +39,13 @@ export class InfoWindow extends google.maps.OverlayView {
     this.infoWindowElement = this.containerElement.querySelector('.info-window') as HTMLElement;
     this.viewportElement = this.infoWindowElement.querySelector('.info-window-viewport') as ScrollableComponentElement;
     this.viewportElement.appendChild(content);
-    this.infoWindowElement.querySelector('.minimize-button')!.addEventListener('click', () => {
+    (this.infoWindowElement.querySelector('.minimize-button') as HTMLButtonElement).addEventListener('click', () => {
       this.containerElement.classList.add('minimized');
     });
-    this.infoWindowElement.querySelector('.maximize-button')!.addEventListener('click', () => {
+    (this.infoWindowElement.querySelector('.maximize-button') as HTMLButtonElement).addEventListener('click', () => {
       this.containerElement.classList.remove('minimized');
     });
-    this.infoWindowElement.querySelector('.close-button')!.addEventListener('click', () => {
+    (this.infoWindowElement.querySelector('.close-button') as HTMLButtonElement).addEventListener('click', () => {
       this.close();
       this.onSelfClose.next();
     });
@@ -53,46 +54,24 @@ export class InfoWindow extends google.maps.OverlayView {
     this.setMap(this.map);
   }
 
-  onAdd(): void {
-    this.getPanes()!.floatPane.appendChild(this.containerElement);
+  public override onAdd(): void {
+    const panes = this.getPanes();
+    if (panes) {
+      panes.floatPane.appendChild(this.containerElement);
+    }
   }
 
-  onRemove(): void {
+  public override onRemove(): void {
     if (this.containerElement.parentElement) {
       this.containerElement.parentElement.removeChild(this.containerElement);
     }
   }
 
-  isOpen(): boolean {
-    return this._isOpen;
-  }
-
-  open(): void {
-    if (this._isOpen) {
-      return;
-    }
-    this._isOpen = true;
-    requestAnimationFrame(() => {
-      this.draw();
-    });
-  }
-
-  close(): void {
-    if (!this._isOpen) {
-      return;
-    }
-    this._isOpen = false;
-    this.containerElement.classList.remove('minimized');
-    requestAnimationFrame(() => {
-      this.draw();
-    });
-  }
-
-  draw(): void {
-    if (this._isOpen) {
+  public override draw(): void {
+    if (this.isWindowOpen) {
       const maxWidth = window.innerWidth - 60;
       const maxHeight = window.innerHeight - 90;
-      const containerPosition = this.getProjection().fromLatLngToDivPixel(this.position)!;
+      const containerPosition = this.getProjection().fromLatLngToDivPixel(this.position) ?? new google.maps.Point(0, 0);
       this.containerElement.style.display = 'block';
       this.containerElement.style.zIndex = `${this.zIndex}`;
       this.containerElement.style.left = `${containerPosition.x}px`;
@@ -105,28 +84,54 @@ export class InfoWindow extends google.maps.OverlayView {
     }
   }
 
-  getBounds(): google.maps.LatLngBounds {
-    const containerPosition = this.getProjection().fromLatLngToDivPixel(this.position)!;
+  public isOpen(): boolean {
+    return this.isWindowOpen;
+  }
+
+  public open(): void {
+    if (this.isWindowOpen) {
+      return;
+    }
+    this.isWindowOpen = true;
+    requestAnimationFrame(() => {
+      this.draw();
+    });
+  }
+
+  public close(): void {
+    if (!this.isWindowOpen) {
+      return;
+    }
+    this.isWindowOpen = false;
+    this.containerElement.classList.remove('minimized');
+    requestAnimationFrame(() => {
+      this.draw();
+    });
+  }
+
+  public getBounds(): google.maps.LatLngBounds {
+    const containerPosition = this.getProjection().fromLatLngToDivPixel(this.position) ?? new google.maps.Point(0, 0);
     const containerTopLeftPosition = this.getProjection().fromDivPixelToLatLng(
       new google.maps.Point(
         containerPosition.x - (this.infoWindowElement.clientWidth / 2) - 30,
-        containerPosition.y - this.infoWindowElement.clientHeight - 140
-      )
+        containerPosition.y - this.infoWindowElement.clientHeight - 140,
+      ),
     );
     const containerBottomRightPosition = this.getProjection().fromDivPixelToLatLng(
       new google.maps.Point(
         containerPosition.x + (this.infoWindowElement.clientWidth / 2) + 30,
-        containerPosition.y + 34
-      )
+        containerPosition.y + 34,
+      ),
     );
     return new google.maps.LatLngBounds(containerTopLeftPosition, containerBottomRightPosition);
   }
 
-  focus(): void {
+  public focus(): void {
     this.infoWindowElement.setAttribute('tabindex', '0');
     requestAnimationFrame(() => {
       this.infoWindowElement.focus();
       this.infoWindowElement.removeAttribute('tabindex');
     });
   }
+
 }

@@ -1,15 +1,16 @@
-import { PinType } from './pin-type';
-import { SerializedPointOfInterest } from './serialized-point-of-interest';
+/* eslint-disable max-len */
+import { SerializedPointOfInterest } from '../models/serialized-point-of-interest';
+import { PinType } from './pin-type.constants';
 
-export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
+export const JURA_POINTS_OF_INTEREST: Record<string, SerializedPointOfInterest> = {
   'belvedere-repenty': {
-    name: "Belvédère de Repenty",
+    name: 'Belvédère de Repenty',
     latitude: 46.48693786199287,
     longitude: 6.015590727778011,
     type: PinType.ScenicViewpoint,
     trails: [
       {
-        startingPoint: "Depuis la route",
+        startingPoint: 'Depuis la route',
         gpxFile: 'belvedere-de-repenty.gpx',
         duration: '20min',
       },
@@ -24,13 +25,13 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     isActivity: false,
   },
   'belvedere-roche-dade': {
-    name: "Belvédère de la Roche au Dade",
+    name: 'Belvédère de la Roche au Dade',
     latitude: 46.52579603202816,
     longitude: 6.0182170591127,
     type: PinType.ScenicViewpoint,
     trails: [
       {
-        startingPoint: "Depuis le parking de la Via Ferrata de Morez",
+        startingPoint: 'Depuis le parking de la Via Ferrata de Morez',
         gpxFile: 'belvedere-de-la-roche-au-dade.gpx',
         duration: '30min',
         inverted: true,
@@ -47,13 +48,13 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     isActivity: false,
   },
   'belvedere-hermitage': {
-    name: "Belvédère de l'Hermitage",
+    name: 'Belvédère de l\'Hermitage',
     latitude: 46.3878955420636,
     longitude: 5.868958812426768,
     type: PinType.ScenicViewpoint,
     trails: [
       {
-        startingPoint: "Depuis l'Office de Tourisme de Saint-Claude",
+        startingPoint: 'Depuis l\'Office de Tourisme de Saint-Claude',
         gpxFile: 'belvedere-de-l-hermitage.gpx',
         duration: '30min',
       },
@@ -69,7 +70,7 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     isActivity: false,
   },
   'belvedere-regardoir': {
-    name: "Belvédère du Regardoir",
+    name: 'Belvédère du Regardoir',
     latitude: 46.44604066194284,
     longitude: 5.7068120775586495,
     type: PinType.ScenicViewpoint,
@@ -80,7 +81,7 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     isActivity: false,
   },
   'cascade-combes': {
-    name: "Cascade des Combes",
+    name: 'Cascade des Combes',
     latitude: 46.40212953027252,
     longitude: 5.8779129448382195,
     type: PinType.Waterfall,
@@ -96,13 +97,13 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     isActivity: false,
   },
   'gorges-abime': {
-    name: "Gorges de l'Abîme",
+    name: 'Gorges de l\'Abîme',
     latitude: 46.40464764997662,
     longitude: 5.880105758891276,
     type: PinType.Canyon,
     trails: [
       {
-        startingPoint: "Depuis le parking de la Cascade des Combes",
+        startingPoint: 'Depuis le parking de la Cascade des Combes',
         gpxFile: 'gorges-de-l-abime.gpx',
         duration: '45min',
       },
@@ -123,13 +124,13 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     isActivity: false,
   },
   'grotte-sainte-anne': {
-    name: "Grotte Sainte-Anne",
+    name: 'Grotte Sainte-Anne',
     latitude: 46.38994014812221,
     longitude: 5.869371872615061,
     type: PinType.Cave,
     trails: [
       {
-        startingPoint: "Depuis l'Office de Tourisme de Saint-Claude",
+        startingPoint: 'Depuis l\'Office de Tourisme de Saint-Claude',
         gpxFile: 'grotte-sainte-anne.gpx',
         duration: '35min',
       },
@@ -144,11 +145,11 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     isActivity: false,
   },
   'via-ferrata-morez': {
-    name: "Via Ferrata de Morez",
+    name: 'Via Ferrata de Morez',
     latitude: 46.526015318747525,
     longitude: 6.020173878441595,
     type: PinType.ViaFerrata,
-    description: `<a href="https://www.viaferrata-fr.net/via-ferrata-126-La-via-ferrata-de-la-Roche-au-Dade-Morez-Jura.html" target="_blank">viaferrata-fr.net<span class="material-icons" aria-hidden="true">open_in_new</span></a>`,
+    description: '<a href="https://www.viaferrata-fr.net/via-ferrata-126-La-via-ferrata-de-la-Roche-au-Dade-Morez-Jura.html" target="_blank">viaferrata-fr.net<span class="material-icons" aria-hidden="true">open_in_new</span></a>',
     photospheres: [
       '!4v1620389799348!6m8!1m7!1sCAoSLEFGMVFpcE9Ia1pCd2lWM1N6Q2gzOUluWHh0ZkwwQ1p5bDV6UmRqWFlkS2k0!2m2!1d46.5261679!2d6.0200669!3f224.50101787110827!4f0.06736034172531902!5f0.7820865974627469',
       '!4v1627143896557!6m8!1m7!1sCAoSLEFGMVFpcE5sN3NOQ182LXdSRWdlZHA2akJhUUQ4ZXNZc2xOcUtxUjQ0c0Vr!2m2!1d46.52639!2d6.0203073!3f197.94810348605245!4f-5.200241954118184!5f0.7820865974627469',
@@ -163,19 +164,19 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     isActivity: true,
   },
   'via-ferrata-vouglans': {
-    name: "Via Ferrata de Vouglans",
+    name: 'Via Ferrata de Vouglans',
     latitude: 46.44532050790993,
     longitude: 5.708870596285287,
     type: PinType.ViaFerrata,
-    description: `<a href="https://www.viaferrata-fr.net/via-ferrata-172-Le-regardoir--Lac-de-Vouglans-Moirans-en-Montagne-Jura.html" target="_blank">viaferrata-fr.net<span class="material-icons" aria-hidden="true">open_in_new</span></a>`,
+    description: '<a href="https://www.viaferrata-fr.net/via-ferrata-172-Le-regardoir--Lac-de-Vouglans-Moirans-en-Montagne-Jura.html" target="_blank">viaferrata-fr.net<span class="material-icons" aria-hidden="true">open_in_new</span></a>',
     trails: [
       {
-        startingPoint: "Sentier d'accès",
+        startingPoint: 'Sentier d\'accès',
         gpxFile: 'via-ferrata-de-vouglans-depart.gpx',
         duration: '10min',
       },
       {
-        startingPoint: "Sentier de retour",
+        startingPoint: 'Sentier de retour',
         gpxFile: 'via-ferrata-de-vouglans-retour.gpx',
         duration: '5min',
       },
@@ -193,7 +194,7 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     isAccessibleWithoutWalkingMuch: true,
   },
   'escalade-mont-robert': {
-    name: "Site d'escalade du Mont Robert",
+    name: 'Site d\'escalade du Mont Robert',
     latitude: 46.43332546647621,
     longitude: 5.721284772523512,
     type: PinType.ClimbingSite,
@@ -204,7 +205,7 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     isActivity: true,
   },
   'escalade-3-commeres': {
-    name: "Site d'escalade des 3 Commères",
+    name: 'Site d\'escalade des 3 Commères',
     latitude: 46.54654811015665,
     longitude: 6.034033758286288,
     type: PinType.ClimbingSite,
@@ -215,7 +216,7 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     isActivity: true,
   },
   'belvedere-barrage-vouglans': {
-    name: "Belvédère du Barrage de Vouglans",
+    name: 'Belvédère du Barrage de Vouglans',
     latitude: 46.39391732886984,
     longitude: 5.667009581013218,
     type: PinType.ScenicViewpoint,
@@ -229,7 +230,7 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     isActivity: false,
   },
   'belvedere-bourlaches': {
-    name: "Belvédère des Bourlaches",
+    name: 'Belvédère des Bourlaches',
     latitude: 46.45664013598437,
     longitude: 5.672187035688165,
     type: PinType.ScenicViewpoint,
@@ -238,7 +239,7 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     ],
     trails: [
       {
-        startingPoint: "Depuis le parking du Belvédère des Bourlaches",
+        startingPoint: 'Depuis le parking du Belvédère des Bourlaches',
         gpxFile: 'belvedere-des-bourlaches.gpx',
         duration: '15min',
       },
@@ -250,7 +251,7 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     isActivity: false,
   },
   'plage-mercantine': {
-    name: "Plage de la Mercantine",
+    name: 'Plage de la Mercantine',
     latitude: 46.464298453276406,
     longitude: 5.693280884183598,
     type: PinType.Beach,
@@ -261,7 +262,7 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     isActivity: false,
   },
   'pont-longchaumois': {
-    name: "Pont de Longchaumois",
+    name: 'Pont de Longchaumois',
     latitude: 46.470071784585095,
     longitude: 5.904846264084158,
     type: PinType.Bridge,
@@ -276,12 +277,12 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     ],
     trails: [
       {
-        startingPoint: "Depuis Longchaumois",
+        startingPoint: 'Depuis Longchaumois',
         gpxFile: 'pont-de-longchaumois.gpx',
         duration: '1h30',
       },
       {
-        startingPoint: "Depuis la Cascade de Pissevieille",
+        startingPoint: 'Depuis la Cascade de Pissevieille',
         gpxFile: 'cascade-de-pissevieille-depuis-pont-longchaumois.gpx',
         duration: '1h',
         inverted: true,
@@ -289,11 +290,11 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     ],
   },
   'fort-rousses': {
-    name: "Le Fort des Rousses",
+    name: 'Le Fort des Rousses',
     latitude: 46.47914923528563,
     longitude: 6.056021302132764,
     type: PinType.Museum,
-    description: `<a href="https://www.fort-des-rousses.com/fr" target="_blank">fort-des-rousses.com<span class="material-icons" aria-hidden="true">open_in_new</span></a>`,
+    description: '<a href="https://www.fort-des-rousses.com/fr" target="_blank">fort-des-rousses.com<span class="material-icons" aria-hidden="true">open_in_new</span></a>',
     isWinterExclusive: false,
     isSummerExclusive: false,
     isIndoor: true,
@@ -301,11 +302,11 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     isActivity: false,
   },
   'ski-dole': {
-    name: "Station de Ski de la Dôle",
+    name: 'Station de Ski de la Dôle',
     latitude: 46.439264680613185,
     longitude: 6.081568202186691,
     type: PinType.SkiStation,
-    description: `<a href="https://www.jurasurleman.com/domaine-skiable/doles-tuffes/" target="_blank">jurasurleman.com<span class="material-icons" aria-hidden="true">open_in_new</span></a>`,
+    description: '<a href="https://www.jurasurleman.com/domaine-skiable/doles-tuffes/" target="_blank">jurasurleman.com<span class="material-icons" aria-hidden="true">open_in_new</span></a>',
     isWinterExclusive: true,
     isSummerExclusive: false,
     isIndoor: false,
@@ -313,11 +314,11 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     isActivity: true,
   },
   'ski-lelex': {
-    name: "Station de Ski de Lélex",
+    name: 'Station de Ski de Lélex',
     latitude: 46.304188196750474,
     longitude: 5.943850757481148,
     type: PinType.SkiStation,
-    description: `<a href="https://www.paysdegex-montsjura.com/domaine-ski-vtt/domaine-de-ski-alpin-de-lelex-crozet/" target="_blank">paysdegex-montsjura.com<span class="material-icons" aria-hidden="true">open_in_new</span></a>`,
+    description: '<a href="https://www.paysdegex-montsjura.com/domaine-ski-vtt/domaine-de-ski-alpin-de-lelex-crozet/" target="_blank">paysdegex-montsjura.com<span class="material-icons" aria-hidden="true">open_in_new</span></a>',
     isWinterExclusive: true,
     isSummerExclusive: false,
     isIndoor: false,
@@ -325,7 +326,7 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     isActivity: true,
   },
   'lac-lamoura': {
-    name: "Lac de Lamoura",
+    name: 'Lac de Lamoura',
     latitude: 46.39508682522628,
     longitude: 5.981503848531151,
     type: PinType.Lake,
@@ -336,13 +337,13 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     isActivity: false,
   },
   'cascade-moulin-aval': {
-    name: "Cascade du Moulin d'Aval",
+    name: 'Cascade du Moulin d\'Aval',
     latitude: 46.35591140420291,
     longitude: 5.904118515327781,
     type: PinType.Waterfall,
     trails: [
       {
-        startingPoint: "Depuis le Belvédère du Saut du Chien",
+        startingPoint: 'Depuis le Belvédère du Saut du Chien',
         gpxFile: 'cascade-du-moulin-aval.gpx',
         duration: '5min',
       },
@@ -359,7 +360,7 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     isAccessibleWithoutWalkingMuch: true,
   },
   'belvedere-saut-chien': {
-    name: "Belvédère du Saut du Chien",
+    name: 'Belvédère du Saut du Chien',
     latitude: 46.35709198201752,
     longitude: 5.902056464863761,
     type: PinType.ScenicViewpoint,
@@ -373,7 +374,7 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     ],
   },
   'plage-surchauffant': {
-    name: "Plage du Surchauffant",
+    name: 'Plage du Surchauffant',
     latitude: 46.522077401833315,
     longitude: 5.676542281239807,
     type: PinType.Beach,
@@ -384,11 +385,11 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     isActivity: false,
   },
   'bike-park-longchaumois': {
-    name: "Bike Park de Longchaumois",
+    name: 'Bike Park de Longchaumois',
     latitude: 46.44571129341734,
     longitude: 5.910999011397395,
     type: PinType.BikePark,
-    description: `<a href="https://longchaumois.fr/tourisme/loisirs-ete/bike-park/" target="_blank">longchaumois.fr<span class="material-icons" aria-hidden="true">open_in_new</span></a>`,
+    description: '<a href="https://longchaumois.fr/tourisme/loisirs-ete/bike-park/" target="_blank">longchaumois.fr<span class="material-icons" aria-hidden="true">open_in_new</span></a>',
     isWinterExclusive: false,
     isSummerExclusive: true,
     isIndoor: false,
@@ -396,7 +397,7 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     isActivity: true,
   },
   'lac-rousses': {
-    name: "Lac des Rousses",
+    name: 'Lac des Rousses',
     latitude: 46.49994306374634,
     longitude: 6.079344078740796,
     type: PinType.Lake,
@@ -407,11 +408,11 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     isActivity: false,
   },
   'ski-serra': {
-    name: "Station de Ski de la Serra",
+    name: 'Station de Ski de la Serra',
     latitude: 46.412159518052306,
     longitude: 5.996286839619209,
     type: PinType.SkiStation,
-    description: `<a href="https://www.jurasurleman.com/domaine-skiable/serra/" target="_blank">jurasurleman.com<span class="material-icons" aria-hidden="true">open_in_new</span></a>`,
+    description: '<a href="https://www.jurasurleman.com/domaine-skiable/serra/" target="_blank">jurasurleman.com<span class="material-icons" aria-hidden="true">open_in_new</span></a>',
     isWinterExclusive: true,
     isSummerExclusive: false,
     isIndoor: false,
@@ -419,11 +420,11 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     isActivity: true,
   },
   'ski-faucille': {
-    name: "Station de Ski de la Faucille",
+    name: 'Station de Ski de la Faucille',
     latitude: 46.36730613762583,
     longitude: 6.015880142730694,
     type: PinType.SkiStation,
-    description: `<a href="https://www.paysdegex-montsjura.com/domaine-ski-vtt/domaine-de-ski-alpin-de-mijoux-la-faucille/" target="_blank">paysdegex-montsjura.com<span class="material-icons" aria-hidden="true">open_in_new</span></a>`,
+    description: '<a href="https://www.paysdegex-montsjura.com/domaine-ski-vtt/domaine-de-ski-alpin-de-mijoux-la-faucille/" target="_blank">paysdegex-montsjura.com<span class="material-icons" aria-hidden="true">open_in_new</span></a>',
     isWinterExclusive: true,
     isSummerExclusive: false,
     isIndoor: false,
@@ -431,8 +432,8 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     isActivity: true,
   },
   'luge-ete-faucille': {
-    name: "Luge d'Été de la Faucille",
-    description: `<a href="https://www.paysdegex-montsjura.com/equipements/luge-sur-rails/" target="_blank">paysdegex-montsjura.com<span class="material-icons" aria-hidden="true">open_in_new</span></a>`,
+    name: 'Luge d\'Été de la Faucille',
+    description: '<a href="https://www.paysdegex-montsjura.com/equipements/luge-sur-rails/" target="_blank">paysdegex-montsjura.com<span class="material-icons" aria-hidden="true">open_in_new</span></a>',
     latitude: 46.367049981541285,
     longitude: 6.014699697841497,
     type: PinType.RollerCoaster,
@@ -443,8 +444,8 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     isActivity: true,
   },
   'tyrolienne-faucille': {
-    name: "Tyrolienne de la Faucille",
-    description: `<a href="https://www.paysdegex-montsjura.com/activite/descente-en-tyrolienne/" target="_blank">paysdegex-montsjura.com<span class="material-icons" aria-hidden="true">open_in_new</span></a>`,
+    name: 'Tyrolienne de la Faucille',
+    description: '<a href="https://www.paysdegex-montsjura.com/activite/descente-en-tyrolienne/" target="_blank">paysdegex-montsjura.com<span class="material-icons" aria-hidden="true">open_in_new</span></a>',
     latitude: 46.36669149710434,
     longitude: 6.012897868370151,
     type: PinType.ZipLine,
@@ -455,7 +456,7 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     isActivity: true,
   },
   'domaine-nordique-vattay': {
-    name: "Domaine Nordique de la Vattay",
+    name: 'Domaine Nordique de la Vattay',
     latitude: 46.388997058308185,
     longitude: 6.053721738522633,
     type: PinType.CrossCountrySkiTrail,
@@ -466,11 +467,11 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     isActivity: true,
   },
   'ski-jouvencelles': {
-    name: "Station de Ski des Jouvencelles",
+    name: 'Station de Ski des Jouvencelles',
     latitude: 46.4560246945411,
     longitude: 6.054330190834567,
     type: PinType.SkiStation,
-    description: `<a href="https://www.jurasurleman.com/domaine-skiable/doles-tuffes/" target="_blank">jurasurleman.com<span class="material-icons" aria-hidden="true">open_in_new</span></a>`,
+    description: '<a href="https://www.jurasurleman.com/domaine-skiable/doles-tuffes/" target="_blank">jurasurleman.com<span class="material-icons" aria-hidden="true">open_in_new</span></a>',
     isWinterExclusive: true,
     isSummerExclusive: false,
     isIndoor: false,
@@ -478,7 +479,7 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     isActivity: true,
   },
   'domaine-nordique-darbella': {
-    name: "Domaine Nordique de la Darbella",
+    name: 'Domaine Nordique de la Darbella',
     latitude: 46.44366600183185,
     longitude: 6.04029007951453,
     type: PinType.CrossCountrySkiTrail,
@@ -489,7 +490,7 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     isActivity: true,
   },
   'domaine-nordique-marais': {
-    name: "Domaine Nordique des Marais",
+    name: 'Domaine Nordique des Marais',
     latitude: 46.55704998804172,
     longitude: 6.022468876634721,
     type: PinType.CrossCountrySkiTrail,
@@ -500,7 +501,7 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     isActivity: true,
   },
   'parapente-cheneviers': {
-    name: "Piste de Décollage de Parapente des Cheneviers",
+    name: 'Piste de Décollage de Parapente des Cheneviers',
     latitude: 46.42434419868878,
     longitude: 5.872901222134379,
     type: PinType.ParaglidingTakeOff,
@@ -514,11 +515,11 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     ],
   },
   'musee-pipe-diamant-saint-claude': {
-    name: "Musée de la Pipe et du Diamant de Saint-Claude",
+    name: 'Musée de la Pipe et du Diamant de Saint-Claude',
     latitude: 46.38693264922453,
     longitude: 5.8662271001162125,
     type: PinType.Museum,
-    description: `<a href="https://www.musee-pipe-diamant.com/" target="_blank">musee-pipe-diamant.com<span class="material-icons" aria-hidden="true">open_in_new</span></a>`,
+    description: '<a href="https://www.musee-pipe-diamant.com/" target="_blank">musee-pipe-diamant.com<span class="material-icons" aria-hidden="true">open_in_new</span></a>',
     isWinterExclusive: false,
     isSummerExclusive: false,
     isIndoor: true,
@@ -526,11 +527,11 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     isActivity: true,
   },
   'musee-lunette-morez': {
-    name: "Musée de la Lunette de Morez",
+    name: 'Musée de la Lunette de Morez',
     latitude: 46.520673107466465,
     longitude: 6.022807695409638,
     type: PinType.Museum,
-    description: `<a href="http://www.musee-lunette.fr/fr" target="_blank">musee-lunette.fr<span class="material-icons" aria-hidden="true">open_in_new</span></a>`,
+    description: '<a href="http://www.musee-lunette.fr/fr" target="_blank">musee-lunette.fr<span class="material-icons" aria-hidden="true">open_in_new</span></a>',
     isWinterExclusive: false,
     isSummerExclusive: false,
     isIndoor: true,
@@ -538,11 +539,11 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     isActivity: true,
   },
   'patinoire-premanon': {
-    name: "Patinoire de Prémanon",
+    name: 'Patinoire de Prémanon',
     latitude: 46.46110897795911,
     longitude: 6.0293126225093285,
     type: PinType.Rink,
-    description: `<a href="https://espacedesmondespolaires.org/informations-pratiques/" target="_blank">espacedesmondespolaires.org<span class="material-icons" aria-hidden="true">open_in_new</span></a>`,
+    description: '<a href="https://espacedesmondespolaires.org/informations-pratiques/" target="_blank">espacedesmondespolaires.org<span class="material-icons" aria-hidden="true">open_in_new</span></a>',
     isWinterExclusive: false,
     isSummerExclusive: false,
     isIndoor: true,
@@ -550,11 +551,11 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     isActivity: true,
   },
   'casino-saint-laurent': {
-    name: "Casino de Saint-Laurent-en-Grandvaux",
+    name: 'Casino de Saint-Laurent-en-Grandvaux',
     latitude: 46.57700171480465,
     longitude: 5.966741847330161,
     type: PinType.Casino,
-    description: `<a href="https://www.joa.fr/casinos/st-laurent-en-grandvaux" target="_blank">joa.fr<span class="material-icons" aria-hidden="true">open_in_new</span></a>`,
+    description: '<a href="https://www.joa.fr/casinos/st-laurent-en-grandvaux" target="_blank">joa.fr<span class="material-icons" aria-hidden="true">open_in_new</span></a>',
     isWinterExclusive: false,
     isSummerExclusive: false,
     isIndoor: true,
@@ -562,11 +563,11 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     isActivity: true,
   },
   'bowling-chaumusse': {
-    name: "Bowling de la Chaumusse",
+    name: 'Bowling de la Chaumusse',
     latitude: 46.59671216477136,
     longitude: 5.959645900329771,
     type: PinType.Bowling,
-    description: `<a href="https://www.facebook.com/bowlingchaumusse" target="_blank">facebook.com/bowlingchaumusse<span class="material-icons" aria-hidden="true">open_in_new</span></a>`,
+    description: '<a href="https://www.facebook.com/bowlingchaumusse" target="_blank">facebook.com/bowlingchaumusse<span class="material-icons" aria-hidden="true">open_in_new</span></a>',
     isWinterExclusive: false,
     isSummerExclusive: false,
     isIndoor: true,
@@ -574,7 +575,7 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     isActivity: true,
   },
   'montagne-dole': {
-    name: "La Dôle",
+    name: 'La Dôle',
     latitude: 46.425451417227194,
     longitude: 6.100055548973375,
     type: PinType.Mountain,
@@ -586,7 +587,7 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     isAccessibleWithoutWalkingMuch: false,
   },
   'ruisseau-abime': {
-    name: "Ruisseau de l'Abîme",
+    name: 'Ruisseau de l\'Abîme',
     latitude: 46.401477319820685,
     longitude: 5.875648118130123,
     type: PinType.Park,
@@ -600,11 +601,11 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     ],
   },
   'bateau-louisiane': {
-    name: "Bateau de Croisière le Louisiane",
+    name: 'Bateau de Croisière le Louisiane',
     latitude: 46.52010736377037,
     longitude: 5.674579771321833,
     type: PinType.Ferry,
-    description: `<a href="http://www.bateaux-croisieres.com/horaires-et-tarifs-1-2.htm" target="_blank">bateaux-croisieres.com<span class="material-icons" aria-hidden="true">open_in_new</span></a>`,
+    description: '<a href="http://www.bateaux-croisieres.com/horaires-et-tarifs-1-2.htm" target="_blank">bateaux-croisieres.com<span class="material-icons" aria-hidden="true">open_in_new</span></a>',
     isWinterExclusive: false,
     isSummerExclusive: true,
     isIndoor: false,
@@ -612,23 +613,23 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     isActivity: true,
   },
   'cascade-vouivre': {
-    name: "Cascade de la Vouivre",
+    name: 'Cascade de la Vouivre',
     latitude: 46.413907948567065,
     longitude: 5.872781919354124,
     type: PinType.Waterfall,
     trails: [
       {
-        startingPoint: "Part la Ferme de Diesles",
+        startingPoint: 'Part la Ferme de Diesles',
         gpxFile: 'cascade-de-la-vouivre-par-diesles.gpx',
         duration: '20min',
       },
       {
-        startingPoint: "Part le Pont des Cheneviers",
+        startingPoint: 'Part le Pont des Cheneviers',
         gpxFile: 'cascade-de-la-vouivre-par-cheneviers.gpx',
         duration: '30min',
       },
       {
-        startingPoint: "Depuis la Cascade sous la Vouivre",
+        startingPoint: 'Depuis la Cascade sous la Vouivre',
         gpxFile: 'cascades-de-la-vouivre-liaison.gpx',
         duration: '30min',
         inverted: true,
@@ -644,25 +645,25 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     isActivity: false,
   },
   'cascade-sous-vouivre': {
-    name: "Cascade sous la Vouivre",
+    name: 'Cascade sous la Vouivre',
     latitude: 46.41384685317267,
     longitude: 5.871360348576231,
     type: PinType.Waterfall,
     trails: [
       {
-        startingPoint: "Part la Ferme de Diesles",
+        startingPoint: 'Part la Ferme de Diesles',
         gpxFile: 'cascade-sous-la-vouivre-par-diesles.gpx',
         duration: '30min',
         inverted: true,
       },
       {
-        startingPoint: "Part le Pont des Cheneviers",
+        startingPoint: 'Part le Pont des Cheneviers',
         gpxFile: 'cascade-sous-la-vouivre-par-cheneviers.gpx',
         duration: '20min',
         inverted: true,
       },
       {
-        startingPoint: "Depuis la Cascade de la Vouivre",
+        startingPoint: 'Depuis la Cascade de la Vouivre',
         gpxFile: 'cascades-de-la-vouivre-liaison.gpx',
         duration: '20min',
       },
@@ -677,7 +678,7 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     isActivity: false,
   },
   'pont-cheneviers': {
-    name: "Pont des Cheneviers",
+    name: 'Pont des Cheneviers',
     latitude: 46.41671664733077,
     longitude: 5.867738521171484,
     type: PinType.Bridge,
@@ -691,13 +692,13 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     isActivity: false,
   },
   'trou-abime': {
-    name: "Trou de l'Abîme",
+    name: 'Trou de l\'Abîme',
     latitude: 46.4075389685646,
     longitude: 5.882489630958023,
     type: PinType.Pond,
     trails: [
       {
-        startingPoint: "Depuis le parking de la Cascade des Combes",
+        startingPoint: 'Depuis le parking de la Cascade des Combes',
         gpxFile: 'gorges-de-l-abime.gpx',
         duration: '45min',
       },
@@ -713,13 +714,13 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     isActivity: false,
   },
   'trou-bleu': {
-    name: "Le Trou Bleu",
+    name: 'Le Trou Bleu',
     latitude: 46.53122931474212,
     longitude: 6.003747890130584,
     type: PinType.Pond,
     trails: [
       {
-        startingPoint: "Depuis le départ du Sentier de Découverte de la Bienne",
+        startingPoint: 'Depuis le départ du Sentier de Découverte de la Bienne',
         gpxFile: 'trou-bleu.gpx',
         duration: '20min',
         inverted: true,
@@ -736,11 +737,11 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     isActivity: false,
   },
   'base-nautique-bellecin': {
-    name: "Base Nautique de Bellecin",
+    name: 'Base Nautique de Bellecin',
     latitude: 46.486847172533146,
     longitude: 5.6763074940355684,
     type: PinType.NauticBase,
-    description: `<a href="http://www.bellecin.com/location-de-materiel/" target="_blank">bellecin.com<span class="material-icons" aria-hidden="true">open_in_new</span></a>`,
+    description: '<a href="http://www.bellecin.com/location-de-materiel/" target="_blank">bellecin.com<span class="material-icons" aria-hidden="true">open_in_new</span></a>',
     photospheres: [
       '!4v1620591095422!6m8!1m7!1sCAoSLEFGMVFpcE5xWkRBN2RBUFhzUkJ2RHhSVjdpX0otR1FPNXkzNU9CNEtweUs2!2m2!1d46.4867058!2d5.6764803!3f165.45294908880572!4f-8.851745217342852!5f0.7820865974627469',
     ],
@@ -751,7 +752,7 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     isActivity: true,
   },
   'piscine-saint-claude': {
-    name: "Piscine de Saint-Claude",
+    name: 'Piscine de Saint-Claude',
     latitude: 46.37487522618866,
     longitude: 5.8737492925635415,
     type: PinType.SwimmingPool,
@@ -762,7 +763,7 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     isActivity: true,
   },
   'cinema-saint-claude': {
-    name: "Cinéma de Saint-Claude",
+    name: 'Cinéma de Saint-Claude',
     latitude: 46.388024959557505,
     longitude: 5.863251565207026,
     type: PinType.Cinema,
@@ -773,7 +774,7 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     isActivity: false,
   },
   'cinema-morez': {
-    name: "Cinéma de Morez",
+    name: 'Cinéma de Morez',
     latitude: 46.52339857362707,
     longitude: 6.020880508567248,
     type: PinType.Cinema,
@@ -784,7 +785,7 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     isActivity: false,
   },
   'cinema-rousses': {
-    name: "Cinéma des Rousses",
+    name: 'Cinéma des Rousses',
     latitude: 46.48392405256153,
     longitude: 6.057734578741707,
     type: PinType.Cinema,
@@ -795,11 +796,11 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     isActivity: false,
   },
   'circuit-jura-sud': {
-    name: "Circuit Jura Sud",
+    name: 'Circuit Jura Sud',
     latitude: 46.42831640034331,
     longitude: 5.714712608735004,
     type: PinType.Karting,
-    description: `<a href="https://www.circuitjurasud.com/" target="_blank">circuitjurasud.com<span class="material-icons" aria-hidden="true">open_in_new</span></a>`,
+    description: '<a href="https://www.circuitjurasud.com/" target="_blank">circuitjurasud.com<span class="material-icons" aria-hidden="true">open_in_new</span></a>',
     isWinterExclusive: false,
     isSummerExclusive: false,
     isIndoor: true,
@@ -807,7 +808,7 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     isActivity: true,
   },
   'lac-clairvaux': {
-    name: "Lac de Clairvaux-les-Lacs",
+    name: 'Lac de Clairvaux-les-Lacs',
     latitude: 46.569271977746396,
     longitude: 5.750986748408562,
     type: PinType.Lake,
@@ -818,23 +819,23 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     isActivity: false,
   },
   'yourte-rosset': {
-    name: "La Yourte de Rosset",
+    name: 'La Yourte de Rosset',
     latitude: 46.45306593877455,
     longitude: 5.969775211744892,
     type: PinType.CampSite,
-    description: `<a href="https://sentierslibres.fr/" target="_blank">sentierslibres.fr<span class="material-icons" aria-hidden="true">open_in_new</span></a>`,
+    description: '<a href="https://sentierslibres.fr/" target="_blank">sentierslibres.fr<span class="material-icons" aria-hidden="true">open_in_new</span></a>',
     isWinterExclusive: false,
     isSummerExclusive: false,
     isIndoor: false,
     isLandscape: false,
     isActivity: false,
   },
-  'longchaumois': {
-    name: "Longchaumois",
+  longchaumois: {
+    name: 'Longchaumois',
     latitude: 46.45923581126969,
     longitude: 5.933146944002905,
     type: PinType.StargazingSite,
-    description: "La commune de Longchaumois en plus d'être à l'écart des lumières des villes, coupe son éclairage public la nuit, ce qui en fait un coin idéal pour l'observation des étoiles.",
+    description: 'La commune de Longchaumois en plus d\'être à l\'écart des lumières des villes, coupe son éclairage public la nuit, ce qui en fait un coin idéal pour l\'observation des étoiles.',
     isWinterExclusive: false,
     isSummerExclusive: false,
     isIndoor: false,
@@ -842,7 +843,7 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     isActivity: false,
   },
   'piscine-morbier': {
-    name: "Piscine de Morbier",
+    name: 'Piscine de Morbier',
     latitude: 46.54179663218006,
     longitude: 6.0199516129757225,
     type: PinType.SwimmingPool,
@@ -853,19 +854,19 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     isActivity: true,
   },
   'cascade-chapeau-gendarme': {
-    name: "Cascade du Chapeau de Gendarme",
+    name: 'Cascade du Chapeau de Gendarme',
     latitude: 46.35891866166526,
     longitude: 5.906130996409802,
     type: PinType.Waterfall,
     trails: [
       {
-        startingPoint: "Depuis le Belvédère du Saut du Chien",
+        startingPoint: 'Depuis le Belvédère du Saut du Chien',
         gpxFile: 'chapeau-de-gendarme-chien.gpx',
         duration: '20min',
         inverted: true,
       },
       {
-        startingPoint: "Depuis la route sous le chapeau",
+        startingPoint: 'Depuis la route sous le chapeau',
         gpxFile: 'chapeau-de-gendarme-route.gpx',
         duration: '5min',
         inverted: true,
@@ -883,13 +884,13 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     isAccessibleWithoutWalkingMuch: true,
   },
   'cascade-moulin-amont': {
-    name: "Cascade du Moulin d'Amont",
+    name: 'Cascade du Moulin d\'Amont',
     latitude: 46.35298685291105,
     longitude: 5.907207305866242,
     type: PinType.Waterfall,
     trails: [
       {
-        startingPoint: "Depuis le Belvédère du Saut du Chien",
+        startingPoint: 'Depuis le Belvédère du Saut du Chien',
         gpxFile: 'cascade-du-moulin-amont.gpx',
         duration: '25min',
       },
@@ -904,13 +905,13 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     isActivity: false,
   },
   'cascades-flumen': {
-    name: "Cascades du Flumen",
+    name: 'Cascades du Flumen',
     latitude: 46.35811225694381,
     longitude: 5.896421970696242,
     type: PinType.Waterfall,
     trails: [
       {
-        startingPoint: "Depuis l'Usine Électrique",
+        startingPoint: 'Depuis l\'Usine Électrique',
         gpxFile: 'cascades-du-flumen.gpx',
         duration: '25min',
       },
@@ -925,13 +926,13 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     isActivity: false,
   },
   'cascade-cheval': {
-    name: "Cascade de la Queue de Cheval",
+    name: 'Cascade de la Queue de Cheval',
     latitude: 46.39015502334763,
     longitude: 5.895178412090032,
     type: PinType.Waterfall,
     trails: [
       {
-        startingPoint: "Depuis le parking de la Cascade de la Queue de Cheval",
+        startingPoint: 'Depuis le parking de la Cascade de la Queue de Cheval',
         gpxFile: 'cascade-de-la-queue-de-cheval.gpx',
         duration: '25min',
       },
@@ -946,7 +947,7 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     isActivity: false,
   },
   'cascade-tuffiere': {
-    name: "Cascade de la Tuffière",
+    name: 'Cascade de la Tuffière',
     latitude: 46.613493180302974,
     longitude: 5.852544194345395,
     type: PinType.Waterfall,
@@ -961,7 +962,7 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     isAccessibleWithoutWalkingMuch: false,
   },
   'cascade-eventail': {
-    name: "Cascade de l'Éventail",
+    name: 'Cascade de l\'Éventail',
     latitude: 46.61388220881226,
     longitude: 5.855047907291682,
     type: PinType.Waterfall,
@@ -977,7 +978,7 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     isAccessibleWithoutWalkingMuch: false,
   },
   'belvedere-eventail': {
-    name: "Belvédère de l'Éventail",
+    name: 'Belvédère de l\'Éventail',
     latitude: 46.61359249938383,
     longitude: 5.854383684651032,
     type: PinType.ScenicViewpoint,
@@ -992,7 +993,7 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     isAccessibleWithoutWalkingMuch: false,
   },
   'cascade-grand-saut': {
-    name: "Cascade du Grand Saut",
+    name: 'Cascade du Grand Saut',
     latitude: 46.614784888795356,
     longitude: 5.8606696097778865,
     type: PinType.Waterfall,
@@ -1008,7 +1009,7 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     isAccessibleWithoutWalkingMuch: false,
   },
   'belvedere-grand-saut': {
-    name: "Belvédère du Grand Saut",
+    name: 'Belvédère du Grand Saut',
     latitude: 46.61412356213719,
     longitude: 5.8593278424653095,
     type: PinType.ScenicViewpoint,
@@ -1023,7 +1024,7 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     isAccessibleWithoutWalkingMuch: false,
   },
   'grotte-lacuzon': {
-    name: "Grotte Lacuzon",
+    name: 'Grotte Lacuzon',
     latitude: 46.61500439297709,
     longitude: 5.8594393194690575,
     type: PinType.Cave,
@@ -1038,7 +1039,7 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     isAccessibleWithoutWalkingMuch: false,
   },
   'cascade-gour-bleu': {
-    name: "Cascade du Gour Bleu",
+    name: 'Cascade du Gour Bleu',
     latitude: 46.61517044065017,
     longitude: 5.862426790613324,
     type: PinType.Waterfall,
@@ -1053,7 +1054,7 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     isAccessibleWithoutWalkingMuch: false,
   },
   'cascade-chateau-garnier': {
-    name: "Cascade du Château Garnier",
+    name: 'Cascade du Château Garnier',
     latitude: 46.61537101732267,
     longitude: 5.866750263301506,
     type: PinType.Waterfall,
@@ -1065,7 +1066,7 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     isAccessibleWithoutWalkingMuch: false,
   },
   'cascade-saut-forge': {
-    name: "Cascade du Saut de la Forge",
+    name: 'Cascade du Saut de la Forge',
     latitude: 46.61421149921766,
     longitude: 5.8687672518101985,
     type: PinType.Waterfall,
@@ -1080,7 +1081,7 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     isAccessibleWithoutWalkingMuch: false,
   },
   'cascade-moulin-jeunet': {
-    name: "Cascade du Moulin Jeunet",
+    name: 'Cascade du Moulin Jeunet',
     latitude: 46.61348564012835,
     longitude: 5.8748687413968925,
     type: PinType.Waterfall,
@@ -1095,7 +1096,7 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     isAccessibleWithoutWalkingMuch: false,
   },
   'ruine-clouterie': {
-    name: "Ruine de la Clouterie",
+    name: 'Ruine de la Clouterie',
     latitude: 46.61067439137875,
     longitude: 5.881165660504313,
     type: PinType.Waterfall,
@@ -1110,7 +1111,7 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     isAccessibleWithoutWalkingMuch: false,
   },
   'cascade-saut-girard': {
-    name: "Cascade du Saut Girard",
+    name: 'Cascade du Saut Girard',
     latitude: 46.6117445212677,
     longitude: 5.8841892481157165,
     type: PinType.Waterfall,
@@ -1126,7 +1127,7 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     isAccessibleWithoutWalkingMuch: false,
   },
   'belvedere-saut-girard': {
-    name: "Belvédère du Saut Girard",
+    name: 'Belvédère du Saut Girard',
     latitude: 46.611586986193714,
     longitude: 5.884075254232584,
     type: PinType.ScenicViewpoint,
@@ -1140,7 +1141,7 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     ],
   },
   'cascade-moulin-fees': {
-    name: "Cascade du Moulin des Fées",
+    name: 'Cascade du Moulin des Fées',
     latitude: 46.6119650192084,
     longitude: 5.8830438272928465,
     type: PinType.Waterfall,
@@ -1155,7 +1156,7 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     isAccessibleWithoutWalkingMuch: false,
   },
   'scuplture-lynx': {
-    name: "Scuplture de Lynx",
+    name: 'Scuplture de Lynx',
     latitude: 46.61191711404929,
     longitude: 5.883864583251404,
     type: PinType.Monument,
@@ -1167,7 +1168,7 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     isAccessibleWithoutWalkingMuch: false,
   },
   'pic-aigle': {
-    name: "Pic de l'Aigle",
+    name: 'Pic de l\'Aigle',
     latitude: 46.6147678853953,
     longitude: 5.902289916452301,
     type: PinType.ScenicViewpoint,
@@ -1182,19 +1183,19 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     ],
     trails: [
       {
-        startingPoint: "Depuis le parking du Pic de l'Aigle",
+        startingPoint: 'Depuis le parking du Pic de l\'Aigle',
         gpxFile: 'pic-de-l-aigle.gpx',
         duration: '20min',
       },
       {
-        startingPoint: "Depuis le parking du Belvédère des 4 Lacs",
+        startingPoint: 'Depuis le parking du Belvédère des 4 Lacs',
         gpxFile: 'pic-de-l-aigle-par-belvedere-4-lacs.gpx',
         duration: '1h',
       },
     ],
   },
   'belvedere-3-lacs': {
-    name: "Belvédère des 3 Lacs",
+    name: 'Belvédère des 3 Lacs',
     latitude: 46.62358498197954,
     longitude: 5.909810833732898,
     type: PinType.ScenicViewpoint,
@@ -1208,19 +1209,19 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     ],
     trails: [
       {
-        startingPoint: "Depuis le parking du Pic de l'Aigle",
+        startingPoint: 'Depuis le parking du Pic de l\'Aigle',
         gpxFile: 'belvedere-des-3-lacs-par-pic-de-l-aigle.gpx',
         duration: '50min',
       },
       {
-        startingPoint: "Depuis le parking du Belvédère des 4 Lacs",
+        startingPoint: 'Depuis le parking du Belvédère des 4 Lacs',
         gpxFile: 'belvedere-des-3-lacs-par-belvedere-4-lacs.gpx',
         duration: '30min',
       },
     ],
   },
   'belvedere-4-lacs': {
-    name: "Belvédère des 4 Lacs",
+    name: 'Belvédère des 4 Lacs',
     latitude: 46.62627191947394,
     longitude: 5.913068302427722,
     type: PinType.ScenicViewpoint,
@@ -1234,12 +1235,12 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     ],
     trails: [
       {
-        startingPoint: "Depuis le parking du Pic de l'Aigle",
+        startingPoint: 'Depuis le parking du Pic de l\'Aigle',
         gpxFile: 'belvedere-des-4-lacs-par-pic-de-l-aigle.gpx',
         duration: '1h10',
       },
       {
-        startingPoint: "Depuis le parking du Belvédère des 4 Lacs",
+        startingPoint: 'Depuis le parking du Belvédère des 4 Lacs',
         gpxFile: 'belvedere-des-4-lacs.gpx',
         duration: '5min',
       },
@@ -1247,7 +1248,7 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     isAccessibleWithoutWalkingMuch: true,
   },
   'pont-roche-blanche': {
-    name: "Pont de Roche Blanche",
+    name: 'Pont de Roche Blanche',
     latitude: 46.454994872233954,
     longitude: 5.890619561768906,
     type: PinType.Bridge,
@@ -1262,7 +1263,7 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     ],
   },
   'cascade-pissevieille': {
-    name: "Cascade de Pissevieille",
+    name: 'Cascade de Pissevieille',
     latitude: 46.453411515747746,
     longitude: 5.893577731926016,
     type: PinType.Waterfall,
@@ -1277,17 +1278,17 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     ],
     trails: [
       {
-        startingPoint: "Depuis le Pont de Roche Blanche",
+        startingPoint: 'Depuis le Pont de Roche Blanche',
         gpxFile: 'cascade-de-pissevieille.gpx',
         duration: '10min',
       },
       {
-        startingPoint: "Depuis le Pont de Longchaumois",
+        startingPoint: 'Depuis le Pont de Longchaumois',
         gpxFile: 'cascade-de-pissevieille-depuis-pont-longchaumois.gpx',
         duration: '1h',
       },
       {
-        startingPoint: "Depuis Longchaumois",
+        startingPoint: 'Depuis Longchaumois',
         gpxFile: 'cascade-de-pissevieille-depuis-longchaumois.gpx',
         duration: '1h50',
       },
@@ -1295,7 +1296,7 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     isAccessibleWithoutWalkingMuch: true,
   },
   'cascade-sous-pissevieille': {
-    name: "Cascade sous Pissevieille",
+    name: 'Cascade sous Pissevieille',
     latitude: 46.45414895366772,
     longitude: 5.892983724792895,
     type: PinType.Waterfall,
@@ -1309,7 +1310,7 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     ],
     trails: [
       {
-        startingPoint: "Depuis le Pont de Roche Blanche",
+        startingPoint: 'Depuis le Pont de Roche Blanche',
         gpxFile: 'cascade-sous-pissevieille.gpx',
         duration: '5min',
         inverted: true,
@@ -1318,7 +1319,7 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     isAccessibleWithoutWalkingMuch: true,
   },
   'cascade-sur-pissevieille': {
-    name: "Cascade sur Pissevieille",
+    name: 'Cascade sur Pissevieille',
     latitude: 46.45287930587765,
     longitude: 5.894495250789982,
     type: PinType.Waterfall,
@@ -1333,14 +1334,14 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     ],
     trails: [
       {
-        startingPoint: "Depuis le Pont de Roche Blanche",
+        startingPoint: 'Depuis le Pont de Roche Blanche',
         gpxFile: 'cascade-sur-pissevieille.gpx',
         duration: '20min',
       },
     ],
   },
   'belvedere-cuvet': {
-    name: "Belvédère du Cuvet",
+    name: 'Belvédère du Cuvet',
     latitude: 46.45590024620774,
     longitude: 5.902053338830768,
     type: PinType.ScenicViewpoint,
@@ -1354,14 +1355,14 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     ],
     trails: [
       {
-        startingPoint: "Depuis Orcières",
+        startingPoint: 'Depuis Orcières',
         gpxFile: 'belvedere-du-cuvet.gpx',
         duration: '20min',
       },
     ],
   },
   'belvedere-corbiere': {
-    name: "Belvédère de la Corbière",
+    name: 'Belvédère de la Corbière',
     latitude: 46.470813085312344,
     longitude: 5.91981498914234,
     type: PinType.ScenicViewpoint,
@@ -1375,7 +1376,7 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     ],
     trails: [
       {
-        startingPoint: "Depuis Longchaumois",
+        startingPoint: 'Depuis Longchaumois',
         gpxFile: 'belvedere-de-la-corbiere.gpx',
         duration: '25min',
       },
@@ -1383,11 +1384,11 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     isAccessibleWithoutWalkingMuch: true,
   },
   'maison-flore': {
-    name: "Maison de la Flore",
+    name: 'Maison de la Flore',
     latitude: 46.45923581126969,
     longitude: 5.928164731438317,
     type: PinType.Museum,
-    description: `<a href="https://longchaumois.fr/loisirs-vie-longchaumois-haut-jura/associations-longchaumois-haut-jura/la-maison-de-la-flore/" target="_blank">longchaumois.fr<span class="material-icons" aria-hidden="true">open_in_new</span></a>`,
+    description: '<a href="https://longchaumois.fr/loisirs-vie-longchaumois-haut-jura/associations-longchaumois-haut-jura/la-maison-de-la-flore/" target="_blank">longchaumois.fr<span class="material-icons" aria-hidden="true">open_in_new</span></a>',
     isWinterExclusive: false,
     isSummerExclusive: true,
     isIndoor: false,
@@ -1395,11 +1396,11 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     isActivity: false,
   },
   'cascades-herisson-milieu': {
-    name: "Les Cascades du Hérisson",
+    name: 'Les Cascades du Hérisson',
     latitude: 46.6135172271435,
     longitude: 5.8678463682336846,
     type: PinType.HikingTrail,
-    description: "Départ au milieu du parcours, au niveau de la cascade du Saut de la Forge (parking gratuit).",
+    description: 'Départ au milieu du parcours, au niveau de la cascade du Saut de la Forge (parking gratuit).',
     isWinterExclusive: false,
     isSummerExclusive: false,
     isIndoor: false,
@@ -1407,23 +1408,23 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     isActivity: true,
     trails: [
       {
-        startingPoint: "Vers le haut",
+        startingPoint: 'Vers le haut',
         gpxFile: 'cascades-du-herisson-milieu-vers-haut.gpx',
         duration: '30min',
       },
       {
-        startingPoint: "Vers le bas",
+        startingPoint: 'Vers le bas',
         gpxFile: 'cascades-du-herisson-milieu-vers-bas.gpx',
         duration: '1h45',
       },
     ],
   },
   'cascades-herisson-haut': {
-    name: "Les Cascades du Hérisson",
+    name: 'Les Cascades du Hérisson',
     latitude: 46.60922156603986,
     longitude: 5.882264329681188,
     type: PinType.HikingTrail,
-    description: "Départ en haut du parcours, au niveau de la cascade du Saut Girard (parking gratuit).",
+    description: 'Départ en haut du parcours, au niveau de la cascade du Saut Girard (parking gratuit).',
     isWinterExclusive: false,
     isSummerExclusive: false,
     isIndoor: false,
@@ -1431,18 +1432,18 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     isActivity: true,
     trails: [
       {
-        startingPoint: "Vers le bas",
+        startingPoint: 'Vers le bas',
         gpxFile: 'cascades-du-herisson-haut-vers-bas.gpx',
         duration: '2h15',
       },
     ],
   },
   'cascades-herisson-bas': {
-    name: "Les Cascades du Hérisson",
+    name: 'Les Cascades du Hérisson',
     latitude: 46.61462478424921,
     longitude: 5.847261105113506,
     type: PinType.HikingTrail,
-    description: "Départ en bas du parcours, au niveau de la Maison des Cascades (parking payant).",
+    description: 'Départ en bas du parcours, au niveau de la Maison des Cascades (parking payant).',
     isWinterExclusive: false,
     isSummerExclusive: false,
     isIndoor: false,
@@ -1450,7 +1451,7 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     isActivity: true,
     trails: [
       {
-        startingPoint: "Vers le haut",
+        startingPoint: 'Vers le haut',
         gpxFile: 'cascades-du-herisson-bas-vers-haut.gpx',
         duration: '2h15',
         inverted: true,
@@ -1458,7 +1459,7 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     ],
   },
   'vue-information-barrage-vouglans': {
-    name: "Point de vue et d'information du Barrage de Vouglans",
+    name: 'Point de vue et d\'information du Barrage de Vouglans',
     latitude: 46.39768470048469,
     longitude: 5.663189443436947,
     type: PinType.ScenicViewpoint,
@@ -1473,7 +1474,7 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     ],
   },
   'belvedere-roche-corneilles': {
-    name: "Belvédère de la Roche aux Corneilles",
+    name: 'Belvédère de la Roche aux Corneilles',
     latitude: 46.455743494001,
     longitude: 5.702249167462368,
     type: PinType.ScenicViewpoint,
@@ -1487,7 +1488,7 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     ],
   },
   'belvedere-roche-blanche': {
-    name: "Belvédère de la Roche Blanche",
+    name: 'Belvédère de la Roche Blanche',
     latitude: 46.35126731111936,
     longitude: 5.891665519800693,
     type: PinType.ScenicViewpoint,
@@ -1501,7 +1502,7 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     ],
   },
   'centre-equestre-tinguely': {
-    name: "Centre Équestre Tinguely",
+    name: 'Centre Équestre Tinguely',
     latitude: 46.48515843485564,
     longitude: 6.074990419175137,
     type: PinType.EquestrianCenter,
@@ -1515,11 +1516,11 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     isActivity: true,
   },
   'centre-equestre-jura-sud': {
-    name: "Centre Équestre Jura Sud",
+    name: 'Centre Équestre Jura Sud',
     latitude: 46.45929638998343,
     longitude: 5.714983021009696,
     type: PinType.EquestrianCenter,
-    description: `<a href="https://www.centre-equestre-jura-sud.com/" target="_blank">centre-equestre-jura-sud.com<span class="material-icons" aria-hidden="true">open_in_new</span></a>`,
+    description: '<a href="https://www.centre-equestre-jura-sud.com/" target="_blank">centre-equestre-jura-sud.com<span class="material-icons" aria-hidden="true">open_in_new</span></a>',
     isWinterExclusive: false,
     isSummerExclusive: false,
     isIndoor: false,
@@ -1527,7 +1528,7 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     isActivity: true,
   },
   'easy-fat-bike': {
-    name: "Easy Fat Bike",
+    name: 'Easy Fat Bike',
     latitude: 46.48474085036485,
     longitude: 6.060113814009869,
     type: PinType.BikePark,
@@ -1541,7 +1542,7 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     isActivity: true,
   },
   'parapente-replan': {
-    name: "Piste de Décollage de Parapente du Replan",
+    name: 'Piste de Décollage de Parapente du Replan',
     latitude: 46.37102197675545,
     longitude: 5.89845013983313,
     type: PinType.ParaglidingTakeOff,
@@ -1552,13 +1553,13 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     isActivity: true,
   },
   'grotte-celary': {
-    name: "Grotte et Belvédère du Célary",
+    name: 'Grotte et Belvédère du Célary',
     latitude: 46.40532224994907,
     longitude: 5.940562837875971,
     type: PinType.Cave,
     trails: [
       {
-        startingPoint: "Depuis le parking de Gaïa Loisirs",
+        startingPoint: 'Depuis le parking de Gaïa Loisirs',
         gpxFile: 'grotte-du-celary.gpx',
         duration: '35min',
         inverted: true,
@@ -1576,7 +1577,7 @@ export const JuraPointsOfInterest: Record<string, SerializedPointOfInterest> = {
     isActivity: false,
   },
   'gaia-loisirs': {
-    name: "Gaïa Loisirs",
+    name: 'Gaïa Loisirs',
     latitude: 46.3995830318417,
     longitude: 5.949442692183995,
     type: PinType.ViaFerrata,

@@ -1,7 +1,7 @@
-import { Pin } from './pin';
-import { PinType } from './pin-type';
+import { Pin } from '../models/pin';
+import { PinType } from './pin-type.constants';
 
-export const Pins: Record<PinType, Pin> = {
+export const PINS: Record<PinType, Pin> = {
   [PinType.ViaFerrata]: {
     label: 'Via Ferrata',
     icon: 'via_ferrata',
@@ -43,7 +43,7 @@ export const Pins: Record<PinType, Pin> = {
     lineHeight: '33px',
   },
   [PinType.ClimbingSite]: {
-    label: "Site d'Escalade",
+    label: 'Site d\'Escalade',
     icon: 'climbing',
     color: 'gray',
     fillColor: '#808080',
@@ -53,7 +53,7 @@ export const Pins: Record<PinType, Pin> = {
     lineHeight: '34px',
   },
   [PinType.StargazingSite]: {
-    label: "Site d'Observation des Étoiles",
+    label: 'Site d\'Observation des Étoiles',
     icon: 'telescope',
     color: 'navy-blue',
     fillColor: '#000080',
@@ -103,7 +103,7 @@ export const Pins: Record<PinType, Pin> = {
     lineHeight: '33px',
   },
   [PinType.Pond]: {
-    label: "Point d'Eau",
+    label: 'Point d\'Eau',
     icon: 'reeds',
     color: 'norway',
     fillColor: '#8fbc8f',
