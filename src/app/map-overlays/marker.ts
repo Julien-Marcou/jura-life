@@ -43,7 +43,7 @@ export class Marker extends google.maps.OverlayView {
         this.dragListener = undefined;
       }
     });
-    this.markerElement.addEventListener('mousedown', () => {
+    this.markerElement.addEventListener('pointerdown', () => {
       this.click = true;
       this.dragListener = google.maps.event.addListenerOnce(this.map, 'drag', () => {
         this.dragListener = undefined;
