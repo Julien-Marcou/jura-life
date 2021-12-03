@@ -218,7 +218,12 @@ export class AppComponent implements OnInit {
   }
 
   private async initAllPointsOfInterest(): Promise<void> {
-    await Promise.all(Object.entries(JURA_POINTS_OF_INTEREST).map(([id, poi]) => this.addPointOfInterest(id, poi)));
+    try {
+      await Promise.all(Object.entries(JURA_POINTS_OF_INTEREST).map(([id, poi]) => this.addPointOfInterest(id, poi)));
+    }
+    catch (error) {
+      console.error(error);
+    }
   }
 
   private initFormControls(): void {
@@ -581,6 +586,9 @@ export class AppComponent implements OnInit {
     const elevationPolylines: Array<google.maps.Polyline> = [];
     trailPoints.forEach((trailPoint, trailPointIndex) => {
       const previousTrailPoint = trailPoints[trailPointIndex - 1];
+      if (!previousTrailPoint) {
+        return;
+      }
       length += this.distanceInKmBetweenEarthCoordinates(trailPoint.point.lat(), trailPoint.point.lng(), previousTrailPoint.point.lat(), previousTrailPoint.point.lng());
       const elevation = trailPoint.elevation - previousTrailPoint.elevation;
       if (elevation > 0) {
