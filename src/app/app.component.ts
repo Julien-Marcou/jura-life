@@ -43,6 +43,7 @@ export class AppComponent implements OnInit {
   public filtersForm: FormGroup;
   public pointOfInterestCountByPinType: Record<string, number>;
   public pins = PINS;
+  public mapLoaded = false;
 
   private filtersFormControls = {
     season: new FormControl('none'),
@@ -102,9 +103,8 @@ export class AppComponent implements OnInit {
   }
 
   public ngOnInit(): void {
-    this.initFormControls();
     this.initGoogleMap();
-    this.openPointOfInterestFromQueryParams();
+    this.initFormControls();
     this.initAllPointsOfInterest();
 
     // TODO : use this to transform "svg pin + icon font" markers to simple "webp" markers
@@ -169,50 +169,10 @@ export class AppComponent implements OnInit {
     }
   }
 
-  private openPointOfInterestFromQueryParams(): void {
-    this.map.addListener('projection_changed', () => {
-      this.route.queryParams.subscribe((params) => {
-        this.paramsChanged.next();
-        const poiId: string | undefined = 'poi' in params ? params['poi'] : undefined;
-        const trailIndex: number = 'trail' in params ? parseInt(params['trail'], 10) : 0;
-        const latitude: number | undefined = 'lat' in params ? parseFloat(params['lat']) : undefined;
-        const longitude: number | undefined = 'lng' in params ? parseFloat(params['lng']) : undefined;
-        const zoom: number | undefined = 'zoom' in params ? parseInt(params['zoom'], 10) : undefined;
-
-        if (poiId !== undefined) {
-          const poi = this.pointsOfInterest.get(poiId);
-          // If the POI already exists, open it
-          if (poi) {
-            this.openPointOfInterest(poi, true, trailIndex);
-          }
-          // Otherwise, open it as soon as it has been added
-          else {
-            this.pointOfInterestAdded.pipe(
-              takeUntil(this.paramsChanged),
-              filter((addedPoi) => addedPoi.id === poiId),
-              take(1),
-            ).subscribe((addedPoi) => {
-              this.openPointOfInterest(addedPoi, true, trailIndex);
-            });
-          }
-        }
-
-        if (latitude !== undefined && longitude !== undefined) {
-          this.map.setCenter(new google.maps.LatLng(latitude, longitude));
-        }
-
-        if (zoom !== undefined) {
-          this.map.setZoom(zoom);
-        }
-      });
-    });
-  }
-
   private initGoogleMap(): void {
     this.map = new google.maps.Map(this.mapElement.nativeElement, {
       center: { lat: 46.4789051, lng: 5.8939042 },
       zoom: 11,
-      mapTypeId: google.maps.MapTypeId.TERRAIN,
       clickableIcons: false,
       gestureHandling: 'greedy',
       styles: [
@@ -238,6 +198,53 @@ export class AppComponent implements OnInit {
           ],
         },
       ],
+    });
+    google.maps.event.addListenerOnce(this.map, 'projection_changed', () => {
+      requestAnimationFrame(() => {
+        this.openPointOfInterestFromQueryParams();
+      });
+    });
+    google.maps.event.addListenerOnce(this.map, 'idle', () => {
+      requestAnimationFrame(() => {
+        this.mapLoaded = true;
+      });
+    });
+  }
+
+  private openPointOfInterestFromQueryParams(): void {
+    this.route.queryParams.subscribe((params) => {
+      this.paramsChanged.next();
+      const poiId: string | undefined = 'poi' in params ? params['poi'] : undefined;
+      const trailIndex: number = 'trail' in params ? parseInt(params['trail'], 10) : 0;
+      const latitude: number | undefined = 'lat' in params ? parseFloat(params['lat']) : undefined;
+      const longitude: number | undefined = 'lng' in params ? parseFloat(params['lng']) : undefined;
+      const zoom: number | undefined = 'zoom' in params ? parseInt(params['zoom'], 10) : undefined;
+
+      if (poiId !== undefined) {
+        const poi = this.pointsOfInterest.get(poiId);
+        // If the POI already exists, open it
+        if (poi) {
+          this.openPointOfInterest(poi, true, trailIndex);
+        }
+        // Otherwise, open it as soon as it has been added
+        else {
+          this.pointOfInterestAdded.pipe(
+            takeUntil(this.paramsChanged),
+            filter((addedPoi) => addedPoi.id === poiId),
+            take(1),
+          ).subscribe((addedPoi) => {
+            this.openPointOfInterest(addedPoi, true, trailIndex);
+          });
+        }
+      }
+
+      if (latitude !== undefined && longitude !== undefined) {
+        this.map.setCenter(new google.maps.LatLng(latitude, longitude));
+      }
+
+      if (zoom !== undefined) {
+        this.map.setZoom(zoom);
+      }
     });
   }
 
@@ -404,8 +411,7 @@ export class AppComponent implements OnInit {
         if (poi.trails) {
           poi.trails[trailIndex].masterPolyline.getPath().forEach((point) => bounds.extend(point));
         }
-        const boundsListener = this.map.addListener('idle', () => {
-          boundsListener.remove();
+        google.maps.event.addListenerOnce(this.map, 'idle', () => {
           this.map.panToBounds(poi.infoWindow.getBounds());
           poi.infoWindow.focus();
         });

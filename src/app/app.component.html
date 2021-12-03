@@ -106,7 +106,7 @@
     <ng-template #closeFiltersTemplate><span class="material-icons" aria-hidden="true">chevron_left</span></ng-template>
     Filtres
   </button>
-  <div class="map" #mapElement></div>
+  <div class="map" #mapElement [class.loading]="!mapLoaded"></div>
 </div>
 
 <!-- TODO : use this to transform "svg pin + icon font" markers to simple "webp" markers -->
