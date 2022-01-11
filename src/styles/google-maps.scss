@@ -61,7 +61,7 @@
 
     .info-window-viewport {
       --scrollbar-width: 14px;
-      --content-padding: 15px;
+      --content-padding: 18px 15px;
     }
 
     .button {
@@ -69,17 +69,18 @@
       z-index: 100;
       top: 0;
       right: 2px;
+      display: flex;
       background-color: transparent;
       color: #888;
       text-align: center;
-      border-radius: 4px;
+      border-radius: 0;
+      width: 22px;
+      height: 22px;
+      align-items: center;
+      justify-content: center;
 
       .material-icons {
-        font-size: 18px;
-        display: block;
-        width: 20px;
-        height: 20px;
-        padding: 2px 0;
+        font-size: 20px;
       }
 
       &:hover, &:focus {
@@ -92,11 +93,10 @@
     }
 
     .minimize-button, .maximize-button {
-      right: 22px;
+      right: 25px;
 
       .material-icons {
-        font-size: 20px;
-        line-height: 18px;
+        font-size: 22px;
       }
     }
 
@@ -105,8 +105,8 @@
     }
 
     .content {
-      max-width: 350px;
-      font-size: 15px;
+      max-width: 400px;
+      font-size: 16px;
       font-weight: 300;
 
       > .permalink {
@@ -122,7 +122,7 @@
         .title {
           display: inline;
           margin: 0;
-          font-size: 18px;
+          font-size: 20px;
         }
 
         .material-icons {
@@ -142,7 +142,9 @@
 
       > .description {
         margin: 0;
-        margin-top: 16px;
+        margin-top: 18px;
+        font-size: 16px;
+        line-height: 1.4;
 
         .material-icons {
           font-size: 16px;
@@ -170,23 +172,32 @@
       }
 
       > .trails {
-        margin-top: 16px;
+        margin-top: 18px;
 
         .trail:not(:last-child) {
-          margin-bottom: 10px;
+          margin-bottom: 14px;
         }
 
         .name {
-          font-size: 15px;
-          margin: 0 0 4px;
-          line-height: 18px;
+          font-size: 16px;
+          margin: 0 0 7px;
+          line-height: 20px;
+        }
+
+        .starting-point {
+          margin-right: 4px;
         }
 
         .select-trail {
-          min-width: 30px;
-          padding: 2px 4px;
-          line-height: 19px;
+          display: inline-flex;
+          min-width: 44px;
+          min-height: 26px;
+          padding: 3px 8px;
+          line-height: 20px;
           border-radius: 2px;
+          align-items: center;
+          justify-content: center;
+          vertical-align: middle;
 
           &:focus-visible {
             box-shadow: var(--accessibility-shadow-info-window);
@@ -197,13 +208,17 @@
           margin: 0;
           display: grid;
           grid-template-columns: repeat(2, 1fr);
-          grid-gap: 2px 6px;
+          grid-gap: 8px;
+
+          @media (max-width: 375px) {
+            grid-template-columns: repeat(1, 1fr);
+          }
         }
 
         .material-icons {
-          margin-top: -4px;
+          font-size: 18px;
           vertical-align: middle;
-          font-size: 16px;
+          margin-top: -1px;
         }
 
         .length {
@@ -244,7 +259,7 @@
       }
 
       > .photospheres {
-        margin-top: 16px;
+        margin-top: 18px;
         display: grid;
         grid-template-columns: repeat(3, 1fr);
         grid-gap: 8px 12px;
@@ -254,14 +269,13 @@
         }
 
         .name {
-          font-size: 15px;
+          font-size: 16px;
           margin: 0;
         }
 
         .select-photosphere {
-          min-width: 30px;
-          padding: 2px 4px;
-          line-height: 19px;
+          padding: 3px 8px;
+          line-height: 20px;
           border-radius: 2px;
           border-radius: 2px;
 

@@ -69,8 +69,8 @@ export class InfoWindow extends google.maps.OverlayView {
 
   public override draw(): void {
     if (this.isWindowOpen) {
-      const maxWidth = window.innerWidth - 60;
-      const maxHeight = window.innerHeight - 90;
+      const maxWidth = window.innerWidth - 70;
+      const maxHeight = window.innerHeight - 155;
       const containerPosition = this.getProjection().fromLatLngToDivPixel(this.position) ?? new google.maps.Point(0, 0);
       this.containerElement.style.display = 'block';
       this.containerElement.style.zIndex = `${this.zIndex}`;
