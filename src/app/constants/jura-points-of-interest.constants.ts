@@ -306,10 +306,9 @@ export const JURA_POINTS_OF_INTEREST: Record<string, SerializedPointOfInterest> 
     latitude: 46.439264680613185,
     longitude: 6.081568202186691,
     type: PinType.SkiStation,
-    description: `Porte des Dappes
-<br><br>
-<a href="/assets/ski-maps/massif-dole-tuffes.png" target="_blank">Plans des pistes<span class="material-icons" aria-hidden="true">open_in_new</span></a>
-<br><br>
+    description: `Porte des Dappes<br>
+<br>
+<a href="/assets/ski-maps/massif-dole-tuffes.png" target="_blank">Plan des pistes<span class="material-icons" aria-hidden="true">open_in_new</span></a><br>
 <a href="https://www.jurasurleman.com/domaine-skiable/doles-tuffes/" target="_blank">jurasurleman.com<span class="material-icons" aria-hidden="true">open_in_new</span></a>`,
     isWinterExclusive: true,
     isSummerExclusive: false,
@@ -322,10 +321,9 @@ export const JURA_POINTS_OF_INTEREST: Record<string, SerializedPointOfInterest> 
     latitude: 46.4560246945411,
     longitude: 6.054330190834567,
     type: PinType.SkiStation,
-    description: `Porte des Jouvencelles
-<br><br>
-<a href="/assets/ski-maps/massif-dole-tuffes.png" target="_blank">Plans des pistes<span class="material-icons" aria-hidden="true">open_in_new</span></a>
-<br><br>
+    description: `Porte des Jouvencelles<br>
+<br>
+<a href="/assets/ski-maps/massif-dole-tuffes.png" target="_blank">Plan des pistes<span class="material-icons" aria-hidden="true">open_in_new</span></a><br>
 <a href="https://www.jurasurleman.com/domaine-skiable/doles-tuffes/" target="_blank">jurasurleman.com<span class="material-icons" aria-hidden="true">open_in_new</span></a>`,
     isWinterExclusive: true,
     isSummerExclusive: false,
@@ -338,10 +336,9 @@ export const JURA_POINTS_OF_INTEREST: Record<string, SerializedPointOfInterest> 
     latitude: 46.44793738429675,
     longitude: 6.077468272246942,
     type: PinType.SkiStation,
-    description: `Porte du Balancier
-<br><br>
-<a href="/assets/ski-maps/massif-dole-tuffes.png" target="_blank">Plans des pistes<span class="material-icons" aria-hidden="true">open_in_new</span></a>
-<br><br>
+    description: `Porte du Balancier<br>
+<br>
+<a href="/assets/ski-maps/massif-dole-tuffes.png" target="_blank">Plan des pistes<span class="material-icons" aria-hidden="true">open_in_new</span></a><br>
 <a href="https://www.jurasurleman.com/domaine-skiable/doles-tuffes/" target="_blank">jurasurleman.com<span class="material-icons" aria-hidden="true">open_in_new</span></a>`,
     isWinterExclusive: true,
     isSummerExclusive: false,
@@ -354,8 +351,7 @@ export const JURA_POINTS_OF_INTEREST: Record<string, SerializedPointOfInterest> 
     latitude: 46.412159518052306,
     longitude: 5.996286839619209,
     type: PinType.SkiStation,
-    description: `<a href="/assets/ski-maps/massif-serra.png" target="_blank">Plans des pistes<span class="material-icons" aria-hidden="true">open_in_new</span></a>
-<br><br>
+    description: `<a href="/assets/ski-maps/massif-serra.png" target="_blank">Plan des pistes<span class="material-icons" aria-hidden="true">open_in_new</span></a><br>
 <a href="https://www.jurasurleman.com/domaine-skiable/serra/" target="_blank">jurasurleman.com<span class="material-icons" aria-hidden="true">open_in_new</span></a>`,
     isWinterExclusive: true,
     isSummerExclusive: false,
@@ -368,8 +364,7 @@ export const JURA_POINTS_OF_INTEREST: Record<string, SerializedPointOfInterest> 
     latitude: 46.49171599839911,
     longitude: 6.0948314489874145,
     type: PinType.SkiStation,
-    description: `<a href="/assets/ski-maps/massif-noirmont.png" target="_blank">Plans des pistes<span class="material-icons" aria-hidden="true">open_in_new</span></a>
-<br><br>
+    description: `<a href="/assets/ski-maps/massif-noirmont.png" target="_blank">Plan des pistes<span class="material-icons" aria-hidden="true">open_in_new</span></a><br>
 <a href="https://www.jurasurleman.com/domaine-skiable/massif-du-noirmont/" target="_blank">jurasurleman.com<span class="material-icons" aria-hidden="true">open_in_new</span></a>`,
     isWinterExclusive: true,
     isSummerExclusive: false,
@@ -382,8 +377,7 @@ export const JURA_POINTS_OF_INTEREST: Record<string, SerializedPointOfInterest> 
     latitude: 46.304188196750474,
     longitude: 5.943850757481148,
     type: PinType.SkiStation,
-    description: `<a href="/assets/ski-maps/massif-lelex.jpg" target="_blank">Plans des pistes<span class="material-icons" aria-hidden="true">open_in_new</span></a>
-<br><br>
+    description: `<a href="/assets/ski-maps/massif-lelex.jpg" target="_blank">Plan des pistes<span class="material-icons" aria-hidden="true">open_in_new</span></a><br>
 <a href="https://www.paysdegex-montsjura.com/domaine-ski-vtt/domaine-de-ski-alpin-de-lelex-crozet/" target="_blank">paysdegex-montsjura.com<span class="material-icons" aria-hidden="true">open_in_new</span></a>`,
     isWinterExclusive: true,
     isSummerExclusive: false,
@@ -490,8 +484,7 @@ export const JURA_POINTS_OF_INTEREST: Record<string, SerializedPointOfInterest> 
     latitude: 46.36730613762583,
     longitude: 6.015880142730694,
     type: PinType.SkiStation,
-    description: `<a href="/assets/ski-maps/massif-faucille.jpg" target="_blank">Plans des pistes<span class="material-icons" aria-hidden="true">open_in_new</span></a>
-<br><br>
+    description: `<a href="/assets/ski-maps/massif-faucille.jpg" target="_blank">Plan des pistes<span class="material-icons" aria-hidden="true">open_in_new</span></a><br>
 <a href="https://www.paysdegex-montsjura.com/domaine-ski-vtt/domaine-de-ski-alpin-de-mijoux-la-faucille/" target="_blank">paysdegex-montsjura.com<span class="material-icons" aria-hidden="true">open_in_new</span></a>`,
     isWinterExclusive: true,
     isSummerExclusive: false,
@@ -1562,8 +1555,7 @@ export const JURA_POINTS_OF_INTEREST: Record<string, SerializedPointOfInterest> 
     latitude: 46.48515843485564,
     longitude: 6.074990419175137,
     type: PinType.EquestrianCenter,
-    description: `<a href="https://charafondue.fr/" target="_blank">charafondue.fr<span class="material-icons" aria-hidden="true">open_in_new</span></a>
-<br>
+    description: `<a href="https://charafondue.fr/" target="_blank">charafondue.fr<span class="material-icons" aria-hidden="true">open_in_new</span></a><br>
 <a href="https://centre-equestre-tinguely.com/activites/" target="_blank">centre-equestre-tinguely.com<span class="material-icons" aria-hidden="true">open_in_new</span></a>`,
     isWinterExclusive: false,
     isSummerExclusive: false,
@@ -1588,8 +1580,7 @@ export const JURA_POINTS_OF_INTEREST: Record<string, SerializedPointOfInterest> 
     latitude: 46.48474085036485,
     longitude: 6.060113814009869,
     type: PinType.BikePark,
-    description: `Location de VTT électrique
-<br>
+    description: `Location de VTT électrique<br>
 <a href="https://www.easyfatbike.com/" target="_blank">easyfatbike.com<span class="material-icons" aria-hidden="true">open_in_new</span></a>`,
     isWinterExclusive: false,
     isSummerExclusive: false,
@@ -1637,8 +1628,7 @@ export const JURA_POINTS_OF_INTEREST: Record<string, SerializedPointOfInterest> 
     latitude: 46.3995830318417,
     longitude: 5.949442692183995,
     type: PinType.ViaFerrata,
-    description: `Parcours sur filets dans les arbres
-<br>
+    description: `Parcours sur filets dans les arbres<br>
 <a href="https://www.gaialoisirs.fr/" target="_blank">gaialoisirs.fr<span class="material-icons" aria-hidden="true">open_in_new</span></a>`,
     isWinterExclusive: false,
     isSummerExclusive: false,
