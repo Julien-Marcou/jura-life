@@ -4,3 +4,16 @@ export type SerializedTrail = {
   gpxFile: string;
   inverted?: boolean;
 };
+
+export type ParsedTrail = {
+  points: Array<TrailPoint>;
+  minElevation: number;
+  maxElevation: number;
+  inverted?: boolean;
+};
+
+export type TrailPoint = {
+  elevation: number;
+  latitude: number;
+  longitude: number;
+};

@@ -12,8 +12,10 @@ import { Marker } from './map-overlays/marker';
 import { Pin } from './models/pin';
 import { PointOfInterest } from './models/point-of-interest';
 import { SerializedPointOfInterest } from './models/serialized-point-of-interest';
-import { SerializedTrail } from './models/serialized-trail';
 import { Trail } from './models/trail';
+import { TrailMetadataService } from './services/trail-metadata.service';
+import { TrailParserBrowserService } from './services/trail-parser-browser.service';
+import { TrailPolylineService } from './services/trail-polyline.service';
 
 // TODO : use this to transform "svg pin + icon font" markers to simple "webp" markers
 // import html2canvas from 'html2canvas';
@@ -332,7 +334,16 @@ export class AppComponent implements OnInit {
   private async addPointOfInterest(id: string, serializedPoi: SerializedPointOfInterest): Promise<void> {
     let trails: Array<Trail> | undefined;
     if (serializedPoi.trails) {
-      trails = await Promise.all(serializedPoi.trails.map((serializedTrail) => this.createTrail(serializedTrail)));
+      trails = await Promise.all(serializedPoi.trails.map(async (serializedTrail): Promise<Trail> => {
+        const parsedTrail = await TrailParserBrowserService.parseTrail(serializedTrail);
+        const trailMetadata = TrailMetadataService.getTrailMetadata(parsedTrail);
+        const trailPolyline = TrailPolylineService.getTrailPolyline(parsedTrail);
+        return {
+          ...serializedTrail,
+          ...trailMetadata,
+          ...trailPolyline,
+        };
+      }));
     }
 
     const zIndex = 10000000 - Math.round(serializedPoi.latitude * 100000) + Math.round(serializedPoi.longitude * 1000);
@@ -521,11 +532,11 @@ export class AppComponent implements OnInit {
           </div>
           <div class="positive-elevation" aria-hidden="true">
             <span class="material-icons">trending_up</span>
-            Dénivelé positif ${Math.round(trail.inverted ? trail.negativeElevation : trail.positiveElevation)}m
+            Dénivelé positif ${Math.round(trail.positiveElevation)}m
           </div>
           <div class="negative-elevation" aria-hidden="true">
             <span class="material-icons">trending_down</span>
-            Dénivelé négatif ${Math.round(trail.inverted ? trail.positiveElevation : trail.negativeElevation)}m
+            Dénivelé négatif ${Math.round(trail.negativeElevation)}m
           </div>`;
         trailsElement.appendChild(trailElement);
       });
@@ -556,135 +567,6 @@ export class AppComponent implements OnInit {
     }
 
     return contentElement;
-  }
-
-  private async createTrail(serializedTrail: SerializedTrail): Promise<Trail> {
-    const gpxString = await (await fetch(`/assets/trails/${serializedTrail.gpxFile}`)).text();
-    const gpxDocument = new DOMParser().parseFromString(gpxString, 'text/xml');
-    const trackPoints = gpxDocument.getElementsByTagName('trkpt');
-
-    const gradient = [
-      {
-        red: 0,
-        green: 198,
-        blue: 255,
-        step: 0,
-      },
-      {
-        red: 147,
-        green: 85,
-        blue: 255,
-        step: 33,
-      },
-      {
-        red: 255,
-        green: 0,
-        blue: 0,
-        step: 66,
-      },
-      {
-        red: 0,
-        green: 0,
-        blue: 0,
-        step: 100,
-      },
-    ];
-    let minElevation = Number.POSITIVE_INFINITY;
-    let maxElevation = Number.NEGATIVE_INFINITY;
-    const masterPolyline = new google.maps.Polyline({
-      zIndex: 0,
-      geodesic: true,
-      clickable: false,
-      strokeColor: '#fff',
-      strokeOpacity: 1.0,
-      strokeWeight: 7,
-    });
-    const trailPoints: Array<{
-      elevation: number;
-      point: google.maps.LatLng;
-    }> = [];
-    Array.from(trackPoints).forEach((trackPoint) => {
-      const latitude = parseFloat(trackPoint.getAttribute('lat') ?? '0');
-      const longitude = parseFloat(trackPoint.getAttribute('lon') ?? '0');
-      const elevation = parseFloat(trackPoint.querySelector('ele')?.textContent ?? '0');
-      const point = new google.maps.LatLng(latitude, longitude);
-      if (elevation < minElevation) {
-        minElevation = elevation;
-      }
-      else if (elevation > maxElevation) {
-        maxElevation = elevation;
-      }
-      trailPoints.push({
-        elevation: elevation,
-        point: point,
-      });
-      masterPolyline.getPath().push(point);
-    });
-
-    let length = 0;
-    let positiveElevation = 0;
-    let negativeElevation = 0;
-    const elevationPolylines: Array<google.maps.Polyline> = [];
-    trailPoints.forEach((trailPoint, trailPointIndex) => {
-      const previousTrailPoint = trailPoints[trailPointIndex - 1];
-      if (!previousTrailPoint) {
-        return;
-      }
-      length += this.distanceInKmBetweenEarthCoordinates(trailPoint.point.lat(), trailPoint.point.lng(), previousTrailPoint.point.lat(), previousTrailPoint.point.lng());
-      const elevation = trailPoint.elevation - previousTrailPoint.elevation;
-      if (elevation > 0) {
-        positiveElevation += elevation;
-      }
-      else {
-        negativeElevation -= elevation;
-      }
-      const step = (((previousTrailPoint.elevation + trailPoint.elevation) / 2) - minElevation) * (100 / (maxElevation - minElevation));
-      let minColor = gradient[0];
-      let maxColor = gradient[gradient.length - 1];
-      gradient.forEach((gradientColor) => {
-        if (gradientColor.step <= step && gradientColor.step > minColor.step) {
-          minColor = gradientColor;
-        }
-        if (gradientColor.step >= step && gradientColor.step < maxColor.step) {
-          maxColor = gradientColor;
-        }
-      });
-      const color = {
-        red: maxColor.red,
-        green: maxColor.green,
-        blue: maxColor.blue,
-      };
-      if (minColor !== maxColor) {
-        const multiplier = (step - minColor.step) * 100 / (maxColor.step - minColor.step);
-        color.red = Math.round(minColor.red + (maxColor.red - minColor.red) * multiplier / 100);
-        color.green = Math.round(minColor.green + (maxColor.green - minColor.green) * multiplier / 100);
-        color.blue = Math.round(minColor.blue + (maxColor.blue - minColor.blue) * multiplier / 100);
-      }
-      elevationPolylines.push(new google.maps.Polyline({
-        zIndex: 1,
-        path: [previousTrailPoint.point, trailPoint.point],
-        geodesic: true,
-        clickable: false,
-        strokeColor: `#${color.red.toString(16).padStart(2, '0')}${color.green.toString(16).padStart(2, '0')}${color.blue.toString(16).padStart(2, '0')}`,
-        strokeOpacity: 1.0,
-        strokeWeight: 3,
-      }));
-    });
-
-    return {
-      startingPoint: serializedTrail.startingPoint,
-      masterPolyline: masterPolyline,
-      elevationPolylines: elevationPolylines,
-      startingElevation: trailPoints[0].elevation,
-      endingElevation: trailPoints[trailPoints.length - 1].elevation,
-      minElevation: minElevation,
-      maxElevation: maxElevation,
-      positiveElevation: positiveElevation,
-      negativeElevation: negativeElevation,
-      length: length,
-      duration: serializedTrail.duration,
-      inverted: serializedTrail.inverted,
-    };
   }
 
   private isPoiMatchingFilters(poi: PointOfInterest, filters: PinFilters): boolean {
@@ -725,16 +607,6 @@ export class AppComponent implements OnInit {
       return false;
     }
     return true;
-  }
-
-  private distanceInKmBetweenEarthCoordinates(lat1: number, lon1: number, lat2: number, lon2: number): number {
-    const earthRadiusKm = 6371;
-    const dLat = (lat2 - lat1) * Math.PI / 180;
-    const dLon = (lon2 - lon1) * Math.PI / 180;
-    lat1 = lat1 * Math.PI / 180;
-    lat2 = lat2 * Math.PI / 180;
-    const a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.sin(dLon/2) * Math.sin(dLon/2) * Math.cos(lat1) * Math.cos(lat2);
-    return earthRadiusKm * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
   }
 
 }

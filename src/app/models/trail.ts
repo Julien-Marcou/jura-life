@@ -1,14 +1,5 @@
-export type Trail = {
-  startingPoint: string;
-  masterPolyline: google.maps.Polyline;
-  elevationPolylines: Array<google.maps.Polyline>;
-  startingElevation: number;
-  endingElevation: number;
-  minElevation: number;
-  maxElevation: number;
-  positiveElevation: number;
-  negativeElevation: number;
-  length: number;
-  duration: string;
-  inverted?: boolean;
-};
+import { SerializedTrail } from './serialized-trail';
+import { TrailMetadata } from './trail-metadata';
+import { TrailPolyline } from './trail-polyline';
+
+export type Trail = SerializedTrail & TrailMetadata & TrailPolyline;

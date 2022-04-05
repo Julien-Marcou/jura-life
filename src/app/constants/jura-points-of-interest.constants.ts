@@ -1,4 +1,4 @@
-/* eslint-disable max-len */
+/* eslint-disable max-len, @typescript-eslint/naming-convention */
 import { SerializedPointOfInterest } from '../models/serialized-point-of-interest';
 import { PinType } from './pin-type.constants';
 
