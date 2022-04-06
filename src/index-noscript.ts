@@ -27,7 +27,7 @@ const renderTrailContent = async (serializedTrail: SerializedTrail): Promise<str
   const trailMetadata = TrailMetadataService.getTrailMetadata(parsedTrail);
   return html`
     <li>
-      <h4>${serializedTrail.startingPoint}</h3>
+      <h4>${serializedTrail.startingPoint}</h4>
       <p>
         Longueur : ${Math.round(trailMetadata.length * 100) / 100}km<br>
         Temps de marche : ${serializedTrail.duration}<br>
