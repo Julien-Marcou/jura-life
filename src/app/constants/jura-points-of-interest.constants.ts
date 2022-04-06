@@ -461,7 +461,8 @@ export const JURA_POINTS_OF_INTEREST: Record<string, SerializedPointOfInterest> 
     latitude: 46.44571129341734,
     longitude: 5.910999011397395,
     type: PinType.BikePark,
-    description: '<a href="https://longchaumois.fr/tourisme/loisirs-ete/bike-park/" target="_blank">longchaumois.fr<span class="material-icons" aria-hidden="true">open_in_new</span></a>',
+    description: `<a href="/assets/bikepark-maps/bikepark-longchaumois.png" target="_blank">Plan du bikepark<span class="material-icons" aria-hidden="true">open_in_new</span></a><br>
+<a href="https://longchaumois.fr/tourisme/loisirs-ete/bike-park/" target="_blank">longchaumois.fr<span class="material-icons" aria-hidden="true">open_in_new</span></a>`,
     isWinterExclusive: false,
     isSummerExclusive: true,
     isIndoor: false,
