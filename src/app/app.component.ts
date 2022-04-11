@@ -10,6 +10,7 @@ import { PINS } from './constants/pins.constants';
 import { InfoWindow } from './map-overlays/info-window';
 import { Marker } from './map-overlays/marker';
 import { Pin } from './models/pin';
+import { PinFilters } from './models/pin-filters';
 import { PointOfInterest } from './models/point-of-interest';
 import { SerializedPointOfInterest } from './models/serialized-point-of-interest';
 import { Trail } from './models/trail';
@@ -19,17 +20,6 @@ import { TrailPolylineService } from './services/trail-polyline.service';
 
 // TODO : use this to transform "svg pin + icon font" markers to simple "webp" markers
 // import html2canvas from 'html2canvas';
-
-type PinFilters = {
-  season: 'none' | 'winter' | 'not-winter' | 'summer' | 'not-summer' | 'all-year';
-  isIndoor: boolean;
-  isLandscape: boolean;
-  isActivity: boolean;
-  hasTrail: boolean;
-  hasNoTrail: boolean;
-  hasPhotosphere: boolean;
-  categories: Record<PinType, boolean>;
-};
 
 @Component({
   selector: 'app-root',
