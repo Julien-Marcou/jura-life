@@ -40,6 +40,38 @@ export class AppComponent implements OnInit {
 
   @ViewChild('mapElement', {static: true}) private mapElement!: ElementRef<HTMLElement>;
 
+  public mapOptions: google.maps.MapOptions = {
+    center: { lat: 46.4789051, lng: 5.8939042 },
+    zoom: 11,
+    clickableIcons: false,
+    gestureHandling: 'greedy',
+    // streetViewControl: false,
+    // fullscreenControl: false,
+    styles: [
+      {
+        featureType: 'poi',
+        elementType: 'labels',
+        stylers: [
+          { visibility: 'off' },
+        ],
+      },
+      {
+        featureType: 'transit',
+        elementType: 'labels',
+        stylers: [
+          { visibility: 'off' },
+        ],
+      },
+      {
+        featureType: 'landscape',
+        elementType: 'labels',
+        stylers: [
+          { visibility: 'off' },
+        ],
+      },
+    ],
+  };
+
   public photosphere?: SafeResourceUrl;
   public displayFilters = false;
   public filtersForm: FormGroup;
@@ -172,35 +204,7 @@ export class AppComponent implements OnInit {
   }
 
   private initGoogleMap(): void {
-    this.map = new google.maps.Map(this.mapElement.nativeElement, {
-      center: { lat: 46.4789051, lng: 5.8939042 },
-      zoom: 11,
-      clickableIcons: false,
-      gestureHandling: 'greedy',
-      styles: [
-        {
-          featureType: 'poi',
-          elementType: 'labels',
-          stylers: [
-            { visibility: 'off' },
-          ],
-        },
-        {
-          featureType: 'transit',
-          elementType: 'labels',
-          stylers: [
-            { visibility: 'off' },
-          ],
-        },
-        {
-          featureType: 'landscape',
-          elementType: 'labels',
-          stylers: [
-            { visibility: 'off' },
-          ],
-        },
-      ],
-    });
+    this.map = new google.maps.Map(this.mapElement.nativeElement, this.mapOptions);
     google.maps.event.addListenerOnce(this.map, 'projection_changed', () => {
       requestAnimationFrame(() => {
         this.openPointOfInterestFromQueryParams();
