@@ -12,8 +12,7 @@ export class Marker extends google.maps.OverlayView {
   private map: google.maps.Map;
   private containerElement: HTMLElement;
   private markerElement: HTMLButtonElement;
-  private click = false;
-  private dragListener?: google.maps.MapsEventListener;
+  private allowMarkerInteraction = true;
 
   constructor(zIndex: number, position: google.maps.LatLng, map: google.maps.Map, title: string, type: PinType) {
     super();
@@ -28,26 +27,28 @@ export class Marker extends google.maps.OverlayView {
         <img class="pin" alt="" aria-hidden="true" src="/assets/markers/${type}.webp" width="33" height="52">
       </button>`;
     this.markerElement = this.containerElement.querySelector('.marker') as HTMLButtonElement;
+
+    // Bring the focused marker into the viewport
     this.markerElement.addEventListener('focus', () => {
-      if (!this.click) {
+      if (!this.allowMarkerInteraction) {
         this.onFocus.next();
       }
     });
+
+    // Open the marker's info window
     this.markerElement.addEventListener('click', () => {
-      if (this.click) {
-        this.click = false;
+      if (this.allowMarkerInteraction) {
         this.onClick.next();
       }
-      if (this.dragListener) {
-        this.dragListener.remove();
-        this.dragListener = undefined;
-      }
     });
+
+    // Prevent focusing & clicking the marker when dragging the map from the marker
     this.markerElement.addEventListener('pointerdown', () => {
-      this.click = true;
-      this.dragListener = google.maps.event.addListenerOnce(this.map, 'drag', () => {
-        this.dragListener = undefined;
-        this.click = false;
+      google.maps.event.addListenerOnce(this.map, 'dragstart', () => {
+        this.allowMarkerInteraction = false;
+        google.maps.event.addListenerOnce(this.map, 'idle', () => {
+          this.allowMarkerInteraction = true;
+        });
       });
     });
 
