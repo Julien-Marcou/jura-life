@@ -41,14 +41,14 @@ export class InfoWindow extends google.maps.OverlayView {
     this.viewportElement.appendChild(content);
     (this.infoWindowElement.querySelector('.minimize-button') as HTMLButtonElement).addEventListener('click', () => {
       this.containerElement.classList.add('minimized');
-    });
+    }, { passive: true });
     (this.infoWindowElement.querySelector('.maximize-button') as HTMLButtonElement).addEventListener('click', () => {
       this.containerElement.classList.remove('minimized');
-    });
+    }, { passive: true });
     (this.infoWindowElement.querySelector('.close-button') as HTMLButtonElement).addEventListener('click', () => {
       this.close();
       this.onSelfClose.next();
-    });
+    }, { passive: true });
 
     InfoWindow.preventMapHitsAndGesturesFrom(this.containerElement);
     this.setMap(this.map);

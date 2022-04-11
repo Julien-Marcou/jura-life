@@ -502,7 +502,7 @@ export class AppComponent implements OnInit {
             selectTrailElement.setAttribute('disabled', 'true');
             selectTrailElement.innerHTML = '<span class="material-icons" aria-hidden="true">check_box</span>';
             this.displayTrail(trail);
-          });
+          }, { passive: true });
         }
         startingPointElement.textContent = `${trail.startingPoint}`;
         selectTrailElement.setAttribute('title', 'Voir la tracé GPS');
@@ -551,7 +551,7 @@ export class AppComponent implements OnInit {
             const closePhotosphereButton = document.querySelector('.close-photosphere-button') as HTMLButtonElement;
             closePhotosphereButton.focus();
           });
-        });
+        }, { passive: true });
         labelElement.textContent = `Photo ${photosphereIndex + 1}`;
         selectPhotosphereElement.setAttribute('title', 'Voir la photo');
         selectPhotosphereElement.setAttribute('aria-label', `Voir la photo ${photosphereIndex + 1}`);

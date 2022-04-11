@@ -33,14 +33,14 @@ export class Marker extends google.maps.OverlayView {
       if (!this.allowMarkerInteraction) {
         this.onFocus.next();
       }
-    });
+    }, { passive: true });
 
     // Open the marker's info window
     this.markerElement.addEventListener('click', () => {
       if (this.allowMarkerInteraction) {
         this.onClick.next();
       }
-    });
+    }, { passive: true });
 
     // Prevent focusing & clicking the marker when dragging the map from the marker
     this.markerElement.addEventListener('pointerdown', () => {
@@ -50,7 +50,7 @@ export class Marker extends google.maps.OverlayView {
           this.allowMarkerInteraction = true;
         });
       });
-    });
+    }, { passive: true });
 
     Marker.preventMapHitsFrom(this.containerElement);
     this.setMap(this.map);
