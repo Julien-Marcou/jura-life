@@ -1556,8 +1556,7 @@ export const JURA_POINTS_OF_INTEREST: Record<string, SerializedPointOfInterest> 
     latitude: 46.48515843485564,
     longitude: 6.074990419175137,
     type: PinType.EquestrianCenter,
-    description: `<a href="https://charafondue.fr/" target="_blank">charafondue.fr<span class="material-icons" aria-hidden="true">open_in_new</span></a><br>
-<a href="https://centre-equestre-tinguely.com/activites/" target="_blank">centre-equestre-tinguely.com<span class="material-icons" aria-hidden="true">open_in_new</span></a>`,
+    description: '<a href="https://centre-equestre-tinguely.com/activites/" target="_blank">centre-equestre-tinguely.com<span class="material-icons" aria-hidden="true">open_in_new</span></a>',
     isWinterExclusive: false,
     isSummerExclusive: false,
     isIndoor: false,
