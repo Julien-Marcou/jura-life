@@ -1,10 +1,11 @@
 import { TargetOptions } from '@angular-builders/custom-webpack';
-import { JURA_POINTS_OF_INTEREST } from './app/constants/jura-points-of-interest.constants';
-import { PINS } from './app/constants/pins.constants';
-import { SerializedPointOfInterest } from './app/models/serialized-point-of-interest';
-import { SerializedTrail } from './app/models/serialized-trail';
-import { TrailMetadataService } from './app/services/trail-metadata.service';
-import { TrailParserNodeJsService } from './app/services/trail-parser-nodejs.service';
+import { JURA_POINTS_OF_INTEREST } from './src/app/constants/jura-points-of-interest.constants';
+import { PINS } from './src/app/constants/pins.constants';
+import { SerializedPointOfInterest } from './src/app/models/serialized-point-of-interest';
+import { SerializedTrail } from './src/app/models/serialized-trail';
+import { TrailMetadataService } from './src/app/services/trail-metadata.service';
+import { TrailParserNodeJsService } from './src/app/services/trail-parser-nodejs.service';
+import { environment } from './src/environments/environment';
 
 const html = (strings: TemplateStringsArray, ...values: Array<unknown>): string => {
   let result = '';

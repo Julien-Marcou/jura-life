@@ -55,7 +55,7 @@
               "src/styles.scss"
             ],
             "scripts": [],
-            "indexTransform": "src/index-noscript.ts"
+            "indexTransform": "noscript.ts"
           },
           "configurations": {
             "production": {
