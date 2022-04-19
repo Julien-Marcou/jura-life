@@ -6,7 +6,8 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "lint": "ng lint --fix"
+    "lint": "ng lint --fix",
+    "sitemap": "ts-node -O '{\"module\": \"commonjs\"}' ./src/sitemap.ts"
   },
   "private": true,
   "dependencies": {
