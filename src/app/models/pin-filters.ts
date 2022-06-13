@@ -1,5 +1,5 @@
-import { PinType } from '../constants/pin-type.constants';
-import { Season } from '../constants/season.constants';
+import { PinType } from './pin-type';
+import { Season } from './season';
 
 export type PinFilters = Partial<{
   season: Season;

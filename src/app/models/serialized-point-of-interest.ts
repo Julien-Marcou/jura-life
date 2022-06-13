@@ -1,4 +1,4 @@
-import { PinType } from '../constants/pin-type.constants';
+import { PinType } from './pin-type';
 import { SerializedTrail } from './serialized-trail';
 
 export type SerializedPointOfInterest = {

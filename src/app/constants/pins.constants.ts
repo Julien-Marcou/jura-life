@@ -1,5 +1,5 @@
 import { Pin } from '../models/pin';
-import { PinType } from './pin-type.constants';
+import { PinType } from '../models/pin-type';
 
 export const PINS: Record<PinType, Pin> = {
   [PinType.ViaFerrata]: {

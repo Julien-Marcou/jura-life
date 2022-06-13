@@ -1,6 +1,6 @@
 /* eslint-disable max-len, @typescript-eslint/naming-convention */
+import { PinType } from '../models/pin-type';
 import { SerializedPointOfInterest } from '../models/serialized-point-of-interest';
-import { PinType } from './pin-type.constants';
 
 export const JURA_POINTS_OF_INTEREST: Record<string, SerializedPointOfInterest> = {
   'belvedere-repenty': {

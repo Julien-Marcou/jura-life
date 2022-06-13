@@ -1,6 +1,6 @@
-import { PinType } from '../constants/pin-type.constants';
 import { InfoWindow } from '../map-overlays/info-window';
 import { Marker } from '../map-overlays/marker';
+import { PinType } from './pin-type';
 import { Trail } from './trail';
 
 export type PointOfInterest = {

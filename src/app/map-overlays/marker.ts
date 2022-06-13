@@ -1,5 +1,5 @@
 import { Subject } from 'rxjs';
-import { PinType } from '../constants/pin-type.constants';
+import { PinType } from '../models/pin-type';
 
 export class Marker extends google.maps.OverlayView {
 
