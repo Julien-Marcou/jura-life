@@ -323,3 +323,5 @@ export const PINS: Record<PinType, Pin> = {
     lineHeight: '33px',
   },
 };
+
+export const PIN_TYPES = Object.keys(PINS) as Array<PinType>;

@@ -1,16 +1,16 @@
 import { KeyValue } from '@angular/common';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { filter, Subject, take, takeUntil } from 'rxjs';
 import { JURA_POINTS_OF_INTEREST } from './constants/jura-points-of-interest.constants';
 import { PinType } from './constants/pin-type.constants';
-import { PINS } from './constants/pins.constants';
+import { PINS, PIN_TYPES } from './constants/pins.constants';
 import { InfoWindow } from './map-overlays/info-window';
 import { Marker } from './map-overlays/marker';
 import { Pin } from './models/pin';
-import { PinFilters } from './models/pin-filters';
+import { PinFilters, Season } from './models/pin-filters';
 import { PointOfInterest } from './models/point-of-interest';
 import { SerializedPointOfInterest } from './models/serialized-point-of-interest';
 import { Trail } from './models/trail';
@@ -64,21 +64,20 @@ export class AppComponent implements OnInit {
 
   public photosphere?: SafeResourceUrl;
   public displayFilters = false;
-  public filtersForm: UntypedFormGroup;
-  public pointOfInterestCountByPinType: Record<string, number>;
+  public filtersForm = new FormGroup({
+    season: new FormControl<Season>('none', {nonNullable: true}),
+    isIndoor: new FormControl(false, {nonNullable: true}),
+    isLandscape: new FormControl(false, {nonNullable: true}),
+    isActivity: new FormControl(false, {nonNullable: true}),
+    hasTrail: new FormControl(false, {nonNullable: true}),
+    hasNoTrail: new FormControl(false, {nonNullable: true}),
+    hasPhotosphere: new FormControl(false, {nonNullable: true}),
+    categories: new FormGroup(AppComponent.getPinTypeControls()),
+  });
+  public pointOfInterestCountByPinType = AppComponent.getPointOfInterestCountByPinType();
   public pins = PINS;
   public mapLoaded = false;
 
-  private filtersFormControls = {
-    season: new UntypedFormControl('none'),
-    isIndoor: new UntypedFormControl(false),
-    isLandscape: new UntypedFormControl(false),
-    isActivity: new UntypedFormControl(false),
-    hasTrail: new UntypedFormControl(false),
-    hasNoTrail: new UntypedFormControl(false),
-    hasPhotosphere: new UntypedFormControl(false),
-    categories: new UntypedFormGroup({}),
-  };
   private map!: google.maps.Map;
   private pointsOfInterest: Map<string, PointOfInterest> = new Map();
   private contentTemplate = document.createElement('template');
@@ -91,7 +90,7 @@ export class AppComponent implements OnInit {
   private readonly paramsChanged = new Subject<void>();
 
   constructor(private readonly route: ActivatedRoute, private readonly sanitizer: DomSanitizer) {
-    this.filtersForm = new UntypedFormGroup(this.filtersFormControls);
+    this.filtersForm = new FormGroup(this.filtersForm.controls);
     this.contentTemplate.innerHTML = `
       <div class="content">
         <a class="permalink">
@@ -120,10 +119,19 @@ export class AppComponent implements OnInit {
           <button class="select-photosphere" type="button">Voir</button>
         </h3>
       </li>`;
-    this.pointOfInterestCountByPinType = Object.fromEntries(Object.keys(PINS).map((pinType) => [pinType, 0]));
-    Object.keys(PINS).forEach((pinType) => {
-      (this.filtersFormControls.categories as UntypedFormGroup).addControl(pinType, new UntypedFormControl(true));
-    });
+  }
+
+  private static getPointOfInterestCountByPinType(): Record<PinType, number> {
+    const iterablePointOfInterestCountByPinType = PIN_TYPES.map((pinType) => [pinType, 0] as const);
+    return Object.fromEntries(iterablePointOfInterestCountByPinType) as Record<PinType, number>;
+  }
+
+  private static getPinTypeControls(): Record<PinType, FormControl<boolean>> {
+    const iterablePinTypeControls = PIN_TYPES.map((pinType) => [
+      pinType,
+      new FormControl(true, {nonNullable: true}),
+    ] as const);
+    return Object.fromEntries(iterablePinTypeControls) as Record<PinType, FormControl<boolean>>;
   }
 
   public ngOnInit(): void {
@@ -153,7 +161,7 @@ export class AppComponent implements OnInit {
     // }, 1000);
   }
 
-  public comparePin(pinA: KeyValue<string, Pin>, pinB: KeyValue<string, Pin>): number {
+  public comparePin(pinA: KeyValue<PinType, Pin>, pinB: KeyValue<PinType, Pin>): number {
     return pinA.value.label.localeCompare(pinB.value.label);
   }
 
@@ -174,11 +182,11 @@ export class AppComponent implements OnInit {
   }
 
   public checkAllCategories(check: boolean): void {
-    const categories = this.filtersFormControls.categories.value as Record<string, boolean>;
+    const categories = this.filtersForm.controls.categories.value as Record<PinType, boolean>;
     Object.keys(categories).forEach((pinType) => {
-      categories[pinType] = check;
+      categories[pinType as PinType] = check;
     });
-    this.filtersFormControls.categories.setValue(categories);
+    this.filtersForm.controls.categories.setValue(categories);
   }
 
   public keyPressForm(event: KeyboardEvent): void {
@@ -257,48 +265,48 @@ export class AppComponent implements OnInit {
   private initFormControls(): void {
     this.filtersForm.valueChanges.subscribe((filters: PinFilters) => {
       if (filters.isActivity || filters.isIndoor) {
-        if (this.filtersFormControls.isLandscape.enabled) {
-          this.filtersFormControls.isLandscape.disable();
+        if (this.filtersForm.controls.isLandscape.enabled) {
+          this.filtersForm.controls.isLandscape.disable();
         }
       }
-      else if (this.filtersFormControls.isLandscape.disabled) {
-        this.filtersFormControls.isLandscape.enable();
+      else if (this.filtersForm.controls.isLandscape.disabled) {
+        this.filtersForm.controls.isLandscape.enable();
       }
 
       if (filters.isLandscape) {
-        if (this.filtersFormControls.isActivity.enabled) {
-          this.filtersFormControls.isActivity.disable();
+        if (this.filtersForm.controls.isActivity.enabled) {
+          this.filtersForm.controls.isActivity.disable();
         }
       }
-      else if (this.filtersFormControls.isActivity.disabled) {
-        this.filtersFormControls.isActivity.enable();
+      else if (this.filtersForm.controls.isActivity.disabled) {
+        this.filtersForm.controls.isActivity.enable();
       }
 
       if (filters.isLandscape || filters.hasTrail) {
-        if (this.filtersFormControls.isIndoor.enabled) {
-          this.filtersFormControls.isIndoor.disable();
+        if (this.filtersForm.controls.isIndoor.enabled) {
+          this.filtersForm.controls.isIndoor.disable();
         }
       }
-      else if (this.filtersFormControls.isIndoor.disabled) {
-        this.filtersFormControls.isIndoor.enable();
+      else if (this.filtersForm.controls.isIndoor.disabled) {
+        this.filtersForm.controls.isIndoor.enable();
       }
 
       if (filters.isIndoor || filters.hasNoTrail) {
-        if (this.filtersFormControls.hasTrail.enabled) {
-          this.filtersFormControls.hasTrail.disable();
+        if (this.filtersForm.controls.hasTrail.enabled) {
+          this.filtersForm.controls.hasTrail.disable();
         }
       }
-      else if (this.filtersFormControls.hasTrail.disabled) {
-        this.filtersFormControls.hasTrail.enable();
+      else if (this.filtersForm.controls.hasTrail.disabled) {
+        this.filtersForm.controls.hasTrail.enable();
       }
 
       if (filters.hasTrail) {
-        if (this.filtersFormControls.hasNoTrail.enabled) {
-          this.filtersFormControls.hasNoTrail.disable();
+        if (this.filtersForm.controls.hasNoTrail.enabled) {
+          this.filtersForm.controls.hasNoTrail.disable();
         }
       }
-      else if (this.filtersFormControls.hasNoTrail.disabled) {
-        this.filtersFormControls.hasNoTrail.enable();
+      else if (this.filtersForm.controls.hasNoTrail.disabled) {
+        this.filtersForm.controls.hasNoTrail.enable();
       }
 
       this.pointsOfInterest.forEach((poi) => {
@@ -564,6 +572,9 @@ export class AppComponent implements OnInit {
   }
 
   private isPoiMatchingFilters(poi: PointOfInterest, filters: PinFilters): boolean {
+    if (!filters.categories) {
+      return false;
+    }
     if (!filters.categories[poi.type]) {
       return false;
     }
