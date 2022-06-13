@@ -442,16 +442,16 @@ export class AppComponent implements OnInit {
     poi.infoWindow.close();
     if (poi.trails) {
       poi.trails.forEach((trail) => {
-        poi.content.querySelectorAll('.select-trail').forEach((_selectTrailElement) => {
-          _selectTrailElement.removeAttribute('disabled');
-          _selectTrailElement.textContent = 'Voir';
+        poi.content.querySelectorAll('.select-trail').forEach((selectTrailElement) => {
+          selectTrailElement.removeAttribute('disabled');
+          selectTrailElement.textContent = 'Voir';
         });
         this.hideTrail(trail);
       });
-      const selectTrailElement = poi.content.querySelector('.select-trail');
-      if (selectTrailElement) {
-        selectTrailElement.setAttribute('disabled', 'true');
-        selectTrailElement.innerHTML = '<span class="material-icons" aria-hidden="true">check_box</span>';
+      const firstSelectTrailElement = poi.content.querySelector('.select-trail');
+      if (firstSelectTrailElement) {
+        firstSelectTrailElement.setAttribute('disabled', 'true');
+        firstSelectTrailElement.innerHTML = '<span class="material-icons" aria-hidden="true">check_box</span>';
       }
     }
   }
@@ -490,8 +490,7 @@ export class AppComponent implements OnInit {
     if (trails) {
       const trailsTemplate = this.trailsTemplate.content.cloneNode(true) as DocumentFragment;
       const trailsElement = trailsTemplate.querySelector('.trails') as HTMLElement;
-      trails.forEach((trailPromise) => {
-        const trail = trailPromise;
+      trails.forEach((trail) => {
         const trailTemplate = this.trailTemplate.content.cloneNode(true) as DocumentFragment;
         const trailElement = trailTemplate.querySelector('.trail') as HTMLElement;
         const startingPointElement = trailElement.querySelector('.starting-point') as HTMLElement;
@@ -502,12 +501,12 @@ export class AppComponent implements OnInit {
         }
         else {
           selectTrailElement.addEventListener('click', () => {
-            trails.forEach((_trail) => {
-              trailsElement.querySelectorAll('.select-trail').forEach((_selectTrailElement) => {
-                _selectTrailElement.removeAttribute('disabled');
-                _selectTrailElement.textContent = 'Voir';
+            trails.forEach((otherTrail) => {
+              trailsElement.querySelectorAll('.select-trail').forEach((otherSelectTrailElement) => {
+                otherSelectTrailElement.removeAttribute('disabled');
+                otherSelectTrailElement.textContent = 'Voir';
               });
-              this.hideTrail(_trail);
+              this.hideTrail(otherTrail);
             });
             selectTrailElement.setAttribute('disabled', 'true');
             selectTrailElement.innerHTML = '<span class="material-icons" aria-hidden="true">check_box</span>';

@@ -118,16 +118,16 @@
             "format": ["UPPER_CASE", "camelCase"]
           },
           {
-            "selector": "typeLike",
+            "selector": ["variableLike", "memberLike", "property", "method"],
+            "format": ["camelCase"]
+          },
+          {
+            "selector": ["typeLike", "enumMember"],
             "format": ["PascalCase"]
           },
           {
             "selector": "property",
             "modifiers": ["static"],
-            "format": ["PascalCase"]
-          },
-          {
-            "selector": "enumMember",
             "format": ["PascalCase"]
           }
         ],
