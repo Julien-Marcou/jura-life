@@ -1,6 +1,6 @@
 import { KeyValue } from '@angular/common';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { filter, Subject, take, takeUntil } from 'rxjs';
@@ -64,20 +64,20 @@ export class AppComponent implements OnInit {
 
   public photosphere?: SafeResourceUrl;
   public displayFilters = false;
-  public filtersForm: FormGroup;
+  public filtersForm: UntypedFormGroup;
   public pointOfInterestCountByPinType: Record<string, number>;
   public pins = PINS;
   public mapLoaded = false;
 
   private filtersFormControls = {
-    season: new FormControl('none'),
-    isIndoor: new FormControl(false),
-    isLandscape: new FormControl(false),
-    isActivity: new FormControl(false),
-    hasTrail: new FormControl(false),
-    hasNoTrail: new FormControl(false),
-    hasPhotosphere: new FormControl(false),
-    categories: new FormGroup({}),
+    season: new UntypedFormControl('none'),
+    isIndoor: new UntypedFormControl(false),
+    isLandscape: new UntypedFormControl(false),
+    isActivity: new UntypedFormControl(false),
+    hasTrail: new UntypedFormControl(false),
+    hasNoTrail: new UntypedFormControl(false),
+    hasPhotosphere: new UntypedFormControl(false),
+    categories: new UntypedFormGroup({}),
   };
   private map!: google.maps.Map;
   private pointsOfInterest: Map<string, PointOfInterest> = new Map();
@@ -91,7 +91,7 @@ export class AppComponent implements OnInit {
   private readonly paramsChanged = new Subject<void>();
 
   constructor(private readonly route: ActivatedRoute, private readonly sanitizer: DomSanitizer) {
-    this.filtersForm = new FormGroup(this.filtersFormControls);
+    this.filtersForm = new UntypedFormGroup(this.filtersFormControls);
     this.contentTemplate.innerHTML = `
       <div class="content">
         <a class="permalink">
@@ -122,7 +122,7 @@ export class AppComponent implements OnInit {
       </li>`;
     this.pointOfInterestCountByPinType = Object.fromEntries(Object.keys(PINS).map((pinType) => [pinType, 0]));
     Object.keys(PINS).forEach((pinType) => {
-      (this.filtersFormControls.categories as FormGroup).addControl(pinType, new FormControl(true));
+      (this.filtersFormControls.categories as UntypedFormGroup).addControl(pinType, new UntypedFormControl(true));
     });
   }
 
