@@ -7,10 +7,11 @@ import { filter, Subject, take, takeUntil } from 'rxjs';
 import { JURA_POINTS_OF_INTEREST } from './constants/jura-points-of-interest.constants';
 import { PinType } from './constants/pin-type.constants';
 import { PINS, PIN_TYPES } from './constants/pins.constants';
+import { Season } from './constants/season.constants';
 import { InfoWindow } from './map-overlays/info-window';
 import { Marker } from './map-overlays/marker';
 import { Pin } from './models/pin';
-import { PinFilters, Season } from './models/pin-filters';
+import { PinFilters } from './models/pin-filters';
 import { PointOfInterest } from './models/point-of-interest';
 import { SerializedPointOfInterest } from './models/serialized-point-of-interest';
 import { Trail } from './models/trail';
@@ -65,7 +66,7 @@ export class AppComponent implements OnInit {
   public photosphere?: SafeResourceUrl;
   public displayFilters = false;
   public filtersForm = new FormGroup({
-    season: new FormControl<Season>('none', {nonNullable: true}),
+    season: new FormControl(Season.None, {nonNullable: true}),
     isIndoor: new FormControl(false, {nonNullable: true}),
     isLandscape: new FormControl(false, {nonNullable: true}),
     isActivity: new FormControl(false, {nonNullable: true}),
@@ -75,6 +76,7 @@ export class AppComponent implements OnInit {
     categories: new FormGroup(AppComponent.getPinTypeControls()),
   });
   public pointOfInterestCountByPinType = AppComponent.getPointOfInterestCountByPinType();
+  public enumSeason = Season;
   public pins = PINS;
   public mapLoaded = false;
 
@@ -596,19 +598,19 @@ export class AppComponent implements OnInit {
     if (filters.isActivity && !poi.isActivity) {
       return false;
     }
-    if (filters.season === 'winter' && !poi.isWinterExclusive) {
+    if (filters.season === Season.Winter && !poi.isWinterExclusive) {
       return false;
     }
-    if (filters.season === 'not-winter' && poi.isWinterExclusive) {
+    if (filters.season === Season.NotWinter && poi.isWinterExclusive) {
       return false;
     }
-    if (filters.season === 'summer' && !poi.isSummerExclusive) {
+    if (filters.season === Season.Summer && !poi.isSummerExclusive) {
       return false;
     }
-    if (filters.season === 'not-summer' && poi.isSummerExclusive) {
+    if (filters.season === Season.NotSummer && poi.isSummerExclusive) {
       return false;
     }
-    if (filters.season === 'all-year' && (poi.isSummerExclusive || poi.isWinterExclusive)) {
+    if (filters.season === Season.AllYear && (poi.isSummerExclusive || poi.isWinterExclusive)) {
       return false;
     }
     return true;

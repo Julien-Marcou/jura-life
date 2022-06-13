@@ -1,9 +1,8 @@
 import { PinType } from '../constants/pin-type.constants';
-
-export type Season = 'none' | 'not-winter' | 'summer'| 'not-summer' | 'winter' | 'all-year';
+import { Season } from '../constants/season.constants';
 
 export type PinFilters = Partial<{
-  season: 'none' | 'winter' | 'not-winter' | 'summer' | 'not-summer' | 'all-year';
+  season: Season;
   isIndoor: boolean;
   isLandscape: boolean;
   isActivity: boolean;

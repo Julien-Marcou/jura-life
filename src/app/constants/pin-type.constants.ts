@@ -1,4 +1,4 @@
-export const enum PinType {
+export enum PinType {
   ViaFerrata = 'via-ferrata',
   ZipLine = 'zip-line',
   Beach = 'beach',
