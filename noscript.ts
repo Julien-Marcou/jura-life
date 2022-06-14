@@ -5,7 +5,6 @@ import { SerializedPointOfInterest } from './src/app/models/serialized-point-of-
 import { SerializedTrail } from './src/app/models/serialized-trail';
 import { TrailMetadataService } from './src/app/services/trail-metadata.service';
 import { TrailParserNodeJsService } from './src/app/services/trail-parser-nodejs.service';
-import { environment } from './src/environments/environment';
 
 const html = (strings: TemplateStringsArray, ...values: Array<unknown>): string => {
   let result = '';
@@ -69,7 +68,7 @@ const renderNoscriptContent = async (): Promise<string> => html`
   ${await Promise.all(Object.entries(JURA_POINTS_OF_INTEREST).map(([id, poi]) => renderPoiContent(id, poi)))}
 `;
 
-export default async (_: TargetOptions, indexHtml: string): Promise<string> => {
+export default async (targetOptions: TargetOptions, indexHtml: string): Promise<string> => {
   const noscriptContentTag = '{{NOSCRIPT_CONTENT}}';
   const noscriptContent = await renderNoscriptContent();
   return indexHtml.replace(noscriptContentTag, noscriptContent);
