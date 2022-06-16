@@ -32,7 +32,7 @@ const sitemapContent = xml`<?xml version="1.0" encoding="UTF-8"?>
 </urlset>`;
 
 const angularConfig = JSON.parse(readFileSync(`${__dirname}/angular.json`).toString());
-const outputPath = angularConfig.projects['jura-poi'].architect.build.options.outputPath;
+const outputPath = angularConfig.projects['jura-life'].architect.build.options.outputPath;
 const sitemapFile = `${__dirname}/${outputPath}/sitemap.xml`;
 
 writeFileSync(sitemapFile, sitemapContent);
