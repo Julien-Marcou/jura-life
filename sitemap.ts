@@ -17,7 +17,7 @@ const xml = (strings: TemplateStringsArray, ...values: Array<unknown>): string =
   return result;
 };
 
-const sitemapBaseUrl = 'https://jura.live/';
+const sitemapBaseUrl = 'https://jura.life/';
 
 const sitemapContent = xml`<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
