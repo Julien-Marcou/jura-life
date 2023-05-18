@@ -1,3 +1,6 @@
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type ZoneGlobalConfigurations = any;
+
 /* eslint-disable no-underscore-dangle */
 (window as ZoneGlobalConfigurations).__Zone_disable_customElements = true;
 (window as ZoneGlobalConfigurations).__Zone_disable_canvas = true;
