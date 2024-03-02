@@ -3,7 +3,9 @@
     Fermer
     <span class="material-icons" aria-hidden="true">close</span>
   </button>
-  <iframe class="iframe" *ngIf="photosphere" [src]="photosphere" allowfullscreen></iframe>
+  @if (photosphere) {
+    <iframe class="iframe" [src]="photosphere" allowfullscreen></iframe>
+  }
 </div>
 
 <form class="filters" [hidden]="!displayFilters || !!photosphere" [formGroup]="filtersForm" (keydown)="keyPressForm($event)">
@@ -84,12 +86,14 @@
         Tout décocher
         <span class="material-icons" aria-hidden="true">check_box_outline_blank</span>
       </button>
-      <label *ngFor="let pin of pins | keyvalue:comparePin">
-        <input type="checkbox" [formControlName]="pin.key">
-        <span class="icon" aria-hidden="true" [style.backgroundColor]="pin.value.fillColor" [style.color]="pin.value.textColor">{{ pin.value.icon }}</span>
-        <span class="label">{{ pin.value.label }}</span>
-        <span class="count">({{ pointOfInterestCountByPinType[pin.key] }})</span>
-      </label>
+      @for (pin of pins | keyvalue:comparePin; track pin.key) {
+        <label>
+          <input type="checkbox" [formControlName]="pin.key">
+          <span class="icon" aria-hidden="true" [style.backgroundColor]="pin.value.fillColor" [style.color]="pin.value.textColor">{{ pin.value.icon }}</span>
+          <span class="label">{{ pin.value.label }}</span>
+          <span class="count">({{ pointOfInterestCountByPinType[pin.key] }})</span>
+        </label>
+      }
     </div>
 
     <button class="close-filters-button" type="button" (click)="toggleFilters()" aria-label="Masquer les filtres des Points d'Intérêts">
@@ -102,8 +106,9 @@
 
 <div class="map-container" [hidden]="!!photosphere">
   <button class="toggle-filters-button" type="button" (click)="toggleFilters()" [attr.aria-label]="displayFilters ? 'Masquer les filtres des Points d\'Intérêts' : 'Afficher les filtres des Points d\'Intérêts'">
-    <span class="material-icons" aria-hidden="true" *ngIf="!displayFilters; else closeFiltersTemplate">search</span>
-    <ng-template #closeFiltersTemplate><span class="material-icons" aria-hidden="true">chevron_left</span></ng-template>
+    <span class="material-icons" aria-hidden="true">
+      {{ displayFilters ? 'chevron_left' : 'search' }}
+    </span>
     Filtres
   </button>
   <div class="map" #mapElement [class.loading]="!mapLoaded"></div>
@@ -111,9 +116,11 @@
 
 <!-- TODO : use this to transform "svg pin + icon font" markers to simple "webp" markers -->
 <!-- <div class="pins source">
-  <div *ngFor="let pin of pins | keyvalue:comparePin" class="pin" [attr.data-name]="pin.key">
-    <img class="marker" src="/assets/pins/{{ pin.value.color }}.svg">
-    <span class="label" [style.font-size]="pin.value.fontSize" [style.color]="pin.value.textColor" [style.line-height]="pin.value.lineHeight">{{ pin.value.icon }}</span>
-  </div>
+  @for (pin of pins | keyvalue:comparePin; track pin.key) {
+    <div class="pin" [attr.data-name]="pin.key">
+      <img class="marker" src="/assets/pins/{{ pin.value.color }}.svg">
+      <span class="label" [style.font-size]="pin.value.fontSize" [style.color]="pin.value.textColor" [style.line-height]="pin.value.lineHeight">{{ pin.value.icon }}</span>
+    </div>
+  }
 </div>
 <div class="pins target"></div> -->
