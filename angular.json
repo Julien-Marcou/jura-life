@@ -38,11 +38,11 @@
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular-builders/custom-webpack:browser",
+          "builder": "@angular-builders/custom-esbuild:application",
           "options": {
             "outputPath": "dist/jura-life",
             "index": "src/index.html",
-            "main": "src/main.ts",
+            "browser": "src/main.ts",
             "polyfills": [
               "src/zone-flags.ts",
               "zone.js"
@@ -58,7 +58,7 @@
               "src/styles.scss"
             ],
             "scripts": [],
-            "indexTransform": "noscript.ts"
+            "indexHtmlTransformer": "noscript.ts"
           },
           "configurations": {
             "production": {
@@ -77,9 +77,7 @@
               "outputHashing": "all"
             },
             "development": {
-              "buildOptimizer": false,
               "optimization": false,
-              "vendorChunk": true,
               "extractLicenses": false,
               "sourceMap": true,
               "namedChunks": true
@@ -88,21 +86,21 @@
           "defaultConfiguration": "production"
         },
         "serve": {
-          "builder": "@angular-builders/custom-webpack:dev-server",
+          "builder": "@angular-builders/custom-esbuild:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "jura-life:build:production"
+              "buildTarget": "jura-life:build:production"
             },
             "development": {
-              "browserTarget": "jura-life:build:development"
+              "buildTarget": "jura-life:build:development"
             }
           },
           "defaultConfiguration": "development"
         },
         "extract-i18n": {
-          "builder": "@angular-builders/custom-webpack:extract-i18n",
+          "builder": "@angular-builders/custom-esbuild:extract-i18n",
           "options": {
-            "browserTarget": "jura-life:build"
+            "buildTarget": "jura-life:build"
           }
         },
         "lint": {

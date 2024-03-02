@@ -1,4 +1,3 @@
-import { TargetOptions } from '@angular-builders/custom-webpack';
 import { JURA_POINTS_OF_INTEREST } from './src/app/constants/jura-points-of-interest.constants';
 import { PINS } from './src/app/constants/pins.constants';
 import { SerializedPointOfInterest } from './src/app/models/serialized-point-of-interest';
@@ -68,7 +67,7 @@ const renderNoscriptContent = async (): Promise<string> => html`
   ${await Promise.all(Object.entries(JURA_POINTS_OF_INTEREST).map(([id, poi]) => renderPoiContent(id, poi)))}
 `;
 
-export default async (targetOptions: TargetOptions, indexHtml: string): Promise<string> => {
+export default async (indexHtml: string): Promise<string> => {
   const noscriptContentTag = '{{NOSCRIPT_CONTENT}}';
   const noscriptContent = await renderNoscriptContent();
   return indexHtml.replace(noscriptContentTag, noscriptContent);
