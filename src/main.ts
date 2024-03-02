@@ -1,7 +1,8 @@
-import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
-import { AppModule } from './app/app.module';
+import { bootstrapApplication } from '@angular/platform-browser';
 
 import 'scrollable-component';
 
-platformBrowserDynamic().bootstrapModule(AppModule)
-  .catch((err) => console.error(err));
+import { AppComponent } from './app/app.component';
+import { APP_CONFIG } from './app/app.config';
+
+bootstrapApplication(AppComponent, APP_CONFIG).catch((err) => console.error(err));

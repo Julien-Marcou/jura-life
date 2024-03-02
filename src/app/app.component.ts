@@ -1,6 +1,6 @@
-import { KeyValue } from '@angular/common';
+import { KeyValue, NgIf, NgFor, KeyValuePipe } from '@angular/common';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { filter, Subject, take, takeUntil } from 'rxjs';
@@ -26,6 +26,14 @@ import { TrailPolylineService } from './services/trail-polyline.service';
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
+  standalone: true,
+  imports: [
+    NgIf,
+    FormsModule,
+    ReactiveFormsModule,
+    NgFor,
+    KeyValuePipe,
+  ],
 })
 export class AppComponent implements OnInit {
 
