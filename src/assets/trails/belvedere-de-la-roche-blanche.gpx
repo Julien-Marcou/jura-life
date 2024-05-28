@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.topografix.com/GPX/1/1" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd">
+  <metadata>
+    <time>2024-05-11T16:52:41+02:00</time>
+  </metadata>
+  <trk>
+    <name>Belvédère de le Roche Blanche</name>
+    <trkseg>
+      <trkpt lat="46.348851" lon="5.891516">
+        <ele>1132</ele>
+        <time>2024-05-11T14:52:41.000Z</time>
+      </trkpt>
+      <trkpt lat="46.34885" lon="5.891335">
+        <ele>1133</ele>
+        <time>2024-05-11T14:53:01.000Z</time>
+      </trkpt>
+      <trkpt lat="46.348986" lon="5.891258">
+        <ele>1135</ele>
+        <time>2024-05-11T14:53:21.000Z</time>
+      </trkpt>
+      <trkpt lat="46.349094" lon="5.891201">
+        <ele>1134</ele>
+        <time>2024-05-11T14:53:35.000Z</time>
+      </trkpt>
+      <trkpt lat="46.349205" lon="5.891116">
+        <ele>1133</ele>
+        <time>2024-05-11T14:53:50.000Z</time>
+      </trkpt>
+      <trkpt lat="46.349263" lon="5.890981">
+        <ele>1132</ele>
+        <time>2024-05-11T14:53:59.000Z</time>
+      </trkpt>
+      <trkpt lat="46.349352" lon="5.890855">
+        <ele>1131</ele>
+        <time>2024-05-11T14:54:09.000Z</time>
+      </trkpt>
+      <trkpt lat="46.349491" lon="5.890789">
+        <ele>1132</ele>
+        <time>2024-05-11T14:54:24.000Z</time>
+      </trkpt>
+      <trkpt lat="46.349602" lon="5.890797">
+        <ele>1132</ele>
+        <time>2024-05-11T14:54:33.000Z</time>
+      </trkpt>
+      <trkpt lat="46.349679" lon="5.8909">
+        <ele>1133</ele>
+        <time>2024-05-11T14:54:42.000Z</time>
+      </trkpt>
+      <trkpt lat="46.349749" lon="5.890997">
+        <ele>1133</ele>
+        <time>2024-05-11T14:54:52.000Z</time>
+      </trkpt>
+      <trkpt lat="46.349885" lon="5.891071">
+        <ele>1133</ele>
+        <time>2024-05-11T14:55:02.000Z</time>
+      </trkpt>
+      <trkpt lat="46.349997" lon="5.891132">
+        <ele>1133</ele>
+        <time>2024-05-11T14:55:12.000Z</time>
+      </trkpt>
+      <trkpt lat="46.350106" lon="5.891212">
+        <ele>1134</ele>
+        <time>2024-05-11T14:55:22.000Z</time>
+      </trkpt>
+      <trkpt lat="46.350223" lon="5.89127">
+        <ele>1135</ele>
+        <time>2024-05-11T14:55:36.000Z</time>
+      </trkpt>
+      <trkpt lat="46.35032" lon="5.891281">
+        <ele>1135</ele>
+        <time>2024-05-11T14:55:45.000Z</time>
+      </trkpt>
+      <trkpt lat="46.350423" lon="5.891334">
+        <ele>1137</ele>
+        <time>2024-05-11T14:55:55.000Z</time>
+      </trkpt>
+      <trkpt lat="46.350531" lon="5.891402">
+        <ele>1138</ele>
+        <time>2024-05-11T14:56:04.000Z</time>
+      </trkpt>
+      <trkpt lat="46.350634" lon="5.891481">
+        <ele>1138</ele>
+        <time>2024-05-11T14:56:14.000Z</time>
+      </trkpt>
+      <trkpt lat="46.350727" lon="5.89146">
+        <ele>1138</ele>
+        <time>2024-05-11T14:56:24.000Z</time>
+      </trkpt>
+      <trkpt lat="46.350835" lon="5.89149">
+        <ele>1138</ele>
+        <time>2024-05-11T14:56:33.000Z</time>
+      </trkpt>
+      <trkpt lat="46.350946" lon="5.891536">
+        <ele>1139</ele>
+        <time>2024-05-11T14:56:43.000Z</time>
+      </trkpt>
+      <trkpt lat="46.351057" lon="5.891581">
+        <ele>1140</ele>
+        <time>2024-05-11T14:56:53.000Z</time>
+      </trkpt>
+      <trkpt lat="46.351172" lon="5.891618">
+        <ele>1140</ele>
+        <time>2024-05-11T14:57:03.000Z</time>
+      </trkpt>
+      <trkpt lat="46.351264" lon="5.89172">
+        <ele>1140</ele>
+        <time>2024-05-11T14:57:12.000Z</time>
+      </trkpt>
+    </trkseg>
+  </trk>
+</gpx>

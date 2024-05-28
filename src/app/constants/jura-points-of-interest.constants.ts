@@ -241,7 +241,7 @@ export const JURA_POINTS_OF_INTEREST: Record<string, SerializedPointOfInterest> 
       {
         startingPoint: 'Depuis le parking du Belvédère des Bourlaches',
         gpxFile: 'belvedere-des-bourlaches.gpx',
-        duration: '15min',
+        duration: '20min',
       },
     ],
     isWinterExclusive: false,
@@ -279,12 +279,12 @@ export const JURA_POINTS_OF_INTEREST: Record<string, SerializedPointOfInterest> 
       {
         startingPoint: 'Depuis Longchaumois',
         gpxFile: 'pont-de-longchaumois.gpx',
-        duration: '1h30',
+        duration: '1h40',
       },
       {
         startingPoint: 'Depuis la Cascade de Pissevieille',
         gpxFile: 'cascade-de-pissevieille-depuis-pont-longchaumois.gpx',
-        duration: '1h',
+        duration: '1h05',
         inverted: true,
       },
     ],
@@ -635,6 +635,13 @@ export const JURA_POINTS_OF_INTEREST: Record<string, SerializedPointOfInterest> 
     isLandscape: true,
     isActivity: false,
     isAccessibleWithoutWalkingMuch: false,
+    trails: [
+      {
+        startingPoint: 'Depuis le parking des Dappes',
+        gpxFile: 'sommet-de-la-dole.gpx',
+        duration: '3h',
+      },
+    ],
   },
   'ruisseau-abime': {
     name: 'Ruisseau de l\'Abîme',
@@ -669,14 +676,14 @@ export const JURA_POINTS_OF_INTEREST: Record<string, SerializedPointOfInterest> 
     type: PinType.Waterfall,
     trails: [
       {
-        startingPoint: 'Part la Ferme de Diesles',
+        startingPoint: 'Par la Ferme de Diesles',
         gpxFile: 'cascade-de-la-vouivre-par-diesles.gpx',
-        duration: '20min',
+        duration: '25min',
       },
       {
-        startingPoint: 'Part le Pont des Cheneviers',
+        startingPoint: 'Par le Pont des Cheneviers',
         gpxFile: 'cascade-de-la-vouivre-par-cheneviers.gpx',
-        duration: '30min',
+        duration: '35min',
       },
       {
         startingPoint: 'Depuis la Cascade sous la Vouivre',
@@ -699,23 +706,24 @@ export const JURA_POINTS_OF_INTEREST: Record<string, SerializedPointOfInterest> 
     latitude: 46.41384685317267,
     longitude: 5.871360348576231,
     type: PinType.Waterfall,
+    description: 'L\'accès à cette cascade peut être périeux',
     trails: [
       {
-        startingPoint: 'Part la Ferme de Diesles',
+        startingPoint: 'Par la Ferme de Diesles',
         gpxFile: 'cascade-sous-la-vouivre-par-diesles.gpx',
-        duration: '30min',
+        duration: '35min',
         inverted: true,
       },
       {
-        startingPoint: 'Part le Pont des Cheneviers',
+        startingPoint: 'Par le Pont des Cheneviers',
         gpxFile: 'cascade-sous-la-vouivre-par-cheneviers.gpx',
-        duration: '20min',
+        duration: '25min',
         inverted: true,
       },
       {
         startingPoint: 'Depuis la Cascade de la Vouivre',
         gpxFile: 'cascades-de-la-vouivre-liaison.gpx',
-        duration: '20min',
+        duration: '25min',
       },
     ],
     photospheres: [
@@ -772,7 +780,7 @@ export const JURA_POINTS_OF_INTEREST: Record<string, SerializedPointOfInterest> 
       {
         startingPoint: 'Depuis le départ du Sentier de Découverte de la Bienne',
         gpxFile: 'trou-bleu.gpx',
-        duration: '20min',
+        duration: '25min',
         inverted: true,
       },
     ],
@@ -963,7 +971,7 @@ export const JURA_POINTS_OF_INTEREST: Record<string, SerializedPointOfInterest> 
       {
         startingPoint: 'Depuis l\'Usine Électrique',
         gpxFile: 'cascades-du-flumen.gpx',
-        duration: '25min',
+        duration: '30min',
       },
     ],
     photospheres: [
@@ -984,12 +992,34 @@ export const JURA_POINTS_OF_INTEREST: Record<string, SerializedPointOfInterest> 
       {
         startingPoint: 'Depuis le parking de la Cascade de la Queue de Cheval',
         gpxFile: 'cascade-de-la-pony-tail.gpx',
-        duration: '25min',
+        duration: '30min',
       },
     ],
     photospheres: [
       '!4v1620937980646!6m8!1m7!1sCAoSLEFGMVFpcE9ndkNlT3ZpNld5X1lkY2E0LUpBRy1wUkpYSHJSRS16dHljQS13!2m2!1d46.3899992!2d5.895200399999999!3f9.000228173644782!4f15.4272117850077!5f0.7820865974627469',
       '!4v1709401334035!6m8!1m7!1sCAoSLEFGMVFpcE0wRHNkT2pUbEVCLXg1SnNQaFZ0Qnd4Q05vWHhjSWoydVZucm1K!2m2!1d46.390038!2d5.895334399999999!3f20!4f10!5f0.7820865974627469',
+    ],
+    isWinterExclusive: false,
+    isSummerExclusive: false,
+    isIndoor: false,
+    isLandscape: true,
+    isActivity: false,
+  },
+  'cascade-ane': {
+    name: 'Cascade de la Queue de l\'Âne',
+    latitude: 46.38237361111069,
+    longitude: 5.887918585144587,
+    type: PinType.Waterfall,
+    trails: [
+      {
+        startingPoint: 'Depuis le parking',
+        gpxFile: 'cascade-de-la-donkey-tail.gpx',
+        duration: '30min',
+        inverted: true,
+      },
+    ],
+    photospheres: [
+      '!4v1716719946212!6m8!1m7!1sCAoSLEFGMVFpcE9QS2ZXekxWc1o2eDhBR1ZoX0JsV3l5Y2V5NktTam1ZMWtlTWRE!2m2!1d46.382064!2d5.887531!3f113.44900078755111!4f22.501078331939596!5f0.7820865974627469',
     ],
     isWinterExclusive: false,
     isSummerExclusive: false,
@@ -1336,12 +1366,12 @@ export const JURA_POINTS_OF_INTEREST: Record<string, SerializedPointOfInterest> 
       {
         startingPoint: 'Depuis le Pont de Longchaumois',
         gpxFile: 'cascade-de-pissevieille-depuis-pont-longchaumois.gpx',
-        duration: '1h',
+        duration: '1h05',
       },
       {
         startingPoint: 'Depuis Longchaumois',
         gpxFile: 'cascade-de-pissevieille-depuis-longchaumois.gpx',
-        duration: '1h50',
+        duration: '1h55',
       },
     ],
     isAccessibleWithoutWalkingMuch: true,
@@ -1461,12 +1491,12 @@ export const JURA_POINTS_OF_INTEREST: Record<string, SerializedPointOfInterest> 
       {
         startingPoint: 'Vers le haut',
         gpxFile: 'cascades-du-herisson-milieu-vers-haut.gpx',
-        duration: '30min',
+        duration: '35min',
       },
       {
         startingPoint: 'Vers le bas',
         gpxFile: 'cascades-du-herisson-milieu-vers-bas.gpx',
-        duration: '1h45',
+        duration: '1h40',
       },
     ],
   },
@@ -1550,6 +1580,13 @@ export const JURA_POINTS_OF_INTEREST: Record<string, SerializedPointOfInterest> 
     isActivity: false,
     photospheres: [
       '!4v1622492203157!6m8!1m7!1sCAoSLEFGMVFpcFA4SE5jSDFERy1jN1FmLXdOMnMySjVqc09FdEYySW8xVW9yU0py!2m2!1d46.3512671!2d5.891681!3f21.86196147532636!4f-3.1357749732489992!5f0.7820865974627469',
+    ],
+    trails: [
+      {
+        startingPoint: 'Depuis le parking',
+        gpxFile: 'belvedere-de-la-roche-blanche.gpx',
+        duration: '8min',
+      },
     ],
   },
   'centre-equestre-tinguely': {
@@ -1636,5 +1673,62 @@ export const JURA_POINTS_OF_INTEREST: Record<string, SerializedPointOfInterest> 
     isIndoor: false,
     isLandscape: false,
     isActivity: true,
+  },
+  'belvedere-duchet': {
+    name: 'Belvédère du Duchet',
+    latitude: 46.50774901739986,
+    longitude: 5.848777643102814,
+    type: PinType.ScenicViewpoint,
+    isWinterExclusive: false,
+    isSummerExclusive: false,
+    isIndoor: false,
+    isLandscape: true,
+    isActivity: false,
+    trails: [
+      {
+        startingPoint: 'Depuis le parking',
+        gpxFile: 'belvedere-du-duchet.gpx',
+        duration: '35min',
+      },
+    ],
+  },
+  'belvedere-fort': {
+    name: 'Belvédère "sur le fort"',
+    latitude: 46.52168976581755,
+    longitude: 5.861885729314611,
+    type: PinType.ScenicViewpoint,
+    isWinterExclusive: false,
+    isSummerExclusive: false,
+    isIndoor: false,
+    isLandscape: true,
+    isActivity: false,
+    photospheres: [
+      '!4v1716719418883!6m8!1m7!1sCAoSLEFGMVFpcE91TmZ1UnZ6SnVsLS1iLUV4RTRidm1yU1ZiTHdkLXE0c19kdjVK!2m2!1d46.5216471!2d5.8617697!3f259.4601898224039!4f-4.044871945058986!5f0.5881200520803356',
+    ],
+    trails: [
+      {
+        startingPoint: 'Depuis le parking',
+        gpxFile: 'belvedere-sur-le-fort.gpx',
+        duration: '45min',
+      },
+    ],
+  },
+  'sentier-tourbiere': {
+    name: 'Le Sentier de la Tourbière',
+    latitude: 46.51300523219718,
+    longitude: 5.848796368057444,
+    type: PinType.HikingTrail,
+    isWinterExclusive: false,
+    isSummerExclusive: false,
+    isIndoor: false,
+    isLandscape: false,
+    isActivity: true,
+    trails: [
+      {
+        startingPoint: 'Depuis le parking',
+        gpxFile: 'sentier-de-la-tourbiere.gpx',
+        duration: '1h30',
+      },
+    ],
   },
 };
