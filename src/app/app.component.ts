@@ -343,7 +343,7 @@ export class AppComponent implements OnInit {
 
   private async addPointOfInterest(id: string, serializedPoi: SerializedPointOfInterest): Promise<void> {
     let trails: Array<Trail> | undefined;
-    if (serializedPoi.trails) {
+    if (serializedPoi.trails?.length) {
       trails = await Promise.all(serializedPoi.trails.map(async (serializedTrail): Promise<Trail> => {
         const parsedTrail = await TrailParserBrowserService.parseTrail(serializedTrail);
         const trailMetadata = TrailMetadataService.getTrailMetadata(parsedTrail);

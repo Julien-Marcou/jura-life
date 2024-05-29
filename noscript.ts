@@ -53,7 +53,7 @@ const renderPoiContent = async (id: string, poi: SerializedPointOfInterest): Pro
       Latitude : ${poi.latitude}<br>
       Longitude : ${poi.longitude}
     </p>
-    ${poi.trails ? html`
+    ${poi.trails?.length ? html`
       <h3>Accès</h3>
       <ul>
         ${await Promise.all(poi.trails.map((serializedTrail) => renderTrailContent(serializedTrail)))}
