@@ -5,7 +5,7 @@ import { ParsedTrail, SerializedTrail } from '../models/serialized-trail';
 export class TrailParserNodeJsService {
 
   public static async parseTrail(serializedTrail: SerializedTrail): Promise<ParsedTrail> {
-    const gpxString = readFileSync(`${__dirname}/../../assets/trails/${serializedTrail.gpxFile}`).toString();
+    const gpxString = readFileSync(`${__dirname}/../../../public/trails/${serializedTrail.gpxFile}`).toString();
     const gpxDocument = new jsdom.JSDOM(gpxString, { contentType: 'text/xml' }).window.document;
     const trackPoints = gpxDocument.getElementsByTagName('trkpt');
 

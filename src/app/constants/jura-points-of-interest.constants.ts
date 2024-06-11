@@ -308,7 +308,7 @@ export const JURA_POINTS_OF_INTEREST: Record<string, SerializedPointOfInterest> 
     type: PinType.SkiStation,
     description: `Porte des Dappes<br>
 <br>
-<a href="/assets/ski-maps/massif-dole-tuffes.png" target="_blank">Plan des pistes<span class="material-icons" aria-hidden="true">open_in_new</span></a><br>
+<a href="/img/ski-maps/massif-dole-tuffes.png" target="_blank">Plan des pistes<span class="material-icons" aria-hidden="true">open_in_new</span></a><br>
 <a href="https://www.jurasurleman.com/domaine-skiable/doles-tuffes/" target="_blank">jurasurleman.com<span class="material-icons" aria-hidden="true">open_in_new</span></a>`,
     isWinterExclusive: true,
     isSummerExclusive: false,
@@ -323,7 +323,7 @@ export const JURA_POINTS_OF_INTEREST: Record<string, SerializedPointOfInterest> 
     type: PinType.SkiStation,
     description: `Porte des Jouvencelles<br>
 <br>
-<a href="/assets/ski-maps/massif-dole-tuffes.png" target="_blank">Plan des pistes<span class="material-icons" aria-hidden="true">open_in_new</span></a><br>
+<a href="/img/ski-maps/massif-dole-tuffes.png" target="_blank">Plan des pistes<span class="material-icons" aria-hidden="true">open_in_new</span></a><br>
 <a href="https://www.jurasurleman.com/domaine-skiable/doles-tuffes/" target="_blank">jurasurleman.com<span class="material-icons" aria-hidden="true">open_in_new</span></a>`,
     isWinterExclusive: true,
     isSummerExclusive: false,
@@ -338,7 +338,7 @@ export const JURA_POINTS_OF_INTEREST: Record<string, SerializedPointOfInterest> 
     type: PinType.SkiStation,
     description: `Porte du Balancier<br>
 <br>
-<a href="/assets/ski-maps/massif-dole-tuffes.png" target="_blank">Plan des pistes<span class="material-icons" aria-hidden="true">open_in_new</span></a><br>
+<a href="/img/ski-maps/massif-dole-tuffes.png" target="_blank">Plan des pistes<span class="material-icons" aria-hidden="true">open_in_new</span></a><br>
 <a href="https://www.jurasurleman.com/domaine-skiable/doles-tuffes/" target="_blank">jurasurleman.com<span class="material-icons" aria-hidden="true">open_in_new</span></a>`,
     isWinterExclusive: true,
     isSummerExclusive: false,
@@ -351,7 +351,7 @@ export const JURA_POINTS_OF_INTEREST: Record<string, SerializedPointOfInterest> 
     latitude: 46.412159518052306,
     longitude: 5.996286839619209,
     type: PinType.SkiStation,
-    description: `<a href="/assets/ski-maps/massif-serra.png" target="_blank">Plan des pistes<span class="material-icons" aria-hidden="true">open_in_new</span></a><br>
+    description: `<a href="/img/ski-maps/massif-serra.png" target="_blank">Plan des pistes<span class="material-icons" aria-hidden="true">open_in_new</span></a><br>
 <a href="https://www.jurasurleman.com/domaine-skiable/serra/" target="_blank">jurasurleman.com<span class="material-icons" aria-hidden="true">open_in_new</span></a>`,
     isWinterExclusive: true,
     isSummerExclusive: false,
@@ -364,7 +364,7 @@ export const JURA_POINTS_OF_INTEREST: Record<string, SerializedPointOfInterest> 
     latitude: 46.49171599839911,
     longitude: 6.0948314489874145,
     type: PinType.SkiStation,
-    description: `<a href="/assets/ski-maps/massif-noirmont.png" target="_blank">Plan des pistes<span class="material-icons" aria-hidden="true">open_in_new</span></a><br>
+    description: `<a href="/img/ski-maps/massif-noirmont.png" target="_blank">Plan des pistes<span class="material-icons" aria-hidden="true">open_in_new</span></a><br>
 <a href="https://www.jurasurleman.com/domaine-skiable/massif-du-noirmont/" target="_blank">jurasurleman.com<span class="material-icons" aria-hidden="true">open_in_new</span></a>`,
     isWinterExclusive: true,
     isSummerExclusive: false,
@@ -377,7 +377,7 @@ export const JURA_POINTS_OF_INTEREST: Record<string, SerializedPointOfInterest> 
     latitude: 46.304188196750474,
     longitude: 5.943850757481148,
     type: PinType.SkiStation,
-    description: `<a href="/assets/ski-maps/massif-lelex.jpg" target="_blank">Plan des pistes<span class="material-icons" aria-hidden="true">open_in_new</span></a><br>
+    description: `<a href="/img/ski-maps/massif-lelex.jpg" target="_blank">Plan des pistes<span class="material-icons" aria-hidden="true">open_in_new</span></a><br>
 <a href="https://www.paysdegex-montsjura.com/domaine-ski-vtt/domaine-de-ski-alpin-de-lelex-crozet/" target="_blank">paysdegex-montsjura.com<span class="material-icons" aria-hidden="true">open_in_new</span></a>`,
     isWinterExclusive: true,
     isSummerExclusive: false,
@@ -461,7 +461,7 @@ export const JURA_POINTS_OF_INTEREST: Record<string, SerializedPointOfInterest> 
     latitude: 46.44571129341734,
     longitude: 5.910999011397395,
     type: PinType.BikePark,
-    description: `<a href="/assets/bikepark-maps/bikepark-longchaumois.png" target="_blank">Plan du bikepark<span class="material-icons" aria-hidden="true">open_in_new</span></a><br>
+    description: `<a href="/img/bikepark-maps/bikepark-longchaumois.png" target="_blank">Plan du bikepark<span class="material-icons" aria-hidden="true">open_in_new</span></a><br>
 <a href="https://longchaumois.fr/tourisme/loisirs-ete/bike-park/" target="_blank">longchaumois.fr<span class="material-icons" aria-hidden="true">open_in_new</span></a>`,
     isWinterExclusive: false,
     isSummerExclusive: true,
@@ -485,7 +485,7 @@ export const JURA_POINTS_OF_INTEREST: Record<string, SerializedPointOfInterest> 
     latitude: 46.36730613762583,
     longitude: 6.015880142730694,
     type: PinType.SkiStation,
-    description: `<a href="/assets/ski-maps/massif-faucille.jpg" target="_blank">Plan des pistes<span class="material-icons" aria-hidden="true">open_in_new</span></a><br>
+    description: `<a href="/img/ski-maps/massif-faucille.jpg" target="_blank">Plan des pistes<span class="material-icons" aria-hidden="true">open_in_new</span></a><br>
 <a href="https://www.paysdegex-montsjura.com/domaine-ski-vtt/domaine-de-ski-alpin-de-mijoux-la-faucille/" target="_blank">paysdegex-montsjura.com<span class="material-icons" aria-hidden="true">open_in_new</span></a>`,
     isWinterExclusive: true,
     isSummerExclusive: false,

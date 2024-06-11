@@ -3,7 +3,7 @@ import { ParsedTrail, SerializedTrail } from '../models/serialized-trail';
 export class TrailParserBrowserService {
 
   public static async parseTrail(serializedTrail: SerializedTrail): Promise<ParsedTrail> {
-    const gpxString = await (await fetch(`/assets/trails/${serializedTrail.gpxFile}`)).text();
+    const gpxString = await (await fetch(`/trails/${serializedTrail.gpxFile}`)).text();
     const gpxDocument = new DOMParser().parseFromString(gpxString, 'text/xml');
     const trackPoints = gpxDocument.getElementsByTagName('trkpt');
 

@@ -50,9 +50,10 @@
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
-              "src/.htaccess",
-              "src/favicon.png",
-              "src/assets"
+              {
+                "glob": "**/*",
+                "input": "public"
+              }
             ],
             "styles": [
               "src/styles.scss"
@@ -79,8 +80,7 @@
             "development": {
               "optimization": false,
               "extractLicenses": false,
-              "sourceMap": true,
-              "namedChunks": true
+              "sourceMap": true
             }
           },
           "defaultConfiguration": "production"
@@ -98,10 +98,7 @@
           "defaultConfiguration": "development"
         },
         "extract-i18n": {
-          "builder": "@angular-builders/custom-esbuild:extract-i18n",
-          "options": {
-            "buildTarget": "jura-life:build"
-          }
+          "builder": "@angular-builders/custom-esbuild:extract-i18n"
         },
         "lint": {
           "builder": "@angular-eslint/builder:lint",

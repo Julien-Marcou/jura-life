@@ -24,7 +24,7 @@ export class Marker extends google.maps.OverlayView {
     this.containerElement.classList.add('marker-container');
     this.containerElement.innerHTML = `
       <button class="marker" type="button" title="${title}" aria-label="Afficher les informations pour : ${title}">
-        <img class="pin" alt="" aria-hidden="true" src="/assets/markers/${type}.webp" width="33" height="52">
+        <img class="pin" alt="" aria-hidden="true" src="/img/markers/${type}.webp" width="33" height="52">
       </button>`;
     this.markerElement = this.containerElement.querySelector('.marker') as HTMLButtonElement;
 
