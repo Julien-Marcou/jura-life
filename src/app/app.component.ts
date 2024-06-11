@@ -30,8 +30,8 @@ import { TrailPolylineService } from './services/trail-polyline.service';
   imports: [
     FormsModule,
     ReactiveFormsModule,
-    KeyValuePipe
-],
+    KeyValuePipe,
+  ],
 })
 export class AppComponent implements OnInit {
 
