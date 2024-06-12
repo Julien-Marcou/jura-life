@@ -1,17 +1,20 @@
-import { ApplicationConfig, inject } from '@angular/core';
-import { NavigationError, Router, Routes, provideRouter, withNavigationErrorHandler } from '@angular/router';
+import { ApplicationConfig } from '@angular/core';
+import { Routes, provideRouter } from '@angular/router';
+import { GoogleMapsComponent } from './components/google-maps/google-maps.component';
 
-const APP_ROUTES: Routes = [];
-
-const navigationErrorHandler = (error: NavigationError): void => {
-  console.error(error);
-  inject(Router).navigate(['']);
-};
+const APP_ROUTES: Routes = [
+  {
+    path: '',
+    component: GoogleMapsComponent,
+  },
+  {
+    path: '**',
+    redirectTo: '',
+  },
+];
 
 export const APP_CONFIG: ApplicationConfig = {
   providers: [
-    provideRouter(
-      APP_ROUTES, withNavigationErrorHandler(navigationErrorHandler),
-    ),
+    provideRouter(APP_ROUTES),
   ],
 };

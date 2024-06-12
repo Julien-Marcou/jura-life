@@ -1,0 +1,126 @@
+<div class="photosphere" [hidden]="!photosphere" (keydown)="keyPressPhotosphere($event)">
+  <button class="close-photosphere-button" type="button" (click)="closePhotosphere()" aria-label="Fermer la photo">
+    Fermer
+    <span class="material-icons" aria-hidden="true">close</span>
+  </button>
+  @if (photosphere) {
+    <iframe class="iframe" [src]="photosphere" allowfullscreen></iframe>
+  }
+</div>
+
+<form class="filters" [hidden]="!displayFilters || !!photosphere" [formGroup]="filtersForm" (keydown)="keyPressForm($event)">
+  <ng-container>
+
+    <div class="seasons">
+      <h2 class="title">
+        <span class="material-icons" aria-hidden="true">thermostat</span>
+        Saison :
+      </h2>
+      <label>
+        <input type="radio" formControlName="season" [value]="enumSeason.None">
+        <span class="label">Peu importe</span>
+      </label>
+      <label>
+        <input type="radio" formControlName="season" [value]="enumSeason.NotWinter">
+        <span class="label">En Été</span>
+      </label>
+      <label>
+        <input type="radio" formControlName="season" [value]="enumSeason.Summer">
+        <span class="label">Uniquement en Été</span>
+      </label>
+      <label>
+        <input type="radio" formControlName="season" [value]="enumSeason.NotSummer">
+        <span class="label">En Hiver</span>
+      </label>
+      <label>
+        <input type="radio" formControlName="season" [value]="enumSeason.Winter">
+        <span class="label">Uniquement en Hiver</span>
+      </label>
+      <label>
+        <input type="radio" formControlName="season" [value]="enumSeason.AllYear">
+        <span class="label">Toute l'Année</span>
+      </label>
+    </div>
+
+    <div class="features">
+      <h2>
+        <span class="material-icons" aria-hidden="true">auto_awesome</span>
+        Caractéristiques :
+      </h2>
+      <label>
+        <input type="checkbox" formControlName="isLandscape">
+        <span class="label">Paysage à voir</span>
+      </label>
+      <label>
+        <input type="checkbox" formControlName="isActivity">
+        <span class="label">Activité à faire</span>
+      </label>
+      <label>
+        <input type="checkbox" formControlName="isIndoor">
+        <span class="label">En intérieur</span>
+      </label>
+      <label>
+        <input type="checkbox" formControlName="hasTrail">
+        <span class="label">Avec randonnée</span>
+      </label>
+      <label>
+        <input type="checkbox" formControlName="hasNoTrail">
+        <span class="label">Sans randonnée</span>
+      </label>
+      <label>
+        <input type="checkbox" formControlName="hasPhotosphere">
+        <span class="label">Aperçu photosphère</span>
+      </label>
+    </div>
+
+    <div class="categories" formGroupName="categories">
+      <h2>
+        <span class="material-icons" aria-hidden="true">sell</span>
+        Catégories :
+      </h2>
+      <button class="check-all" type="button" (click)="checkAllCategories(true)">
+        Tout cocher
+        <span class="material-icons" aria-hidden="true">check_box</span>
+      </button>
+      <button class="uncheck-all" type="button" (click)="checkAllCategories(false)">
+        Tout décocher
+        <span class="material-icons" aria-hidden="true">check_box_outline_blank</span>
+      </button>
+      @for (pin of pins | keyvalue:comparePin; track pin.key) {
+        <label>
+          <input type="checkbox" [formControlName]="pin.key">
+          <span class="icon" aria-hidden="true" [style.backgroundColor]="pin.value.fillColor" [style.color]="pin.value.textColor">{{ pin.value.icon }}</span>
+          <span class="label">{{ pin.value.label }}</span>
+          <span class="count">({{ pointOfInterestCountByPinType[pin.key] }})</span>
+        </label>
+      }
+    </div>
+
+    <button class="close-filters-button" type="button" (click)="toggleFilters()" aria-label="Masquer les filtres des Points d'Intérêts">
+      Valider
+      <span class="material-icons" aria-hidden="true">done</span>
+    </button>
+
+  </ng-container>
+</form>
+
+<div class="map-container" [hidden]="!!photosphere">
+  <button class="toggle-filters-button" type="button" (click)="toggleFilters()" [attr.aria-label]="displayFilters ? 'Masquer les filtres des Points d\'Intérêts' : 'Afficher les filtres des Points d\'Intérêts'">
+    <span class="material-icons" aria-hidden="true">
+      {{ displayFilters ? 'chevron_left' : 'search' }}
+    </span>
+    Filtres
+  </button>
+  <div class="map" #mapElement [class.loading]="!mapLoaded"></div>
+</div>
+
+<!-- TODO : use this to transform "svg pin + icon font" markers to simple "webp" markers -->
+<!-- <div class="pins source">
+  @for (pin of pins | keyvalue:comparePin; track pin.key) {
+    <div class="pin" [attr.data-name]="pin.key">
+      <img class="marker" src="/img/pins/{{ pin.value.color }}.svg">
+      <span class="label" [style.font-size]="pin.value.fontSize" [style.color]="pin.value.textColor" [style.line-height]="pin.value.lineHeight">{{ pin.value.icon }}</span>
+    </div>
+  }
+</div>
+<div class="pins target"></div> -->
