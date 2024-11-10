@@ -402,6 +402,13 @@ export const JURA_POINTS_OF_INTEREST: Record<string, SerializedPointOfInterest> 
     latitude: 46.39508682522628,
     longitude: 5.981503848531151,
     type: PinType.Lake,
+    trails: [
+      {
+        startingPoint: 'Depuis le parking',
+        gpxFile: 'lac-de-lamoura.gpx',
+        duration: '40min',
+      },
+    ],
     isWinterExclusive: false,
     isSummerExclusive: false,
     isIndoor: false,
@@ -637,9 +644,14 @@ export const JURA_POINTS_OF_INTEREST: Record<string, SerializedPointOfInterest> 
     isAccessibleWithoutWalkingMuch: false,
     trails: [
       {
-        startingPoint: 'Depuis le parking des Dappes',
-        gpxFile: 'sommet-de-la-dole.gpx',
-        duration: '3h',
+        startingPoint: 'Depuis le parking des Dappes (France)',
+        gpxFile: 'sommet-de-la-dole-depart-francais.gpx',
+        duration: '3h15',
+      },
+      {
+        startingPoint: 'Depuis le parking du Chalet de la Dôle (Suisse)',
+        gpxFile: 'sommet-de-la-dole-depart-suisse.gpx',
+        duration: '2h40',
       },
     ],
   },
@@ -728,6 +740,24 @@ export const JURA_POINTS_OF_INTEREST: Record<string, SerializedPointOfInterest> 
     ],
     photospheres: [
       '!4v1620388548319!6m8!1m7!1sCAoSLEFGMVFpcE4zOC04YXpnMTFMcjNqUVZlbHB4Z2RuYU5USWhRSjgzcFMtMWQy!2m2!1d46.414002!2d5.871368899999999!3f126.01277663762797!4f18.085101386088937!5f0.7820865974627469',
+    ],
+    isWinterExclusive: false,
+    isSummerExclusive: false,
+    isIndoor: false,
+    isLandscape: true,
+    isActivity: false,
+  },
+  'cascade-bief-chaille': {
+    name: 'Cascade du Bief de la Chaille',
+    latitude: 46.46449943599589,
+    longitude: 6.053700849436772,
+    type: PinType.Waterfall,
+    trails: [
+      {
+        startingPoint: 'Depuis le Belvédère des Maquisards',
+        gpxFile: 'cascade-du-bief-de-la-chaille-depuis-belvedere-maquisards.gpx',
+        duration: '2h45',
+      },
     ],
     isWinterExclusive: false,
     isSummerExclusive: false,
