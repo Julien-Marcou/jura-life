@@ -2,12 +2,13 @@ import { KeyValue, KeyValuePipe } from '@angular/common';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { filter, Subject, take, takeUntil } from 'rxjs';
 import { JURA_POINTS_OF_INTEREST } from '../../constants/jura-points-of-interest.constants';
 import { PINS, PIN_TYPES } from '../../constants/pins.constants';
 import { InfoWindow } from '../../map-overlays/info-window';
 import { Marker } from '../../map-overlays/marker';
+import { Feature } from '../../models/feature';
 import { Pin } from '../../models/pin';
 import { PinFilters } from '../../models/pin-filters';
 import { PinType } from '../../models/pin-type';
@@ -73,12 +74,14 @@ export class GoogleMapsComponent implements OnInit {
   public displayFilters = false;
   public filtersForm = new FormGroup({
     season: new FormControl(Season.None, {nonNullable: true}),
-    isIndoor: new FormControl(false, {nonNullable: true}),
-    isLandscape: new FormControl(false, {nonNullable: true}),
-    isActivity: new FormControl(false, {nonNullable: true}),
-    hasTrail: new FormControl(false, {nonNullable: true}),
-    hasNoTrail: new FormControl(false, {nonNullable: true}),
-    hasPhotosphere: new FormControl(false, {nonNullable: true}),
+    features: new FormGroup<Record<Feature, FormControl<boolean>>>({
+      [Feature.IsIndoor]: new FormControl(false, {nonNullable: true}),
+      [Feature.IsLandscape]: new FormControl(false, {nonNullable: true}),
+      [Feature.IsActivity]: new FormControl(false, {nonNullable: true}),
+      [Feature.HasTrail]: new FormControl(false, {nonNullable: true}),
+      [Feature.HasNoTrail]: new FormControl(false, {nonNullable: true}),
+      [Feature.HasPhotosphere]: new FormControl(false, {nonNullable: true}),
+    }),
     categories: new FormGroup(GoogleMapsComponent.getPinTypeControls()),
   });
   public pointOfInterestCountByPinType = GoogleMapsComponent.getPointOfInterestCountByPinType();
@@ -97,7 +100,7 @@ export class GoogleMapsComponent implements OnInit {
   private readonly pointOfInterestAdded = new Subject<PointOfInterest>();
   private readonly paramsChanged = new Subject<void>();
 
-  constructor(private readonly route: ActivatedRoute, private readonly sanitizer: DomSanitizer) {
+  constructor(private readonly route: ActivatedRoute, private readonly sanitizer: DomSanitizer, private readonly router: Router) {
     this.filtersForm = new FormGroup(this.filtersForm.controls);
     this.contentTemplate.innerHTML = `
       <div class="content">
@@ -146,6 +149,7 @@ export class GoogleMapsComponent implements OnInit {
     this.initGoogleMap();
     this.initFormControls();
     this.initAllPointsOfInterest();
+    this.updateFiltersFromQueryParams();
 
     // TODO : use this to transform "svg pin + icon font" markers to simple "webp" markers
     // setTimeout(async () => {
@@ -271,50 +275,50 @@ export class GoogleMapsComponent implements OnInit {
   }
 
   private initFormControls(): void {
-    this.filtersForm.valueChanges.subscribe((filters: PinFilters) => {
-      if (filters.isActivity || filters.isIndoor) {
-        if (this.filtersForm.controls.isLandscape.enabled) {
-          this.filtersForm.controls.isLandscape.disable();
+    this.filtersForm.valueChanges.subscribe((filters) => {
+      if (filters.features?.isActivity || filters.features?.isIndoor) {
+        if (this.filtersForm.controls.features.controls.isLandscape.enabled) {
+          this.filtersForm.controls.features.controls.isLandscape.disable();
         }
       }
-      else if (this.filtersForm.controls.isLandscape.disabled) {
-        this.filtersForm.controls.isLandscape.enable();
+      else if (this.filtersForm.controls.features.controls.isLandscape.disabled) {
+        this.filtersForm.controls.features.controls.isLandscape.enable();
       }
 
-      if (filters.isLandscape) {
-        if (this.filtersForm.controls.isActivity.enabled) {
-          this.filtersForm.controls.isActivity.disable();
+      if (filters.features?.isLandscape) {
+        if (this.filtersForm.controls.features.controls.isActivity.enabled) {
+          this.filtersForm.controls.features.controls.isActivity.disable();
         }
       }
-      else if (this.filtersForm.controls.isActivity.disabled) {
-        this.filtersForm.controls.isActivity.enable();
+      else if (this.filtersForm.controls.features.controls.isActivity.disabled) {
+        this.filtersForm.controls.features.controls.isActivity.enable();
       }
 
-      if (filters.isLandscape || filters.hasTrail) {
-        if (this.filtersForm.controls.isIndoor.enabled) {
-          this.filtersForm.controls.isIndoor.disable();
+      if (filters.features?.isLandscape || filters.features?.hasTrail) {
+        if (this.filtersForm.controls.features.controls.isIndoor.enabled) {
+          this.filtersForm.controls.features.controls.isIndoor.disable();
         }
       }
-      else if (this.filtersForm.controls.isIndoor.disabled) {
-        this.filtersForm.controls.isIndoor.enable();
+      else if (this.filtersForm.controls.features.controls.isIndoor.disabled) {
+        this.filtersForm.controls.features.controls.isIndoor.enable();
       }
 
-      if (filters.isIndoor || filters.hasNoTrail) {
-        if (this.filtersForm.controls.hasTrail.enabled) {
-          this.filtersForm.controls.hasTrail.disable();
+      if (filters.features?.isIndoor || filters.features?.hasNoTrail) {
+        if (this.filtersForm.controls.features.controls.hasTrail.enabled) {
+          this.filtersForm.controls.features.controls.hasTrail.disable();
         }
       }
-      else if (this.filtersForm.controls.hasTrail.disabled) {
-        this.filtersForm.controls.hasTrail.enable();
+      else if (this.filtersForm.controls.features.controls.hasTrail.disabled) {
+        this.filtersForm.controls.features.controls.hasTrail.enable();
       }
 
-      if (filters.hasTrail) {
-        if (this.filtersForm.controls.hasNoTrail.enabled) {
-          this.filtersForm.controls.hasNoTrail.disable();
+      if (filters.features?.hasTrail) {
+        if (this.filtersForm.controls.features.controls.hasNoTrail.enabled) {
+          this.filtersForm.controls.features.controls.hasNoTrail.disable();
         }
       }
-      else if (this.filtersForm.controls.hasNoTrail.disabled) {
-        this.filtersForm.controls.hasNoTrail.enable();
+      else if (this.filtersForm.controls.features.controls.hasNoTrail.disabled) {
+        this.filtersForm.controls.features.controls.hasNoTrail.enable();
       }
 
       this.pointsOfInterest.forEach((poi) => {
@@ -326,6 +330,50 @@ export class GoogleMapsComponent implements OnInit {
       ).subscribe((addedPoi) => {
         this.displayOrHidePoiAccordingToFilters(addedPoi, filters);
       });
+
+      this.updateQueryParamsFromFilters(filters);
+    });
+  }
+
+  private updateQueryParamsFromFilters(filters: PinFilters): void {
+    const queryParams: Record<string, string> = {};
+    if (filters.season && filters.season !== Season.None) {
+      queryParams['season'] = filters.season;
+    }
+
+    const allFeatures = Object.keys(this.filtersForm.getRawValue().features) as Array<Feature>;
+    const enabledFeatures = allFeatures.filter((feature) => filters.features?.[feature]);
+    if (filters.features && enabledFeatures.length !== 0) {
+      queryParams['features'] = enabledFeatures.join(',');
+    }
+
+    const allCategories = PIN_TYPES;
+    const enabledCategories = allCategories.filter((category) => filters.categories?.[category]);
+    if (filters.categories && enabledCategories.length !== allCategories.length) {
+      queryParams['categories'] = enabledCategories.join(',');
+    }
+
+    this.router.navigate([], { queryParams: queryParams, replaceUrl: true });
+  }
+
+  private updateFiltersFromQueryParams(): void {
+    this.route.queryParams.subscribe((params) => {
+      const season: Season = 'season' in params ? params['season'] : Season.None;
+      this.filtersForm.controls.season.setValue(season, {emitEvent: false});
+
+      const allFeatures = Object.keys(this.filtersForm.getRawValue().features) as Array<Feature>;
+      const enabledFeatures: Array<Feature> = 'features' in params ? params['features'].split(',') : [];
+      allFeatures.forEach((feature) => {
+        this.filtersForm.controls.features.controls[feature].setValue(enabledFeatures.includes(feature), {emitEvent: false});
+      });
+
+      const allCategories = PIN_TYPES;
+      const enabledCategories: Array<PinType> = 'categories' in params ? params['categories'].split(',') : PIN_TYPES;
+      allCategories.forEach((category) => {
+        this.filtersForm.controls.categories.controls[category].setValue(enabledCategories.includes(category), {emitEvent: false});
+      });
+
+      this.filtersForm.updateValueAndValidity();
     });
   }
 
@@ -585,22 +633,22 @@ export class GoogleMapsComponent implements OnInit {
     if (!filters.categories[poi.type]) {
       return false;
     }
-    if (filters.hasPhotosphere && !poi.photospheres) {
+    if (filters.features?.hasPhotosphere && !poi.photospheres) {
       return false;
     }
-    if (filters.hasTrail && (!poi.trails && poi.isAccessibleWithoutWalkingMuch !== false || poi.type === PinType.ViaFerrata)) {
+    if (filters.features?.hasTrail && (!poi.trails && poi.isAccessibleWithoutWalkingMuch !== false || poi.type === PinType.ViaFerrata)) {
       return false;
     }
-    if (filters.hasNoTrail && (poi.trails && poi.isAccessibleWithoutWalkingMuch === undefined || poi.isAccessibleWithoutWalkingMuch === false)) {
+    if (filters.features?.hasNoTrail && (poi.trails && poi.isAccessibleWithoutWalkingMuch === undefined || poi.isAccessibleWithoutWalkingMuch === false)) {
       return false;
     }
-    if (filters.isIndoor && !poi.isIndoor) {
+    if (filters.features?.isIndoor && !poi.isIndoor) {
       return false;
     }
-    if (filters.isLandscape && !poi.isLandscape) {
+    if (filters.features?.isLandscape && !poi.isLandscape) {
       return false;
     }
-    if (filters.isActivity && !poi.isActivity) {
+    if (filters.features?.isActivity && !poi.isActivity) {
       return false;
     }
     if (filters.season === Season.Winter && !poi.isWinterExclusive) {
