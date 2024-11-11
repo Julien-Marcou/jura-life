@@ -1,9 +1,9 @@
 import { FeatureType } from './feature-type';
 import { PinType } from './pin-type';
-import { Season } from './season';
+import { SeasonType } from './season-type';
 
 export type PinFilters = Partial<{
-  season: Season;
+  season: SeasonType;
   features: Partial<Record<FeatureType, boolean>>;
   categories: Partial<Record<PinType, boolean>>;
 }>;

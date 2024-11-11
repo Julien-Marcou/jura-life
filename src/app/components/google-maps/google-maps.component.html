@@ -16,30 +16,12 @@
         <span class="material-icons" aria-hidden="true">thermostat</span>
         Saison :
       </h2>
-      <label>
-        <input type="radio" formControlName="season" [value]="enumSeason.None">
-        <span class="label">Peu importe</span>
-      </label>
-      <label>
-        <input type="radio" formControlName="season" [value]="enumSeason.NotWinter">
-        <span class="label">En Été</span>
-      </label>
-      <label>
-        <input type="radio" formControlName="season" [value]="enumSeason.Summer">
-        <span class="label">Uniquement en Été</span>
-      </label>
-      <label>
-        <input type="radio" formControlName="season" [value]="enumSeason.NotSummer">
-        <span class="label">En Hiver</span>
-      </label>
-      <label>
-        <input type="radio" formControlName="season" [value]="enumSeason.Winter">
-        <span class="label">Uniquement en Hiver</span>
-      </label>
-      <label>
-        <input type="radio" formControlName="season" [value]="enumSeason.AllYear">
-        <span class="label">Toute l'Année</span>
-      </label>
+      @for (season of seasons | keyvalue:compareKeepOrder; track season.key) {
+        <label>
+          <input type="radio" formControlName="season" [value]="season.key">
+          <span class="label">{{ season.value.label }}</span>
+        </label>
+      }
     </div>
 
     <div class="features" formGroupName="features">

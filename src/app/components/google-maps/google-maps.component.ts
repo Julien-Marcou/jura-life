@@ -14,12 +14,13 @@ import { Pin } from '../../models/pin';
 import { PinFilters } from '../../models/pin-filters';
 import { PinType } from '../../models/pin-type';
 import { PointOfInterest } from '../../models/point-of-interest';
-import { Season } from '../../models/season';
+import { SeasonType } from '../../models/season-type';
 import { SerializedPointOfInterest } from '../../models/serialized-point-of-interest';
 import { Trail } from '../../models/trail';
 import { TrailMetadataService } from '../../services/trail-metadata.service';
 import { TrailParserBrowserService } from '../../services/trail-parser-browser.service';
 import { TrailPolylineService } from '../../services/trail-polyline.service';
+import { SEASONS } from '../../constants/seasons.constants';
 
 // TODO : use this to transform "svg pin + icon font" markers to simple "webp" markers
 // import html2canvas from 'html2canvas';
@@ -74,12 +75,12 @@ export class GoogleMapsComponent implements OnInit {
   public photosphere?: SafeResourceUrl;
   public displayFilters = false;
   public filtersForm = new FormGroup({
-    season: new FormControl(Season.None, {nonNullable: true}),
+    season: new FormControl(SeasonType.None, {nonNullable: true}),
     features: new FormGroup(GoogleMapsComponent.getFeatureTypeControls()),
     categories: new FormGroup(GoogleMapsComponent.getPinTypeControls()),
   });
   public pointOfInterestCountByPinType = GoogleMapsComponent.getPointOfInterestCountByPinType();
-  public enumSeason = Season;
+  public seasons = SEASONS;
   public features = FEATURES;
   public pins = PINS;
   public mapLoaded = false;
@@ -333,7 +334,7 @@ export class GoogleMapsComponent implements OnInit {
       categories: null,
     };
 
-    if (filters.season && filters.season !== Season.None) {
+    if (filters.season && filters.season !== SeasonType.None) {
       queryParams['season'] = filters.season;
     }
 
@@ -364,7 +365,7 @@ export class GoogleMapsComponent implements OnInit {
 
   private updateFiltersFromQueryParams(): void {
     this.route.queryParams.subscribe((params) => {
-      const season: Season = 'season' in params ? params['season'] : Season.None;
+      const season: SeasonType = 'season' in params ? params['season'] : SeasonType.None;
       this.filtersForm.controls.season.setValue(season, {emitEvent: false});
 
       const enabledFeatures: Array<FeatureType> = 'features' in params ? params['features'].split(',') : [];
@@ -655,19 +656,19 @@ export class GoogleMapsComponent implements OnInit {
     if (filters.features?.isActivity && !poi.isActivity) {
       return false;
     }
-    if (filters.season === Season.Winter && !poi.isWinterExclusive) {
+    if (filters.season === SeasonType.Winter && !poi.isWinterExclusive) {
       return false;
     }
-    if (filters.season === Season.NotWinter && poi.isWinterExclusive) {
+    if (filters.season === SeasonType.NotWinter && poi.isWinterExclusive) {
       return false;
     }
-    if (filters.season === Season.Summer && !poi.isSummerExclusive) {
+    if (filters.season === SeasonType.Summer && !poi.isSummerExclusive) {
       return false;
     }
-    if (filters.season === Season.NotSummer && poi.isSummerExclusive) {
+    if (filters.season === SeasonType.NotSummer && poi.isSummerExclusive) {
       return false;
     }
-    if (filters.season === Season.AllYear && (poi.isSummerExclusive || poi.isWinterExclusive)) {
+    if (filters.season === SeasonType.AllYear && (poi.isSummerExclusive || poi.isWinterExclusive)) {
       return false;
     }
     return true;
