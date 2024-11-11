@@ -3,7 +3,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
-import { distinctUntilChanged, filter, first, map, Subject, takeUntil } from 'rxjs';
+import { debounceTime, distinctUntilChanged, filter, first, firstValueFrom, map, Subject, takeUntil } from 'rxjs';
 import { ALL_FEATURE_TYPES, FEATURES } from '../../constants/features.constants';
 import { JURA_POINTS_OF_INTEREST } from '../../constants/jura-points-of-interest.constants';
 import { PINS, ALL_PIN_TYPES } from '../../constants/pins.constants';
@@ -21,6 +21,7 @@ import { TrailMetadataService } from '../../services/trail-metadata.service';
 import { TrailParserBrowserService } from '../../services/trail-parser-browser.service';
 import { TrailPolylineService } from '../../services/trail-polyline.service';
 import { SEASONS } from '../../constants/seasons.constants';
+import { HttpParams } from '@angular/common/http';
 
 // TODO : use this to transform "svg pin + icon font" markers to simple "webp" markers
 // import html2canvas from 'html2canvas';
@@ -309,37 +310,44 @@ export class GoogleMapsComponent implements OnInit {
   }
 
   private initFormControls(): void {
-    this.filtersForm.valueChanges.subscribe((filters) => {
-      this.updateQueryParamsFromFilters(filters);
-      this.filterPointsOfInterest(filters);
+    this.filtersForm.valueChanges.subscribe(async (filters) => {
+      // resolving the incompatibilities between features will trigger the "valueChanges" again
+      const hasIncompatibility = this.resolveFeatureIncompatibilities(filters);
+
+      // so we can only proceed once the incompatibilities are resolved
+      if (!hasIncompatibility) {
+        this.filterPointsOfInterest(filters);
+        this.updateQueryParamsFromFilters(filters);
+      }
     });
-    this.updateIncompatibilitiesOnFeatureChange();
   }
 
-  private updateIncompatibilitiesOnFeatureChange(): void {
+  private resolveFeatureIncompatibilities(filters: PinFilters): boolean {
+    let hasIncompatibility = false;
+
     ALL_FEATURE_TYPES.forEach((featureType) => {
-      const featureControl = this.filtersForm.controls.features.controls[featureType];
       const feature = FEATURES[featureType];
-      featureControl.valueChanges.subscribe((isSelected) => {
-        feature.isIncompatibleWith?.forEach((incompatibleFeatureType) => {
-          const incompatibleFeatureControl = this.filtersForm.controls.features.controls[incompatibleFeatureType];
-          if (isSelected && incompatibleFeatureControl.enabled) {
-            incompatibleFeatureControl.disable();
-          }
-          else if (!isSelected && incompatibleFeatureControl.disabled) {
-            incompatibleFeatureControl.enable();
-          }
-        });
-      });
+      const featureControl = this.filtersForm.controls.features.controls[featureType];
+      const shouldDisableFeature = feature.isIncompatibleWith?.some((incompatibleFeatureType) => filters.features?.[incompatibleFeatureType]);
+      if (featureControl.enabled && shouldDisableFeature) {
+        featureControl.disable({emitEvent: false});
+        hasIncompatibility = true;
+      }
+      else if (featureControl.disabled && !shouldDisableFeature) {
+        featureControl.enable({emitEvent: false});
+        hasIncompatibility = true;
+      }
     });
+
+    if (hasIncompatibility) {
+      this.filtersForm.updateValueAndValidity();
+    }
+
+    return hasIncompatibility;
   }
 
-  private updateQueryParamsFromFilters(filters: PinFilters): void {
-    const queryParams: Record<string, string | null> = {
-      season: null,
-      features: null,
-      categories: null,
-    };
+  private async updateQueryParamsFromFilters(filters: PinFilters): Promise<void> {
+    const queryParams: Record<string, string> = {};
 
     if (filters.season && filters.season !== SeasonType.None) {
       queryParams['season'] = filters.season;
@@ -355,7 +363,12 @@ export class GoogleMapsComponent implements OnInit {
       queryParams['categories'] = enabledCategories.join(',');
     }
 
-    this.router.navigate([], { queryParams: queryParams, replaceUrl: true });
+    // prevent infinite loop by navigating only if the query params have changed
+    const currentHttpParams = new HttpParams({ fromObject: await firstValueFrom(this.route.queryParams) }).toString();
+    const newHttpParams = new HttpParams({ fromObject: queryParams }).toString();
+    if (currentHttpParams !== newHttpParams) {
+      await this.router.navigate([], { queryParams: queryParams, replaceUrl: true });
+    }
   }
 
   private filterPointsOfInterest(filters: PinFilters): void {
@@ -372,33 +385,41 @@ export class GoogleMapsComponent implements OnInit {
 
   private updateFiltersFromQueryParams(): void {
     this.route.queryParamMap.subscribe((params) => {
-      let updateValueAndValidity = false;
+      let filtersHaveChanged = false;
 
       const season = params.get('season');
-      if (season !== null) {
+      if (season !== null && this.filtersForm.controls.season.value !== season) {
         this.filtersForm.controls.season.setValue(season as SeasonType, {emitEvent: false});
-        updateValueAndValidity = true;
+        filtersHaveChanged = true;
       }
 
       const features = params.get('features');
       if (features !== null) {
         const enabledFeatures = features.split(',') as Array<FeatureType>;
         ALL_FEATURE_TYPES.forEach((feature) => {
-          this.filtersForm.controls.features.controls[feature].setValue(enabledFeatures.includes(feature), {emitEvent: false});
+          const shouldSelect = enabledFeatures.includes(feature);
+          const featureControl = this.filtersForm.controls.features.controls[feature];
+          if (featureControl.value !== shouldSelect) {
+            featureControl.setValue(shouldSelect, {emitEvent: false});
+            filtersHaveChanged = true;
+          }
         });
-        updateValueAndValidity = true;
       }
 
       const categories = params.get('categories');
       if (categories !== null) {
         const enabledCategories = categories.split(',') as Array<PinType>;
         ALL_PIN_TYPES.forEach((category) => {
-          this.filtersForm.controls.categories.controls[category].setValue(enabledCategories.includes(category), {emitEvent: false});
+          const shouldSelected = enabledCategories.includes(category);
+          const categoryControl = this.filtersForm.controls.categories.controls[category];
+          if (categoryControl.value !== shouldSelected) {
+            categoryControl.setValue(shouldSelected, {emitEvent: false});
+            filtersHaveChanged = true;
+          }
         });
-        updateValueAndValidity = true;
       }
 
-      if (updateValueAndValidity) {
+      if (filtersHaveChanged) {
         this.filtersForm.updateValueAndValidity();
       }
     });
