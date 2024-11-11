@@ -499,6 +499,22 @@ export class GoogleMapsComponent implements OnInit {
     this.pointOfInterestAdded.next(poi);
   }
 
+  public centerMapOnAllPOIs(): void {
+    requestAnimationFrame(() => {
+      const bounds = new google.maps.LatLngBounds();
+      let hasVisiblePOIs = false;
+      this.pointsOfInterest.forEach((poi) => {
+        if (poi.marker.isVisible()) {
+          bounds.extend(new google.maps.LatLng(poi.position.lat(), poi.position.lng()));
+          hasVisiblePOIs = true;
+        }
+      });
+      if (hasVisiblePOIs) {
+        this.map.fitBounds(bounds, 20);
+      }
+    });
+  }
+
   private focusPointOfInterest(poi: PointOfInterest): void {
     requestAnimationFrame(() => {
       const bounds = new google.maps.LatLngBounds(poi.position);

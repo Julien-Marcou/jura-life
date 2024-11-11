@@ -75,6 +75,10 @@
     </span>
     Filtres
   </button>
+  <button class="center-button" type="button" (click)="centerMapOnAllPOIs()" aria-label="Recenter la carte sur tous les Points d'Intérêts actuellement affichés">
+    <span class="material-icons" aria-hidden="true">adjust</span>
+    Centrer
+  </button>
   <div class="map" #mapElement [class.loading]="!mapLoaded"></div>
 </div>
 

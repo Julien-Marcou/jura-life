@@ -186,7 +186,8 @@
   }
 }
 
-.toggle-filters-button {
+.toggle-filters-button,
+.center-button {
   position: absolute;
   z-index: 10;
   bottom: 24px;
@@ -213,6 +214,10 @@
     margin-top: -2px;
     line-height: 15px;
   }
+}
+
+.center-button {
+  left: 126px;
 }
 
 .close-filters-button {
