@@ -336,7 +336,12 @@ export class GoogleMapsComponent implements OnInit {
   }
 
   private updateQueryParamsFromFilters(filters: PinFilters): void {
-    const queryParams: Record<string, string> = {};
+    const queryParams: Record<string, string | null> = {
+      season: null,
+      features: null,
+      categories: null,
+    };
+
     if (filters.season && filters.season !== Season.None) {
       queryParams['season'] = filters.season;
     }
@@ -353,7 +358,7 @@ export class GoogleMapsComponent implements OnInit {
       queryParams['categories'] = enabledCategories.join(',');
     }
 
-    this.router.navigate([], { queryParams: queryParams, replaceUrl: true });
+    this.router.navigate([], { queryParams: queryParams, replaceUrl: true, queryParamsHandling: 'merge' });
   }
 
   private updateFiltersFromQueryParams(): void {
@@ -529,7 +534,7 @@ export class GoogleMapsComponent implements OnInit {
     const contentElement = contentTemplate.querySelector('.content') as HTMLElement;
 
     const permalinkElement = contentElement.querySelector('.permalink') as HTMLLinkElement;
-    permalinkElement.href = `/?poi=${id}`;
+    permalinkElement.href = this.router.createUrlTree([], { queryParams: { poi: id } }).toString();
 
     const titleElement = contentElement.querySelector('.title') as HTMLElement;
     titleElement.textContent = serializedPoi.name;
