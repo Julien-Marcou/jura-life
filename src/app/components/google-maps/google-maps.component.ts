@@ -3,7 +3,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
-import { filter, Subject, take, takeUntil } from 'rxjs';
+import { distinctUntilChanged, filter, first, map, pairwise, startWith, Subject, takeUntil } from 'rxjs';
 import { JURA_POINTS_OF_INTEREST } from '../../constants/jura-points-of-interest.constants';
 import { PINS, PIN_TYPES } from '../../constants/pins.constants';
 import { InfoWindow } from '../../map-overlays/info-window';
@@ -98,7 +98,6 @@ export class GoogleMapsComponent implements OnInit {
   private photospheresTemplate = document.createElement('template');
   private photosphereTemplate = document.createElement('template');
   private readonly pointOfInterestAdded = new Subject<PointOfInterest>();
-  private readonly paramsChanged = new Subject<void>();
 
   constructor(private readonly route: ActivatedRoute, private readonly sanitizer: DomSanitizer, private readonly router: Router) {
     this.filtersForm = new FormGroup(this.filtersForm.controls);
@@ -218,6 +217,7 @@ export class GoogleMapsComponent implements OnInit {
     google.maps.event.addListenerOnce(this.map, 'projection_changed', () => {
       requestAnimationFrame(() => {
         this.openPointOfInterestFromQueryParams();
+        this.centerMapFromQueryParams();
       });
     });
     google.maps.event.addListenerOnce(this.map, 'idle', () => {
@@ -228,41 +228,60 @@ export class GoogleMapsComponent implements OnInit {
   }
 
   private openPointOfInterestFromQueryParams(): void {
-    this.route.queryParams.subscribe((params) => {
-      this.paramsChanged.next();
-      const poiId: string | undefined = 'poi' in params ? params['poi'] : undefined;
-      const trailIndex: number = 'trail' in params ? parseInt(params['trail'], 10) : 0;
-      const latitude: number | undefined = 'lat' in params ? parseFloat(params['lat']) : undefined;
-      const longitude: number | undefined = 'lng' in params ? parseFloat(params['lng']) : undefined;
-      const zoom: number | undefined = 'zoom' in params ? parseInt(params['zoom'], 10) : undefined;
-
-      if (poiId !== undefined) {
-        const poi = this.pointsOfInterest.get(poiId);
-        // If the POI already exists, open it
-        if (poi) {
-          this.openPointOfInterest(poi, true, trailIndex);
+    this.route.queryParams
+      .pipe(
+        map((params) => {
+          const poiId: string | undefined = 'poi' in params ? params['poi'] : undefined;
+          const trailIndex: number = 'trail' in params ? parseInt(params['trail'], 10) : 0;
+          return { poiId: poiId, trailIndex: trailIndex };
+        }),
+        distinctUntilChanged((previous, current) => {
+          return previous.poiId === current.poiId && previous.trailIndex === current.trailIndex;
+        }),
+      )
+      .subscribe(({ poiId, trailIndex }) => {
+        if (poiId !== undefined) {
+          const poi = this.pointsOfInterest.get(poiId);
+          // If the POI already exists, open it
+          if (poi) {
+            this.openPointOfInterest(poi, true, trailIndex);
+          }
+          // Otherwise, open it as soon as it has been added
+          else if (poiId in JURA_POINTS_OF_INTEREST) {
+            this.pointOfInterestAdded.pipe(
+              filter((addedPoi) => addedPoi.id === poiId),
+              first(),
+            ).subscribe((addedPoi) => {
+              this.openPointOfInterest(addedPoi, true, trailIndex);
+            });
+          }
         }
-        // Otherwise, open it as soon as it has been added
-        else {
-          this.pointOfInterestAdded.pipe(
-            takeUntil(this.paramsChanged),
-            filter((addedPoi) => addedPoi.id === poiId),
-            take(1),
-          ).subscribe((addedPoi) => {
-            this.openPointOfInterest(addedPoi, true, trailIndex);
-          });
-        }
-      }
-
-      if (latitude !== undefined && longitude !== undefined) {
-        this.map.setCenter(new google.maps.LatLng(latitude, longitude));
-      }
-
-      if (zoom !== undefined) {
-        this.map.setZoom(zoom);
-      }
-    });
+      });
   }
+
+  private centerMapFromQueryParams(): void {
+    this.route.queryParams
+      .pipe(
+        map((params) => {
+          const latitude: number | undefined = 'lat' in params ? parseFloat(params['lat']) : undefined;
+          const longitude: number | undefined = 'lng' in params ? parseFloat(params['lng']) : undefined;
+          const zoom: number | undefined = 'zoom' in params ? parseInt(params['zoom'], 10) : undefined;
+          return { latitude: latitude, longitude: longitude, zoom: zoom };
+        }),
+        distinctUntilChanged((previous, current) => {
+          return previous.latitude === current.latitude && previous.longitude === current.longitude && previous.zoom === current.zoom;
+        }),
+      )
+      .subscribe(({ latitude, longitude, zoom }) => {
+        if (latitude !== undefined && longitude !== undefined) {
+          this.map.setCenter(new google.maps.LatLng(latitude, longitude));
+        }
+        if (zoom !== undefined) {
+          this.map.setZoom(zoom);
+        }
+      });
+  }
+
 
   private async initAllPointsOfInterest(): Promise<void> {
     try {
