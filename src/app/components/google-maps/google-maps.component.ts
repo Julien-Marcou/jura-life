@@ -236,19 +236,22 @@ export class GoogleMapsComponent implements OnInit {
   }
 
   private openPointOfInterestFromQueryParams(): void {
-    this.route.queryParams
+    this.route.queryParamMap
       .pipe(
         map((params) => {
-          const poiId: string | undefined = 'poi' in params ? params['poi'] : undefined;
-          const trailIndex: number = 'trail' in params ? parseInt(params['trail'], 10) : 0;
-          return { poiId: poiId, trailIndex: trailIndex };
+          const poiId = params.get('poi');
+          const trailIndex = params.get('trail');
+          return {
+            poiId: poiId,
+            trailIndex: trailIndex ? parseInt(trailIndex, 10) : 0,
+          };
         }),
         distinctUntilChanged((previous, current) => {
           return previous.poiId === current.poiId && previous.trailIndex === current.trailIndex;
         }),
       )
       .subscribe(({ poiId, trailIndex }) => {
-        if (poiId !== undefined) {
+        if (poiId !== null) {
           const poi = this.pointsOfInterest.get(poiId);
           // If the POI already exists, open it
           if (poi) {
@@ -268,23 +271,27 @@ export class GoogleMapsComponent implements OnInit {
   }
 
   private centerMapFromQueryParams(): void {
-    this.route.queryParams
+    this.route.queryParamMap
       .pipe(
         map((params) => {
-          const latitude: number | undefined = 'lat' in params ? parseFloat(params['lat']) : undefined;
-          const longitude: number | undefined = 'lng' in params ? parseFloat(params['lng']) : undefined;
-          const zoom: number | undefined = 'zoom' in params ? parseInt(params['zoom'], 10) : undefined;
-          return { latitude: latitude, longitude: longitude, zoom: zoom };
+          const latitude = params.get('lat');
+          const longitude = params.get('lng');
+          const zoom = params.get('zoom');
+          return {
+            latitude: latitude ? parseFloat(latitude) : null,
+            longitude: longitude ? parseFloat(longitude) : null,
+            zoom: zoom ? parseInt(zoom, 10) : null,
+          };
         }),
         distinctUntilChanged((previous, current) => {
           return previous.latitude === current.latitude && previous.longitude === current.longitude && previous.zoom === current.zoom;
         }),
       )
       .subscribe(({ latitude, longitude, zoom }) => {
-        if (latitude !== undefined && longitude !== undefined) {
+        if (latitude !== null && longitude !== null) {
           this.map.setCenter(new google.maps.LatLng(latitude, longitude));
         }
-        if (zoom !== undefined) {
+        if (zoom !== null) {
           this.map.setZoom(zoom);
         }
       });
@@ -348,7 +355,7 @@ export class GoogleMapsComponent implements OnInit {
       queryParams['categories'] = enabledCategories.join(',');
     }
 
-    this.router.navigate([], { queryParams: queryParams, replaceUrl: true, queryParamsHandling: 'merge' });
+    this.router.navigate([], { queryParams: queryParams, replaceUrl: true });
   }
 
   private filterPointsOfInterest(filters: PinFilters): void {
@@ -364,21 +371,36 @@ export class GoogleMapsComponent implements OnInit {
   }
 
   private updateFiltersFromQueryParams(): void {
-    this.route.queryParams.subscribe((params) => {
-      const season: SeasonType = 'season' in params ? params['season'] : SeasonType.None;
-      this.filtersForm.controls.season.setValue(season, {emitEvent: false});
+    this.route.queryParamMap.subscribe((params) => {
+      let updateValueAndValidity = false;
 
-      const enabledFeatures: Array<FeatureType> = 'features' in params ? params['features'].split(',') : [];
-      ALL_FEATURE_TYPES.forEach((featureType) => {
-        this.filtersForm.controls.features.controls[featureType].setValue(enabledFeatures.includes(featureType), {emitEvent: false});
-      });
+      const season = params.get('season');
+      if (season !== null) {
+        this.filtersForm.controls.season.setValue(season as SeasonType, {emitEvent: false});
+        updateValueAndValidity = true;
+      }
 
-      const enabledCategories: Array<PinType> = 'categories' in params ? params['categories'].split(',') : ALL_PIN_TYPES;
-      ALL_PIN_TYPES.forEach((category) => {
-        this.filtersForm.controls.categories.controls[category].setValue(enabledCategories.includes(category), {emitEvent: false});
-      });
+      const features = params.get('features');
+      if (features !== null) {
+        const enabledFeatures = features.split(',') as Array<FeatureType>;
+        ALL_FEATURE_TYPES.forEach((feature) => {
+          this.filtersForm.controls.features.controls[feature].setValue(enabledFeatures.includes(feature), {emitEvent: false});
+        });
+        updateValueAndValidity = true;
+      }
 
-      this.filtersForm.updateValueAndValidity();
+      const categories = params.get('categories');
+      if (categories !== null) {
+        const enabledCategories = categories.split(',') as Array<PinType>;
+        ALL_PIN_TYPES.forEach((category) => {
+          this.filtersForm.controls.categories.controls[category].setValue(enabledCategories.includes(category), {emitEvent: false});
+        });
+        updateValueAndValidity = true;
+      }
+
+      if (updateValueAndValidity) {
+        this.filtersForm.updateValueAndValidity();
+      }
     });
   }
 
