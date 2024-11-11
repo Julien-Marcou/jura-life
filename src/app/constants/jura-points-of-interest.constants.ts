@@ -299,7 +299,7 @@ export const JURA_POINTS_OF_INTEREST: Record<string, SerializedPointOfInterest> 
     isSummerExclusive: false,
     isIndoor: true,
     isLandscape: false,
-    isActivity: false,
+    isActivity: true,
   },
   'ski-dole': {
     name: 'Station de Ski Dôle-Tuffes',

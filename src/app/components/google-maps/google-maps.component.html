@@ -47,30 +47,12 @@
         <span class="material-icons" aria-hidden="true">auto_awesome</span>
         Caractéristiques :
       </h2>
-      <label>
-        <input type="checkbox" formControlName="isLandscape">
-        <span class="label">Paysage à voir</span>
-      </label>
-      <label>
-        <input type="checkbox" formControlName="isActivity">
-        <span class="label">Activité à faire</span>
-      </label>
-      <label>
-        <input type="checkbox" formControlName="isIndoor">
-        <span class="label">En intérieur</span>
-      </label>
-      <label>
-        <input type="checkbox" formControlName="hasTrail">
-        <span class="label">Avec randonnée</span>
-      </label>
-      <label>
-        <input type="checkbox" formControlName="hasNoTrail">
-        <span class="label">Sans randonnée</span>
-      </label>
-      <label>
-        <input type="checkbox" formControlName="hasPhotosphere">
-        <span class="label">Aperçu photosphère</span>
-      </label>
+      @for (feature of features | keyvalue:compareKeepOrder; track feature.key) {
+        <label>
+          <input type="checkbox" [formControlName]="feature.key">
+          <span class="label">{{ feature.value.label }}</span>
+        </label>
+      }
     </div>
 
     <div class="categories" formGroupName="categories">

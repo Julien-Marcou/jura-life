@@ -1,8 +1,6 @@
-export enum Feature {
-  IsIndoor = 'isIndoor',
-  IsLandscape = 'isLandscape',
-  IsActivity = 'isActivity',
-  HasTrail = 'hasTrail',
-  HasNoTrail = 'hasNoTrail',
-  HasPhotosphere = 'hasPhotosphere',
-}
+import { FeatureType } from './feature-type';
+
+export type Feature = {
+  label: string;
+  isIncompatibleWith?: Array<FeatureType>;
+};

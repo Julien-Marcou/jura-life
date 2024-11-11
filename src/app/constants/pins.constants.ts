@@ -324,4 +324,4 @@ export const PINS: Record<PinType, Pin> = {
   },
 };
 
-export const PIN_TYPES = Object.keys(PINS) as Array<PinType>;
+export const ALL_PIN_TYPES = Object.keys(PINS) as Array<PinType>;

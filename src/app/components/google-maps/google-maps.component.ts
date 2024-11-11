@@ -3,12 +3,13 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
-import { distinctUntilChanged, filter, first, map, pairwise, startWith, Subject, takeUntil } from 'rxjs';
+import { distinctUntilChanged, filter, first, map, Subject, takeUntil } from 'rxjs';
+import { ALL_FEATURE_TYPES, FEATURES } from '../../constants/features.constants';
 import { JURA_POINTS_OF_INTEREST } from '../../constants/jura-points-of-interest.constants';
-import { PINS, PIN_TYPES } from '../../constants/pins.constants';
+import { PINS, ALL_PIN_TYPES } from '../../constants/pins.constants';
 import { InfoWindow } from '../../map-overlays/info-window';
 import { Marker } from '../../map-overlays/marker';
-import { Feature } from '../../models/feature';
+import { FeatureType } from '../../models/feature-type';
 import { Pin } from '../../models/pin';
 import { PinFilters } from '../../models/pin-filters';
 import { PinType } from '../../models/pin-type';
@@ -74,18 +75,12 @@ export class GoogleMapsComponent implements OnInit {
   public displayFilters = false;
   public filtersForm = new FormGroup({
     season: new FormControl(Season.None, {nonNullable: true}),
-    features: new FormGroup<Record<Feature, FormControl<boolean>>>({
-      [Feature.IsIndoor]: new FormControl(false, {nonNullable: true}),
-      [Feature.IsLandscape]: new FormControl(false, {nonNullable: true}),
-      [Feature.IsActivity]: new FormControl(false, {nonNullable: true}),
-      [Feature.HasTrail]: new FormControl(false, {nonNullable: true}),
-      [Feature.HasNoTrail]: new FormControl(false, {nonNullable: true}),
-      [Feature.HasPhotosphere]: new FormControl(false, {nonNullable: true}),
-    }),
+    features: new FormGroup(GoogleMapsComponent.getFeatureTypeControls()),
     categories: new FormGroup(GoogleMapsComponent.getPinTypeControls()),
   });
   public pointOfInterestCountByPinType = GoogleMapsComponent.getPointOfInterestCountByPinType();
   public enumSeason = Season;
+  public features = FEATURES;
   public pins = PINS;
   public mapLoaded = false;
 
@@ -132,12 +127,20 @@ export class GoogleMapsComponent implements OnInit {
   }
 
   private static getPointOfInterestCountByPinType(): Record<PinType, number> {
-    const iterablePointOfInterestCountByPinType = PIN_TYPES.map((pinType) => [pinType, 0] as const);
+    const iterablePointOfInterestCountByPinType = ALL_PIN_TYPES.map((pinType) => [pinType, 0] as const);
     return Object.fromEntries(iterablePointOfInterestCountByPinType) as Record<PinType, number>;
   }
 
+  private static getFeatureTypeControls(): Record<FeatureType, FormControl<boolean>> {
+    const iterableFeatureTypeControls = ALL_FEATURE_TYPES.map((featureType) => [
+      featureType,
+      new FormControl(false, {nonNullable: true}),
+    ] as const);
+    return Object.fromEntries(iterableFeatureTypeControls) as Record<FeatureType, FormControl<boolean>>;
+  }
+
   private static getPinTypeControls(): Record<PinType, FormControl<boolean>> {
-    const iterablePinTypeControls = PIN_TYPES.map((pinType) => [
+    const iterablePinTypeControls = ALL_PIN_TYPES.map((pinType) => [
       pinType,
       new FormControl(true, {nonNullable: true}),
     ] as const);
@@ -170,6 +173,10 @@ export class GoogleMapsComponent implements OnInit {
     //     });
     //   }
     // }, 1000);
+  }
+
+  public compareKeepOrder(): number {
+    return 0;
   }
 
   public comparePin(pinA: KeyValue<PinType, Pin>, pinB: KeyValue<PinType, Pin>): number {
@@ -295,62 +302,27 @@ export class GoogleMapsComponent implements OnInit {
 
   private initFormControls(): void {
     this.filtersForm.valueChanges.subscribe((filters) => {
-      if (filters.features?.isActivity || filters.features?.isIndoor) {
-        if (this.filtersForm.controls.features.controls.isLandscape.enabled) {
-          this.filtersForm.controls.features.controls.isLandscape.disable();
-        }
-      }
-      else if (this.filtersForm.controls.features.controls.isLandscape.disabled) {
-        this.filtersForm.controls.features.controls.isLandscape.enable();
-      }
-
-      if (filters.features?.isLandscape) {
-        if (this.filtersForm.controls.features.controls.isActivity.enabled) {
-          this.filtersForm.controls.features.controls.isActivity.disable();
-        }
-      }
-      else if (this.filtersForm.controls.features.controls.isActivity.disabled) {
-        this.filtersForm.controls.features.controls.isActivity.enable();
-      }
-
-      if (filters.features?.isLandscape || filters.features?.hasTrail) {
-        if (this.filtersForm.controls.features.controls.isIndoor.enabled) {
-          this.filtersForm.controls.features.controls.isIndoor.disable();
-        }
-      }
-      else if (this.filtersForm.controls.features.controls.isIndoor.disabled) {
-        this.filtersForm.controls.features.controls.isIndoor.enable();
-      }
-
-      if (filters.features?.isIndoor || filters.features?.hasNoTrail) {
-        if (this.filtersForm.controls.features.controls.hasTrail.enabled) {
-          this.filtersForm.controls.features.controls.hasTrail.disable();
-        }
-      }
-      else if (this.filtersForm.controls.features.controls.hasTrail.disabled) {
-        this.filtersForm.controls.features.controls.hasTrail.enable();
-      }
-
-      if (filters.features?.hasTrail) {
-        if (this.filtersForm.controls.features.controls.hasNoTrail.enabled) {
-          this.filtersForm.controls.features.controls.hasNoTrail.disable();
-        }
-      }
-      else if (this.filtersForm.controls.features.controls.hasNoTrail.disabled) {
-        this.filtersForm.controls.features.controls.hasNoTrail.enable();
-      }
-
-      this.pointsOfInterest.forEach((poi) => {
-        this.displayOrHidePoiAccordingToFilters(poi, filters);
-      });
-
-      this.pointOfInterestAdded.pipe(
-        takeUntil(this.filtersForm.valueChanges),
-      ).subscribe((addedPoi) => {
-        this.displayOrHidePoiAccordingToFilters(addedPoi, filters);
-      });
-
       this.updateQueryParamsFromFilters(filters);
+      this.filterPointsOfInterest(filters);
+    });
+    this.updateIncompatibilitiesOnFeatureChange();
+  }
+
+  private updateIncompatibilitiesOnFeatureChange(): void {
+    ALL_FEATURE_TYPES.forEach((featureType) => {
+      const featureControl = this.filtersForm.controls.features.controls[featureType];
+      const feature = FEATURES[featureType];
+      featureControl.valueChanges.subscribe((isSelected) => {
+        feature.isIncompatibleWith?.forEach((incompatibleFeatureType) => {
+          const incompatibleFeatureControl = this.filtersForm.controls.features.controls[incompatibleFeatureType];
+          if (isSelected && incompatibleFeatureControl.enabled) {
+            incompatibleFeatureControl.disable();
+          }
+          else if (!isSelected && incompatibleFeatureControl.disabled) {
+            incompatibleFeatureControl.enable();
+          }
+        });
+      });
     });
   }
 
@@ -365,19 +337,29 @@ export class GoogleMapsComponent implements OnInit {
       queryParams['season'] = filters.season;
     }
 
-    const allFeatures = Object.keys(this.filtersForm.getRawValue().features) as Array<Feature>;
-    const enabledFeatures = allFeatures.filter((feature) => filters.features?.[feature]);
+    const enabledFeatures = ALL_FEATURE_TYPES.filter((feature) => filters.features?.[feature]);
     if (filters.features && enabledFeatures.length !== 0) {
       queryParams['features'] = enabledFeatures.join(',');
     }
 
-    const allCategories = PIN_TYPES;
-    const enabledCategories = allCategories.filter((category) => filters.categories?.[category]);
-    if (filters.categories && enabledCategories.length !== allCategories.length) {
+    const enabledCategories = ALL_PIN_TYPES.filter((category) => filters.categories?.[category]);
+    if (filters.categories && enabledCategories.length !== ALL_PIN_TYPES.length) {
       queryParams['categories'] = enabledCategories.join(',');
     }
 
     this.router.navigate([], { queryParams: queryParams, replaceUrl: true, queryParamsHandling: 'merge' });
+  }
+
+  private filterPointsOfInterest(filters: PinFilters): void {
+    this.pointsOfInterest.forEach((poi) => {
+      this.displayOrHidePoiAccordingToFilters(poi, filters);
+    });
+
+    this.pointOfInterestAdded.pipe(
+      takeUntil(this.filtersForm.valueChanges),
+    ).subscribe((addedPoi) => {
+      this.displayOrHidePoiAccordingToFilters(addedPoi, filters);
+    });
   }
 
   private updateFiltersFromQueryParams(): void {
@@ -385,15 +367,13 @@ export class GoogleMapsComponent implements OnInit {
       const season: Season = 'season' in params ? params['season'] : Season.None;
       this.filtersForm.controls.season.setValue(season, {emitEvent: false});
 
-      const allFeatures = Object.keys(this.filtersForm.getRawValue().features) as Array<Feature>;
-      const enabledFeatures: Array<Feature> = 'features' in params ? params['features'].split(',') : [];
-      allFeatures.forEach((feature) => {
-        this.filtersForm.controls.features.controls[feature].setValue(enabledFeatures.includes(feature), {emitEvent: false});
+      const enabledFeatures: Array<FeatureType> = 'features' in params ? params['features'].split(',') : [];
+      ALL_FEATURE_TYPES.forEach((featureType) => {
+        this.filtersForm.controls.features.controls[featureType].setValue(enabledFeatures.includes(featureType), {emitEvent: false});
       });
 
-      const allCategories = PIN_TYPES;
-      const enabledCategories: Array<PinType> = 'categories' in params ? params['categories'].split(',') : PIN_TYPES;
-      allCategories.forEach((category) => {
+      const enabledCategories: Array<PinType> = 'categories' in params ? params['categories'].split(',') : ALL_PIN_TYPES;
+      ALL_PIN_TYPES.forEach((category) => {
         this.filtersForm.controls.categories.controls[category].setValue(enabledCategories.includes(category), {emitEvent: false});
       });
 
