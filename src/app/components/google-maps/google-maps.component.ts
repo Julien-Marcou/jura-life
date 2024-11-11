@@ -502,10 +502,15 @@ export class GoogleMapsComponent implements OnInit {
   private focusPointOfInterest(poi: PointOfInterest): void {
     requestAnimationFrame(() => {
       const bounds = new google.maps.LatLngBounds(poi.position);
-      const center = bounds.getCenter();
-      bounds.extend(new google.maps.LatLng(center.lat() - 0.01, center.lng() - 0.01));
-      bounds.extend(new google.maps.LatLng(center.lat() + 0.01, center.lng() + 0.01));
-      this.map.panToBounds(bounds);
+      this.map.panToBounds(
+        bounds,
+        {
+          top: 75,
+          bottom: 75,
+          left: 50,
+          right: 50,
+        },
+      );
     });
   }
 
@@ -532,10 +537,10 @@ export class GoogleMapsComponent implements OnInit {
           this.map.panToBounds(poi.infoWindow.getBounds());
           poi.infoWindow.focus();
         });
-        this.map.fitBounds(bounds);
+        this.map.fitBounds(bounds, 20);
       }
       else {
-        this.map.panToBounds(poi.infoWindow.getBounds());
+        this.map.panToBounds(poi.infoWindow.getBounds(), 20);
       }
     });
   }
