@@ -1,12 +1,14 @@
 import { KeyValue, KeyValuePipe } from '@angular/common';
+import { HttpParams } from '@angular/common/http';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
-import { debounceTime, distinctUntilChanged, filter, first, firstValueFrom, map, Subject, takeUntil } from 'rxjs';
+import { distinctUntilChanged, filter, first, firstValueFrom, map, Subject, takeUntil } from 'rxjs';
 import { ALL_FEATURE_TYPES, FEATURES } from '../../constants/features.constants';
 import { JURA_POINTS_OF_INTEREST } from '../../constants/jura-points-of-interest.constants';
 import { PINS, ALL_PIN_TYPES } from '../../constants/pins.constants';
+import { SEASONS } from '../../constants/seasons.constants';
 import { InfoWindow } from '../../map-overlays/info-window';
 import { Marker } from '../../map-overlays/marker';
 import { FeatureType } from '../../models/feature-type';
@@ -20,8 +22,6 @@ import { Trail } from '../../models/trail';
 import { TrailMetadataService } from '../../services/trail-metadata.service';
 import { TrailParserBrowserService } from '../../services/trail-parser-browser.service';
 import { TrailPolylineService } from '../../services/trail-polyline.service';
-import { SEASONS } from '../../constants/seasons.constants';
-import { HttpParams } from '@angular/common/http';
 
 // TODO : use this to transform "svg pin + icon font" markers to simple "webp" markers
 // import html2canvas from 'html2canvas';
