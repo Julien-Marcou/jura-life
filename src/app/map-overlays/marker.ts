@@ -30,7 +30,7 @@ export class Marker extends google.maps.OverlayView {
 
     // Bring the focused marker into the viewport
     this.markerElement.addEventListener('focus', () => {
-      if (!this.allowMarkerInteraction) {
+      if (this.allowMarkerInteraction) {
         this.onFocus.next();
       }
     }, { passive: true });
