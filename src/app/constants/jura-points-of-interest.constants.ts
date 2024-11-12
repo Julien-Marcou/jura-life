@@ -359,19 +359,6 @@ export const JURA_POINTS_OF_INTEREST: Record<string, SerializedPointOfInterest> 
     isLandscape: false,
     isActivity: true,
   },
-  'ski-noirmont': {
-    name: 'Station de Ski du Noirmont',
-    latitude: 46.49171599839911,
-    longitude: 6.0948314489874145,
-    type: PinType.SkiStation,
-    description: `<a href="/img/ski-maps/massif-noirmont.png" target="_blank">Plan des pistes<span class="material-icons" aria-hidden="true">open_in_new</span></a><br>
-<a href="https://www.jurasurleman.com/domaine-skiable/massif-du-noirmont/" target="_blank">jurasurleman.com<span class="material-icons" aria-hidden="true">open_in_new</span></a>`,
-    isWinterExclusive: true,
-    isSummerExclusive: false,
-    isIndoor: false,
-    isLandscape: false,
-    isActivity: true,
-  },
   'ski-lelex': {
     name: 'Station de Ski de Lélex',
     latitude: 46.304188196750474,
