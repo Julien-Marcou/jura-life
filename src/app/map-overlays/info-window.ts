@@ -25,10 +25,10 @@ export class InfoWindow extends google.maps.OverlayView {
       <div class="info-window-anchor">
         <div class="info-window">
           <button class="minimize-button button" type="button" title="Réduire" aria-label="Réduire la fenêtre">
-            <span class="material-icons" aria-hidden="true">expand_more</span>
+            <span class="material-icons" aria-hidden="true">remove</span>
           </button>
           <button class="maximize-button button" type="button" title="Agrandir" aria-label="Agrandir la fenêtre">
-            <span class="material-icons" aria-hidden="true">expand_less</span>
+            <span class="material-icons" aria-hidden="true">unfold_more</span>
           </button>
           <button class="close-button button" type="button" title="Fermer" aria-label="Fermer la fenêtre">
             <span class="material-icons" aria-hidden="true">close</span>

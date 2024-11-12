@@ -27,10 +27,15 @@
   position: absolute;
   width: 0;
   height: 0;
+  filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.37));
+
+  .info-window-anchor:after, .info-window {
+    background-color: white;
+  }
 
   .info-window-anchor {
     position: absolute;
-    bottom: 63px;
+    bottom: 65px; // 52px (pin height) + 12px (info window arrow height) + 1px (spacing)
     left: 0;
     width: 100vw;
     height: 0;
@@ -40,24 +45,21 @@
       position: absolute;
       top: 0;
       left: 0;
-      height: 15px;
-      width: 15px;
-      transform: translate(-50%, -50%) rotate(-45deg);
-      background: linear-gradient(45deg, rgba(255, 255, 255, 1) 11px, rgba(255, 255, 255, 0) 12px);
-      box-shadow: -2px 2px 2px 0 rgba(0, 0, 0, 0.2);
+      height: 12px;
+      width: 23px;
+      transform: translateX(-50%);
+      clip-path: polygon(0 0, 50% 100%, 100% 0);
     }
   }
 
   .info-window {
     position: absolute;
     box-sizing: border-box;
-    top: 0;
+    bottom: 0;
     left: 0;
     min-width: 80px;
-    transform: translate(-50%, -100%);
-    background-color: white;
+    transform: translateX(-50%);
     border-radius: 8px;
-    box-shadow: 0 2px 7px 1px rgba(0, 0, 0, 0.3);
 
     .info-window-viewport {
       --scrollbar-width: 14px;
@@ -102,6 +104,10 @@
 
     .maximize-button {
       display: none;
+
+      .material-icons {
+        // transform: rotate(45deg);
+      }
     }
 
     .content {
@@ -126,8 +132,7 @@
         }
 
         .material-icons {
-          opacity: 0.5;
-          color: #bbb;
+          color: #ccc;
           margin-top: -4px;
           vertical-align: middle;
           font-size: 20px;
@@ -135,7 +140,7 @@
 
         &:hover, &:focus {
           .material-icons {
-            opacity: 1;
+            color: #888;
           }
         }
       }
@@ -288,19 +293,44 @@
   }
 
   &.minimized {
-    opacity: 0.8;
+    filter: none;
+    color: #000;
+    text-shadow: 0 0 2px white;
 
-    .minimize-button {
-      display: none;
-    }
-
-    .maximize-button {
-      display: block;
+    .info-window-anchor:after, .info-window {
+      background-color: rgba(255, 255, 255, 0.66);
     }
 
     .info-window {
+      display: grid;
+      align-content: center;
+      align-items: center;
+      justify-content: center;
+      grid-template: "content action" 1fr / 1fr min-content;
+      gap: 8px;
+      padding: 8px 6px 8px 14px;
+
+      .info-window-viewport {
+        --content-padding: 0;
+      }
+
+      .minimize-button, .close-button {
+        display: none;
+      }
+
+      .maximize-button {
+        grid-area: action;
+        display: flex;
+        position: initial;
+        color: #666;
+        text-shadow: 0 0 2px white;
+        &:hover, &:focus {
+          color: #000;
+        }
+      }
 
       .content {
+        grid-area: content;
 
         > * {
           display: none;
@@ -308,13 +338,15 @@
 
         > .permalink {
           display: block;
+          padding: 0;
+          margin: 0;
 
           .title {
             font-size: 16px;
           }
 
           .material-icons {
-            font-size: 18px;
+            display: none;
           }
         }
       }
