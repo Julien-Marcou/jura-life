@@ -30,7 +30,6 @@ import { TrailPolylineService } from '../../services/trail-polyline.service';
   selector: 'app-google-maps',
   templateUrl: './google-maps.component.html',
   styleUrls: ['./google-maps.component.scss'],
-  standalone: true,
   imports: [
     FormsModule,
     ReactiveFormsModule,
