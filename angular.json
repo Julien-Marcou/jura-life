@@ -40,8 +40,6 @@
         "build": {
           "builder": "@angular-builders/custom-esbuild:application",
           "options": {
-            "outputPath": "dist/jura-life",
-            "index": "src/index.html",
             "browser": "src/main.ts",
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",

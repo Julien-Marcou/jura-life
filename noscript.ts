@@ -73,7 +73,7 @@ const renderNoscriptContent = (): string => html`
 `;
 
 export default (indexHtml: string): string => {
-  const noscriptContentTag = '{{NOSCRIPT_CONTENT}}';
+  const noscriptContentTag = '{{ NOSCRIPT_CONTENT }}';
   const noscriptContent = renderNoscriptContent();
   return indexHtml.replace(noscriptContentTag, noscriptContent);
 };
