@@ -125,7 +125,8 @@
       margin-right: 5px;
     }
 
-    .check-all, .uncheck-all {
+    .check-all,
+    .uncheck-all {
       background-color: #f6f6f6;
       padding: 6px 6px 6px 10px;
       margin-bottom: 5px;
@@ -133,7 +134,8 @@
       border-radius: 4px;
       color: #565656;
 
-      &:hover, &:active {
+      &:hover,
+      &:active {
         background-color: #ebebeb;
         color: #000;
       }
@@ -154,7 +156,7 @@
       height: 22px;
       line-height: 22px;
       vertical-align: middle;
-      font-family: 'Map Icons';
+      font-family: 'Map Icons', sans-serif;
       text-align: center;
       border: 1px solid #000;
       margin: 0 4px 0 2px;
@@ -200,7 +202,8 @@
   box-shadow: 0 1px 4px -1px rgb(0 0 0 / 30%);
   color: #565656;
 
-  &:hover, &:active {
+  &:hover,
+  &:active {
     background-color: #ebebeb;
     color: #000;
   }
@@ -232,7 +235,8 @@
   border-top: 1px solid rgb(0 0 0 / 30%);
   color: #565656;
 
-  &:hover, &:active {
+  &:hover,
+  &:active {
     background-color: #ebebeb;
     color: #000;
   }
@@ -279,7 +283,8 @@
     background-color: #fff;
     box-shadow: 0 1px 4px -1px rgba(0, 0, 0, 0.3);
 
-    &:hover, &:active {
+    &:hover,
+    &:active {
       background-color: #ebebeb;
       color: #000;
     }

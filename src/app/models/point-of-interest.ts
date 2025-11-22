@@ -1,7 +1,7 @@
-import { InfoWindow } from '../map-overlays/info-window';
-import { Marker } from '../map-overlays/marker';
-import { PinType } from './pin-type';
-import { Trail } from './trail';
+import type { PinType } from './pin-type';
+import type { Trail } from './trail';
+import type { InfoWindow } from '../map-overlays/info-window';
+import type { Marker } from '../map-overlays/marker';
 
 export type PointOfInterest = {
   id: string;
@@ -11,8 +11,8 @@ export type PointOfInterest = {
   content: HTMLElement;
   marker: Marker;
   infoWindow: InfoWindow;
-  trails?: Array<Trail>;
-  photospheres?: Array<string>;
+  trails?: Trail[];
+  photospheres?: string[];
   isWinterExclusive: boolean;
   isSummerExclusive: boolean;
   isIndoor: boolean;

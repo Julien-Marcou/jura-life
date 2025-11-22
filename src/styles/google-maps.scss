@@ -29,7 +29,8 @@
   height: 0;
   filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.37));
 
-  .info-window-anchor:after, .info-window {
+  .info-window-anchor:after,
+  .info-window {
     background-color: white;
   }
 
@@ -41,7 +42,7 @@
     height: 0;
 
     &:after {
-      content: "";
+      content: '';
       position: absolute;
       top: 0;
       left: 0;
@@ -85,7 +86,8 @@
         font-size: 20px;
       }
 
-      &:hover, &:focus {
+      &:hover,
+      &:focus {
         color: #000;
       }
 
@@ -94,7 +96,8 @@
       }
     }
 
-    .minimize-button, .maximize-button {
+    .minimize-button,
+    .maximize-button {
       right: 25px;
 
       .material-icons {
@@ -134,7 +137,8 @@
           font-size: 20px;
         }
 
-        &:hover, &:focus {
+        &:hover,
+        &:focus {
           .material-icons {
             color: #888;
           }
@@ -161,7 +165,8 @@
             box-shadow: var(--accessibility-shadow-info-window);
           }
 
-          &:hover, &:focus {
+          &:hover,
+          &:focus {
             text-decoration: underline;
           }
 
@@ -293,7 +298,8 @@
     color: #000;
     text-shadow: 0 0 2px white;
 
-    .info-window-anchor:after, .info-window {
+    .info-window-anchor:after,
+    .info-window {
       background-color: rgba(255, 255, 255, 0.66);
     }
 
@@ -302,7 +308,7 @@
       align-content: center;
       align-items: center;
       justify-content: center;
-      grid-template: "content action" 1fr / 1fr min-content;
+      grid-template: 'content action' 1fr / 1fr min-content;
       gap: 8px;
       padding: 8px 6px 8px 14px;
 
@@ -310,7 +316,8 @@
         --content-padding: 0;
       }
 
-      .minimize-button, .close-button {
+      .minimize-button,
+      .close-button {
         display: none;
       }
 
@@ -320,7 +327,8 @@
         position: initial;
         color: #666;
         text-shadow: 0 0 2px white;
-        &:hover, &:focus {
+        &:hover,
+        &:focus {
           color: #000;
         }
       }

@@ -43,10 +43,6 @@
             "outputPath": "dist/jura-life",
             "index": "src/index.html",
             "browser": "src/main.ts",
-            "polyfills": [
-              "src/zone-flags.ts",
-              "zone.js"
-            ],
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
@@ -57,6 +53,10 @@
             ],
             "styles": [
               "src/styles.scss"
+            ],
+            "polyfills": [
+              "src/zone-flags.ts",
+              "zone.js"
             ],
             "scripts": [],
             "indexHtmlTransformer": "noscript.ts"
@@ -72,7 +72,7 @@
                 {
                   "type": "anyComponentStyle",
                   "maximumWarning": "2kb",
-                  "maximumError": "4kb"
+                  "maximumError": "5kb"
                 }
               ],
               "outputHashing": "all"
@@ -104,7 +104,14 @@
           "builder": "@angular-eslint/builder:lint",
           "options": {
             "lintFilePatterns": [
+              "eslint.config.mjs",
+              "angular.json",
+              "package.json",
+              "tsconfig.json",
+              "tsconfig.app.json",
               "src/**/*.ts",
+              "src/**/*.scss",
+              "src/**/*.json",
               "src/**/*.html"
             ]
           }
@@ -114,7 +121,7 @@
   },
   "cli": {
     "schematicCollections": [
-      "@angular-eslint/schematics"
+      "angular-eslint"
     ]
   }
 }

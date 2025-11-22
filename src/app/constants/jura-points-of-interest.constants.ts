@@ -1,6 +1,6 @@
-/* eslint-disable max-len, @typescript-eslint/naming-convention */
+import type { SerializedPointOfInterest } from '../models/serialized-point-of-interest';
+
 import { PinType } from '../models/pin-type';
-import { SerializedPointOfInterest } from '../models/serialized-point-of-interest';
 
 export const JURA_POINTS_OF_INTEREST: Record<string, SerializedPointOfInterest> = {
   'belvedere-repenty': {
@@ -905,7 +905,7 @@ export const JURA_POINTS_OF_INTEREST: Record<string, SerializedPointOfInterest> 
     isLandscape: false,
     isActivity: false,
   },
-  longchaumois: {
+  'longchaumois': {
     name: 'Longchaumois',
     latitude: 46.45923581126969,
     longitude: 5.933146944002905,

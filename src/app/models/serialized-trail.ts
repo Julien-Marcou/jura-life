@@ -6,7 +6,7 @@ export type SerializedTrail = {
 };
 
 export type ParsedTrail = {
-  points: Array<TrailPoint>;
+  points: TrailPoint[];
   minElevation: number;
   maxElevation: number;
   inverted?: boolean;

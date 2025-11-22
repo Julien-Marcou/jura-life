@@ -20,7 +20,8 @@ a {
   text-decoration: none;
 }
 
-ul, ol {
+ul,
+ol {
   list-style: none;
   margin: 0;
   padding: 0;
@@ -30,7 +31,12 @@ p {
   margin: 0 0 1.5rem;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-weight: normal;
   margin: 0 0 1.5rem;
   line-height: 1.15em;
@@ -51,17 +57,27 @@ button::-moz-focus-inner {
   border: 0 none;
 }
 
-button, input[type="checkbox"], input[type="radio"], select {
+button,
+input[type='checkbox'],
+input[type='radio'],
+select {
   cursor: pointer;
 }
 
-button, input, select, textarea, optgroup, option {
+button,
+input,
+select,
+textarea,
+optgroup,
+option {
   color: inherit;
   font: inherit;
   margin: 0;
 }
 
-input, select, textarea {
+input,
+select,
+textarea {
   display: block;
   min-width: 0;
   width: 100%;
@@ -78,10 +94,12 @@ table {
   border: 0 none;
 }
 
-th, td {
+th,
+td {
   border: 1px solid;
 }
 
-th, td {
+th,
+td {
   padding: 1rem;
 }

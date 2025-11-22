@@ -1,5 +1,5 @@
-import { ParsedTrail } from '../models/serialized-trail';
-import { TrailMetadata } from '../models/trail-metadata';
+import type { ParsedTrail } from '../models/serialized-trail';
+import type { TrailMetadata } from '../models/trail-metadata';
 
 export class TrailMetadataService {
 
@@ -10,7 +10,7 @@ export class TrailMetadataService {
     let positiveElevation = 0;
     let negativeElevation = 0;
     parsedTrail.points.forEach((trailPoint, trailPointIndex) => {
-      const previousTrailPoint = parsedTrail.points[trailPointIndex - 1];
+      const previousTrailPoint = parsedTrail.points.at(trailPointIndex - 1);
       if (!previousTrailPoint) {
         return;
       }
@@ -31,7 +31,7 @@ export class TrailMetadataService {
       endingElevation: parsedTrail.inverted ? startingElevation : endingElevation,
       positiveElevation: parsedTrail.inverted ? negativeElevation : positiveElevation,
       negativeElevation: parsedTrail.inverted ? positiveElevation : negativeElevation,
-      length: length,
+      length,
     };
   }
 
@@ -41,8 +41,8 @@ export class TrailMetadataService {
     const dLon = (lon2 - lon1) * Math.PI / 180;
     lat1 = lat1 * Math.PI / 180;
     lat2 = lat2 * Math.PI / 180;
-    const a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.sin(dLon/2) * Math.sin(dLon/2) * Math.cos(lat1) * Math.cos(lat2);
-    return earthRadiusKm * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.sin(dLon / 2) * Math.sin(dLon / 2) * Math.cos(lat1) * Math.cos(lat2);
+    return earthRadiusKm * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   }
 
 }

@@ -1,11 +1,11 @@
-import { ParsedTrail, TrailPoint } from '../models/serialized-trail';
-import { TrailPolyline } from '../models/trail-polyline';
+import type { ParsedTrail, TrailPoint } from '../models/serialized-trail';
+import type { TrailPolyline } from '../models/trail-polyline';
 
 export class TrailPolylineService {
 
-  private static StrokeColor = '#fff';
+  private static readonly StrokeColor = '#fff';
 
-  private static ElevationGradient = [
+  private static readonly ElevationGradient = [
     {
       red: 0,
       green: 198,
@@ -41,7 +41,7 @@ export class TrailPolylineService {
       strokeOpacity: 1.0,
       strokeWeight: 7,
     });
-    const elevationPolylines: Array<google.maps.Polyline> = [];
+    const elevationPolylines: google.maps.Polyline[] = [];
 
     let previousTrailPoint: TrailPoint | undefined;
     let previousPolylinePoint: google.maps.LatLng | undefined;
@@ -63,8 +63,8 @@ export class TrailPolylineService {
     }
 
     return {
-      masterPolyline: masterPolyline,
-      elevationPolylines: elevationPolylines,
+      masterPolyline,
+      elevationPolylines,
     };
   }
 

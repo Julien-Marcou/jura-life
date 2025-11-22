@@ -1,5 +1,7 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+import type { ScrollableComponentElement } from 'scrollable-component';
+
 import { Subject } from 'rxjs';
-import { ScrollableComponentElement } from 'scrollable-component';
 
 export class InfoWindow extends google.maps.OverlayView {
 
@@ -36,16 +38,16 @@ export class InfoWindow extends google.maps.OverlayView {
           <scrollable-component class="info-window-viewport" scrollbar-visibility="always"></scrollable-component>
         </div>
       </div>`;
-    this.infoWindowElement = this.containerElement.querySelector('.info-window') as HTMLElement;
-    this.viewportElement = this.infoWindowElement.querySelector('.info-window-viewport') as ScrollableComponentElement;
+    this.infoWindowElement = this.containerElement.querySelector('.info-window')!;
+    this.viewportElement = this.infoWindowElement.querySelector('.info-window-viewport')!;
     this.viewportElement.appendChild(content);
-    (this.infoWindowElement.querySelector('.minimize-button') as HTMLButtonElement).addEventListener('click', () => {
+    (this.infoWindowElement.querySelector('.minimize-button')!).addEventListener('click', () => {
       this.containerElement.classList.add('minimized');
     }, { passive: true });
-    (this.infoWindowElement.querySelector('.maximize-button') as HTMLButtonElement).addEventListener('click', () => {
+    (this.infoWindowElement.querySelector('.maximize-button')!).addEventListener('click', () => {
       this.containerElement.classList.remove('minimized');
     }, { passive: true });
-    (this.infoWindowElement.querySelector('.close-button') as HTMLButtonElement).addEventListener('click', () => {
+    (this.infoWindowElement.querySelector('.close-button')!).addEventListener('click', () => {
       this.close();
       this.onSelfClose.next();
     }, { passive: true });
@@ -70,7 +72,7 @@ export class InfoWindow extends google.maps.OverlayView {
   public override draw(): void {
     if (this.isWindowOpen) {
       const containerProjection = this.getProjection();
-      if (!containerProjection) {
+      if (!(containerProjection as unknown)) {
         return;
       }
       const maxWidth = window.innerWidth - 70;

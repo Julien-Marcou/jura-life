@@ -1,24 +1,30 @@
-import { KeyValue, KeyValuePipe } from '@angular/common';
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+import type { FeatureType } from '../../models/feature-type';
+import type { Pin } from '../../models/pin';
+import type { PinFilters } from '../../models/pin-filters';
+import type { PointOfInterest } from '../../models/point-of-interest';
+import type { SerializedPointOfInterest } from '../../models/serialized-point-of-interest';
+import type { Trail } from '../../models/trail';
+import type { KeyValue } from '@angular/common';
+import type { ElementRef, OnInit } from '@angular/core';
+import type { SafeResourceUrl } from '@angular/platform-browser';
+
+import { KeyValuePipe } from '@angular/common';
 import { HttpParams } from '@angular/common/http';
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, inject, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { distinctUntilChanged, filter, first, firstValueFrom, map, Subject, takeUntil } from 'rxjs';
+
 import { ALL_FEATURE_TYPES, FEATURES } from '../../constants/features.constants';
 import { JURA_POINTS_OF_INTEREST } from '../../constants/jura-points-of-interest.constants';
 import { PINS, ALL_PIN_TYPES } from '../../constants/pins.constants';
 import { SEASONS } from '../../constants/seasons.constants';
 import { InfoWindow } from '../../map-overlays/info-window';
 import { Marker } from '../../map-overlays/marker';
-import { FeatureType } from '../../models/feature-type';
-import { Pin } from '../../models/pin';
-import { PinFilters } from '../../models/pin-filters';
 import { PinType } from '../../models/pin-type';
-import { PointOfInterest } from '../../models/point-of-interest';
 import { SeasonType } from '../../models/season-type';
-import { SerializedPointOfInterest } from '../../models/serialized-point-of-interest';
-import { Trail } from '../../models/trail';
 import { TrailMetadataService } from '../../services/trail-metadata.service';
 import { TrailParserBrowserService } from '../../services/trail-parser-browser.service';
 import { TrailPolylineService } from '../../services/trail-polyline.service';
@@ -38,7 +44,11 @@ import { TrailPolylineService } from '../../services/trail-polyline.service';
 })
 export class GoogleMapsComponent implements OnInit {
 
-  @ViewChild('mapElement', {static: true}) private mapElement!: ElementRef<HTMLElement>;
+  private readonly route = inject(ActivatedRoute);
+  private readonly sanitizer = inject(DomSanitizer);
+  private readonly router = inject(Router);
+
+  @ViewChild('mapElement', { static: true }) private mapElement!: ElementRef<HTMLElement>;
 
   public mapOptions: google.maps.MapOptions = {
     center: { lat: 46.4789051, lng: 5.8939042 },
@@ -75,10 +85,11 @@ export class GoogleMapsComponent implements OnInit {
   public photosphere?: SafeResourceUrl;
   public displayFilters = false;
   public filtersForm = new FormGroup({
-    season: new FormControl(SeasonType.None, {nonNullable: true}),
+    season: new FormControl(SeasonType.None, { nonNullable: true }),
     features: new FormGroup(GoogleMapsComponent.getFeatureTypeControls()),
     categories: new FormGroup(GoogleMapsComponent.getPinTypeControls()),
   });
+
   public pointOfInterestCountByPinType = GoogleMapsComponent.getPointOfInterestCountByPinType();
   public seasons = SEASONS;
   public features = FEATURES;
@@ -86,7 +97,7 @@ export class GoogleMapsComponent implements OnInit {
   public mapLoaded = false;
 
   private map!: google.maps.Map;
-  private pointsOfInterest: Map<string, PointOfInterest> = new Map();
+  private pointsOfInterest = new Map<string, PointOfInterest>();
   private contentTemplate = document.createElement('template');
   private descriptionTemplate = document.createElement('template');
   private trailsTemplate = document.createElement('template');
@@ -95,7 +106,7 @@ export class GoogleMapsComponent implements OnInit {
   private photosphereTemplate = document.createElement('template');
   private readonly pointOfInterestAdded = new Subject<PointOfInterest>();
 
-  constructor(private readonly route: ActivatedRoute, private readonly sanitizer: DomSanitizer, private readonly router: Router) {
+  constructor() {
     this.filtersForm = new FormGroup(this.filtersForm.controls);
     this.contentTemplate.innerHTML = `
       <div class="content">
@@ -135,7 +146,7 @@ export class GoogleMapsComponent implements OnInit {
   private static getFeatureTypeControls(): Record<FeatureType, FormControl<boolean>> {
     const iterableFeatureTypeControls = ALL_FEATURE_TYPES.map((featureType) => [
       featureType,
-      new FormControl(false, {nonNullable: true}),
+      new FormControl(false, { nonNullable: true }),
     ] as const);
     return Object.fromEntries(iterableFeatureTypeControls) as Record<FeatureType, FormControl<boolean>>;
   }
@@ -143,7 +154,7 @@ export class GoogleMapsComponent implements OnInit {
   private static getPinTypeControls(): Record<PinType, FormControl<boolean>> {
     const iterablePinTypeControls = ALL_PIN_TYPES.map((pinType) => [
       pinType,
-      new FormControl(true, {nonNullable: true}),
+      new FormControl(true, { nonNullable: true }),
     ] as const);
     return Object.fromEntries(iterablePinTypeControls) as Record<PinType, FormControl<boolean>>;
   }
@@ -186,7 +197,7 @@ export class GoogleMapsComponent implements OnInit {
 
   public toggleFilters(): void {
     this.displayFilters = !this.displayFilters;
-    const filtersForm = document.querySelector('.filters') as HTMLFormElement;
+    const filtersForm: HTMLFormElement = document.querySelector('.filters')!;
     filtersForm.setAttribute('tabindex', '0');
     if (this.displayFilters) {
       requestAnimationFrame(() => {
@@ -242,7 +253,7 @@ export class GoogleMapsComponent implements OnInit {
           const poiId = params.get('poi');
           const trailIndex = params.get('trail');
           return {
-            poiId: poiId,
+            poiId,
             trailIndex: trailIndex ? parseInt(trailIndex, 10) : 0,
           };
         }),
@@ -297,26 +308,27 @@ export class GoogleMapsComponent implements OnInit {
       });
   }
 
-
-  private async initAllPointsOfInterest(): Promise<void> {
-    try {
-      await Promise.all(Object.entries(JURA_POINTS_OF_INTEREST).map(([id, poi]) => this.addPointOfInterest(id, poi)));
-      this.pointOfInterestAdded.complete();
-    }
-    catch (error) {
-      console.error(error);
-    }
+  private initAllPointsOfInterest(): void {
+    Promise.all(Object.entries(JURA_POINTS_OF_INTEREST).map(([id, poi]) => this.addPointOfInterest(id, poi)))
+      .then(() => {
+        this.pointOfInterestAdded.complete();
+      })
+      .catch((error: unknown) => {
+        console.error(error);
+      });
   }
 
   private initFormControls(): void {
-    this.filtersForm.valueChanges.subscribe(async (filters) => {
+    this.filtersForm.valueChanges.subscribe((filters) => {
       // resolving the incompatibilities between features will trigger the "valueChanges" again
       const hasIncompatibility = this.resolveFeatureIncompatibilities(filters);
 
       // so we can only proceed once the incompatibilities are resolved
       if (!hasIncompatibility) {
         this.filterPointsOfInterest(filters);
-        this.updateQueryParamsFromFilters(filters);
+        this.updateQueryParamsFromFilters(filters).catch((error: unknown) => {
+          console.error(error);
+        });
       }
     });
   }
@@ -324,19 +336,19 @@ export class GoogleMapsComponent implements OnInit {
   private resolveFeatureIncompatibilities(filters: PinFilters): boolean {
     let hasIncompatibility = false;
 
-    ALL_FEATURE_TYPES.forEach((featureType) => {
+    for (const featureType of ALL_FEATURE_TYPES) {
       const feature = FEATURES[featureType];
       const featureControl = this.filtersForm.controls.features.controls[featureType];
       const shouldDisableFeature = feature.isIncompatibleWith?.some((incompatibleFeatureType) => filters.features?.[incompatibleFeatureType]);
       if (featureControl.enabled && shouldDisableFeature) {
-        featureControl.disable({emitEvent: false});
+        featureControl.disable({ emitEvent: false });
         hasIncompatibility = true;
       }
       else if (featureControl.disabled && !shouldDisableFeature) {
-        featureControl.enable({emitEvent: false});
+        featureControl.enable({ emitEvent: false });
         hasIncompatibility = true;
       }
-    });
+    }
 
     if (hasIncompatibility) {
       this.filtersForm.updateValueAndValidity();
@@ -366,7 +378,7 @@ export class GoogleMapsComponent implements OnInit {
     const currentHttpParams = new HttpParams({ fromObject: await firstValueFrom(this.route.queryParams) }).toString();
     const newHttpParams = new HttpParams({ fromObject: queryParams }).toString();
     if (currentHttpParams !== newHttpParams) {
-      await this.router.navigate([], { queryParams: queryParams, replaceUrl: true });
+      await this.router.navigate([], { queryParams, replaceUrl: true });
     }
   }
 
@@ -387,19 +399,19 @@ export class GoogleMapsComponent implements OnInit {
       let filtersHaveChanged = false;
 
       const season = params.get('season');
-      if (season !== null && this.filtersForm.controls.season.value !== season) {
-        this.filtersForm.controls.season.setValue(season as SeasonType, {emitEvent: false});
+      if (season !== null && (this.filtersForm.controls.season.value as string) !== season) {
+        this.filtersForm.controls.season.setValue(season as SeasonType, { emitEvent: false });
         filtersHaveChanged = true;
       }
 
       const features = params.get('features');
       if (features !== null) {
-        const enabledFeatures = features.split(',') as Array<FeatureType>;
+        const enabledFeatures = features.split(',') as FeatureType[];
         ALL_FEATURE_TYPES.forEach((feature) => {
           const shouldSelect = enabledFeatures.includes(feature);
           const featureControl = this.filtersForm.controls.features.controls[feature];
           if (featureControl.value !== shouldSelect) {
-            featureControl.setValue(shouldSelect, {emitEvent: false});
+            featureControl.setValue(shouldSelect, { emitEvent: false });
             filtersHaveChanged = true;
           }
         });
@@ -407,12 +419,12 @@ export class GoogleMapsComponent implements OnInit {
 
       const categories = params.get('categories');
       if (categories !== null) {
-        const enabledCategories = categories.split(',') as Array<PinType>;
+        const enabledCategories = categories.split(',') as PinType[];
         ALL_PIN_TYPES.forEach((category) => {
           const shouldSelected = enabledCategories.includes(category);
           const categoryControl = this.filtersForm.controls.categories.controls[category];
           if (categoryControl.value !== shouldSelected) {
-            categoryControl.setValue(shouldSelected, {emitEvent: false});
+            categoryControl.setValue(shouldSelected, { emitEvent: false });
             filtersHaveChanged = true;
           }
         });
@@ -437,7 +449,7 @@ export class GoogleMapsComponent implements OnInit {
   }
 
   private async addPointOfInterest(id: string, serializedPoi: SerializedPointOfInterest): Promise<void> {
-    let trails: Array<Trail> | undefined;
+    let trails: Trail[] | undefined;
     if (serializedPoi.trails?.length) {
       trails = await Promise.all(serializedPoi.trails.map(async (serializedTrail): Promise<Trail> => {
         const parsedTrail = await TrailParserBrowserService.parseTrail(serializedTrail);
@@ -457,14 +469,14 @@ export class GoogleMapsComponent implements OnInit {
     const content = this.createContent(id, serializedPoi, trails);
     const infoWindow = new InfoWindow(zIndex, position, this.map, content);
     const poi: PointOfInterest = {
-      id: id,
+      id,
       name: serializedPoi.name,
       type: serializedPoi.type,
-      position: position,
-      content: content,
-      marker: marker,
-      infoWindow: infoWindow,
-      trails: trails,
+      position,
+      content,
+      marker,
+      infoWindow,
+      trails,
       photospheres: serializedPoi.photospheres,
       isWinterExclusive: serializedPoi.isWinterExclusive,
       isSummerExclusive: serializedPoi.isSummerExclusive,
@@ -502,12 +514,12 @@ export class GoogleMapsComponent implements OnInit {
     requestAnimationFrame(() => {
       const bounds = new google.maps.LatLngBounds();
       let hasVisiblePOIs = false;
-      this.pointsOfInterest.forEach((poi) => {
+      for (const poi of this.pointsOfInterest.values()) {
         if (poi.marker.isVisible()) {
           bounds.extend(new google.maps.LatLng(poi.position.lat(), poi.position.lng()));
           hasVisiblePOIs = true;
         }
-      });
+      }
       if (hasVisiblePOIs) {
         this.map.fitBounds(bounds, 20);
       }
@@ -529,11 +541,11 @@ export class GoogleMapsComponent implements OnInit {
     });
   }
 
-  private openPointOfInterest(poi: PointOfInterest, centerViewport: boolean = false, trailIndex: number = 0): void {
+  private openPointOfInterest(poi: PointOfInterest, centerViewport = false, trailIndex = 0): void {
     poi.infoWindow.open();
     if (poi.trails) {
       this.displayTrail(poi.trails[trailIndex]);
-      const selectTrailElement = poi.content.querySelectorAll('.select-trail')[trailIndex];
+      const selectTrailElement = Array.from(poi.content.querySelectorAll('.select-trail')).at(trailIndex);
       if (selectTrailElement) {
         selectTrailElement.setAttribute('disabled', 'true');
         selectTrailElement.innerHTML = '<span class="material-icons" aria-hidden="true">check_box</span>';
@@ -592,32 +604,32 @@ export class GoogleMapsComponent implements OnInit {
     });
   }
 
-  private createContent(id: string, serializedPoi: SerializedPointOfInterest, trails?: Array<Trail>): HTMLElement {
+  private createContent(id: string, serializedPoi: SerializedPointOfInterest, trails?: Trail[]): HTMLElement {
     const contentTemplate = this.contentTemplate.content.cloneNode(true) as DocumentFragment;
-    const contentElement = contentTemplate.querySelector('.content') as HTMLElement;
+    const contentElement: HTMLDivElement = contentTemplate.querySelector('.content')!;
 
-    const permalinkElement = contentElement.querySelector('.permalink') as HTMLLinkElement;
+    const permalinkElement: HTMLLinkElement = contentElement.querySelector('.permalink')!;
     permalinkElement.href = this.router.createUrlTree([], { queryParams: { poi: id } }).toString();
 
-    const titleElement = contentElement.querySelector('.title') as HTMLElement;
+    const titleElement = contentElement.querySelector('.title')!;
     titleElement.textContent = serializedPoi.name;
 
     if (serializedPoi.description) {
       const descriptionTemplate = this.descriptionTemplate.content.cloneNode(true) as DocumentFragment;
-      const descriptionElement = descriptionTemplate.querySelector('.description') as HTMLElement;
+      const descriptionElement = descriptionTemplate.querySelector('.description')!;
       descriptionElement.innerHTML = serializedPoi.description;
       contentElement.appendChild(descriptionElement);
     }
 
     if (trails) {
       const trailsTemplate = this.trailsTemplate.content.cloneNode(true) as DocumentFragment;
-      const trailsElement = trailsTemplate.querySelector('.trails') as HTMLElement;
+      const trailsElement = trailsTemplate.querySelector('.trails')!;
       trails.forEach((trail) => {
         const trailTemplate = this.trailTemplate.content.cloneNode(true) as DocumentFragment;
-        const trailElement = trailTemplate.querySelector('.trail') as HTMLElement;
-        const startingPointElement = trailElement.querySelector('.starting-point') as HTMLElement;
-        const selectTrailElement = trailElement.querySelector('.select-trail') as HTMLElement;
-        const topologyElement = trailElement.querySelector('.topology') as HTMLElement;
+        const trailElement = trailTemplate.querySelector('.trail')!;
+        const startingPointElement = trailElement.querySelector('.starting-point')!;
+        const selectTrailElement = trailElement.querySelector('.select-trail')!;
+        const topologyElement = trailElement.querySelector('.topology')!;
         if (trails.length === 1) {
           selectTrailElement.remove();
         }
@@ -635,7 +647,7 @@ export class GoogleMapsComponent implements OnInit {
             this.displayTrail(trail);
           }, { passive: true });
         }
-        startingPointElement.textContent = `${trail.startingPoint}`;
+        startingPointElement.textContent = trail.startingPoint;
         selectTrailElement.setAttribute('title', 'Voir la tracé GPS');
         selectTrailElement.setAttribute('aria-label', `Voir la tracé GPS : ${trail.startingPoint}`);
         topologyElement.innerHTML = `
@@ -670,16 +682,16 @@ export class GoogleMapsComponent implements OnInit {
 
     if (serializedPoi.photospheres) {
       const photospheresTemplate = this.photospheresTemplate.content.cloneNode(true) as DocumentFragment;
-      const photospheresElement = photospheresTemplate.querySelector('.photospheres') as HTMLElement;
+      const photospheresElement = photospheresTemplate.querySelector('.photospheres')!;
       serializedPoi.photospheres.forEach((photosphere, photosphereIndex) => {
         const photosphereTemplate = this.photosphereTemplate.content.cloneNode(true) as DocumentFragment;
-        const photosphereElement = photosphereTemplate.querySelector('.photosphere') as HTMLElement;
-        const labelElement = photosphereElement.querySelector('.label') as HTMLElement;
-        const selectPhotosphereElement = photosphereElement.querySelector('.select-photosphere') as HTMLElement;
+        const photosphereElement = photosphereTemplate.querySelector('.photosphere')!;
+        const labelElement = photosphereElement.querySelector('.label')!;
+        const selectPhotosphereElement = photosphereElement.querySelector('.select-photosphere')!;
         selectPhotosphereElement.addEventListener('click', () => {
           this.photosphere = this.sanitizer.bypassSecurityTrustResourceUrl(`https://www.google.com/maps/embed?pb=${photosphere}`);
           requestAnimationFrame(() => {
-            const closePhotosphereButton = document.querySelector('.close-photosphere-button') as HTMLButtonElement;
+            const closePhotosphereButton: HTMLButtonElement = document.querySelector('.close-photosphere-button')!;
             closePhotosphereButton.focus();
           });
         }, { passive: true });
@@ -704,10 +716,10 @@ export class GoogleMapsComponent implements OnInit {
     if (filters.features?.hasPhotosphere && !poi.photospheres) {
       return false;
     }
-    if (filters.features?.hasTrail && (!poi.trails && poi.isAccessibleWithoutWalkingMuch !== false || poi.type === PinType.ViaFerrata)) {
+    if (filters.features?.hasTrail && ((!poi.trails && poi.isAccessibleWithoutWalkingMuch !== false) || poi.type === PinType.ViaFerrata)) {
       return false;
     }
-    if (filters.features?.hasNoTrail && (poi.trails && poi.isAccessibleWithoutWalkingMuch === undefined || poi.isAccessibleWithoutWalkingMuch === false)) {
+    if (filters.features?.hasNoTrail && ((poi.trails && poi.isAccessibleWithoutWalkingMuch === undefined) || poi.isAccessibleWithoutWalkingMuch === false)) {
       return false;
     }
     if (filters.features?.isIndoor && !poi.isIndoor) {

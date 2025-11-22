@@ -1,4 +1,5 @@
-import { Pin } from '../models/pin';
+import type { Pin } from '../models/pin';
+
 import { PinType } from '../models/pin-type';
 
 export const PINS: Record<PinType, Pin> = {
@@ -324,4 +325,4 @@ export const PINS: Record<PinType, Pin> = {
   },
 };
 
-export const ALL_PIN_TYPES = Object.keys(PINS) as Array<PinType>;
+export const ALL_PIN_TYPES = Object.keys(PINS) as PinType[];

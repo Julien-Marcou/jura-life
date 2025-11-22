@@ -1,7 +1,6 @@
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-member-access */
 type ZoneGlobalConfigurations = any;
 
-/* eslint-disable no-underscore-dangle */
 (window as ZoneGlobalConfigurations).__Zone_disable_customElements = true;
 (window as ZoneGlobalConfigurations).__Zone_disable_canvas = true;
 (window as ZoneGlobalConfigurations).__Zone_disable_geolocation = true;
@@ -10,13 +9,13 @@ type ZoneGlobalConfigurations = any;
 (window as ZoneGlobalConfigurations).__Zone_disable_FileReader = true;
 
 type AllEventMap = (
-  keyof HTMLElementEventMap |
-  keyof WindowEventHandlersEventMap |
-  keyof WebSocketEventMap |
-  keyof XMLHttpRequestEventTargetEventMap
+  keyof HTMLElementEventMap
+  | keyof WindowEventHandlersEventMap
+  | keyof WebSocketEventMap
+  | keyof XMLHttpRequestEventTargetEventMap
 );
 
-const disabledEvents: Array<AllEventMap> = [
+const disabledEvents: AllEventMap[] = [
   // Scroll
   'scroll',
   'wheel',

@@ -1,7 +1,8 @@
 import { writeFileSync, readFileSync } from 'fs';
+
 import { JURA_POINTS_OF_INTEREST } from './src/app/constants/jura-points-of-interest.constants';
 
-const xml = (strings: TemplateStringsArray, ...values: Array<unknown>): string => {
+const xml = (strings: TemplateStringsArray, ...values: unknown[]): string => {
   let result = '';
   for (let i = 0; i < values.length; i++) {
     result += strings[i];
@@ -10,7 +11,7 @@ const xml = (strings: TemplateStringsArray, ...values: Array<unknown>): string =
       result += value.join('');
     }
     else {
-      result += value;
+      result += `${value}`;
     }
   }
   result += strings[values.length];
@@ -31,8 +32,10 @@ const sitemapContent = xml`<?xml version="1.0" encoding="UTF-8"?>
   </url>`)}
 </urlset>`;
 
+/* eslint-disable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access */
 const angularConfig = JSON.parse(readFileSync(`${__dirname}/angular.json`).toString());
 const outputPath = angularConfig.projects['jura-life'].architect.build.options.outputPath;
 const sitemapFile = `${__dirname}/${outputPath}/sitemap.xml`;
+/* eslint-enable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access */
 
 writeFileSync(sitemapFile, sitemapContent);

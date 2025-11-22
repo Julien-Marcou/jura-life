@@ -1,4 +1,5 @@
-import { Feature } from '../models/feature';
+import type { Feature } from '../models/feature';
+
 import { FeatureType } from '../models/feature-type';
 
 export const FEATURES: Record<FeatureType, Feature> = {
@@ -27,4 +28,4 @@ export const FEATURES: Record<FeatureType, Feature> = {
   },
 };
 
-export const ALL_FEATURE_TYPES = Object.keys(FEATURES) as Array<FeatureType>;
+export const ALL_FEATURE_TYPES = Object.keys(FEATURES) as FeatureType[];

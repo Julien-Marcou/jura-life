@@ -1,4 +1,5 @@
-import { Season } from '../models/season';
+import type { Season } from '../models/season';
+
 import { SeasonType } from '../models/season-type';
 
 export const SEASONS: Record<SeasonType, Season> = {
@@ -22,4 +23,4 @@ export const SEASONS: Record<SeasonType, Season> = {
   },
 };
 
-export const ALL_SEASONS = Object.keys(SEASONS) as Array<SeasonType>;
+export const ALL_SEASONS = Object.keys(SEASONS) as SeasonType[];

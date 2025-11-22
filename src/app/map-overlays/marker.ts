@@ -1,5 +1,7 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+import type { PinType } from '../models/pin-type';
+
 import { Subject } from 'rxjs';
-import { PinType } from '../models/pin-type';
 
 export class Marker extends google.maps.OverlayView {
 
@@ -26,7 +28,7 @@ export class Marker extends google.maps.OverlayView {
       <button class="marker" type="button" title="${title}" aria-label="Afficher les informations pour : ${title}">
         <img class="pin" alt="" aria-hidden="true" src="/img/markers/${type}.webp" width="33" height="52">
       </button>`;
-    this.markerElement = this.containerElement.querySelector('.marker') as HTMLButtonElement;
+    this.markerElement = this.containerElement.querySelector('.marker')!;
 
     // Bring the focused marker into the viewport
     this.markerElement.addEventListener('focus', () => {

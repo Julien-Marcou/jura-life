@@ -13,8 +13,8 @@
   src: url('/fonts/map-icons.woff2') format('woff2');
 }
 
-@import "styles/reset";
-@import "styles/google-maps";
+@import 'styles/reset';
+@import 'styles/google-maps';
 
 body {
   color: #1f1f1f;

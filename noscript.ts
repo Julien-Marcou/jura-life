@@ -1,11 +1,14 @@
+import type { SerializedPointOfInterest } from './src/app/models/serialized-point-of-interest';
+import type { SerializedTrail } from './src/app/models/serialized-trail';
+
 import { JURA_POINTS_OF_INTEREST } from './src/app/constants/jura-points-of-interest.constants';
 import { PINS } from './src/app/constants/pins.constants';
-import { SerializedPointOfInterest } from './src/app/models/serialized-point-of-interest';
-import { SerializedTrail } from './src/app/models/serialized-trail';
 import { TrailMetadataService } from './src/app/services/trail-metadata.service';
 import { TrailParserNodeJsService } from './src/app/services/trail-parser-nodejs.service';
 
-const html = (strings: TemplateStringsArray, ...values: Array<unknown>): string => {
+type HtmlValue = string | number;
+
+const html = (strings: TemplateStringsArray, ...values: HtmlValue[] | HtmlValue[][]): string => {
   let result = '';
   for (let i = 0; i < values.length; i++) {
     result += strings[i];
@@ -14,15 +17,15 @@ const html = (strings: TemplateStringsArray, ...values: Array<unknown>): string 
       result += value.join('');
     }
     else {
-      result += value;
+      result += `${value}`;
     }
   }
   result += strings[values.length];
   return result;
 };
 
-const renderTrailContent = async (serializedTrail: SerializedTrail): Promise<string> => {
-  const parsedTrail = await TrailParserNodeJsService.parseTrail(serializedTrail);
+const renderTrailContent = (serializedTrail: SerializedTrail): string => {
+  const parsedTrail = TrailParserNodeJsService.parseTrail(serializedTrail);
   const trailMetadata = TrailMetadataService.getTrailMetadata(parsedTrail);
   return html`
     <li>
@@ -41,7 +44,7 @@ const renderTrailContent = async (serializedTrail: SerializedTrail): Promise<str
   `;
 };
 
-const renderPoiContent = async (id: string, poi: SerializedPointOfInterest): Promise<string> => html`
+const renderPoiContent = (id: string, poi: SerializedPointOfInterest): string => html`
   <article>
     <h2 id="${id}">${poi.name}</h2>
     <p>
@@ -53,22 +56,24 @@ const renderPoiContent = async (id: string, poi: SerializedPointOfInterest): Pro
       Latitude : ${poi.latitude}<br>
       Longitude : ${poi.longitude}
     </p>
-    ${poi.trails?.length ? html`
+    ${poi.trails?.length
+      ? html`
       <h3>Accès</h3>
       <ul>
-        ${await Promise.all(poi.trails.map((serializedTrail) => renderTrailContent(serializedTrail)))}
+        ${poi.trails.map((serializedTrail) => renderTrailContent(serializedTrail))}
       </ul>
-    ` : ''}
+    `
+      : ''}
   </article>
 `;
 
-const renderNoscriptContent = async (): Promise<string> => html`
+const renderNoscriptContent = (): string => html`
   <h1>Carte Intéractive des Points d'Intérêt Touristique du Haut-Jura</h1>
-  ${await Promise.all(Object.entries(JURA_POINTS_OF_INTEREST).map(([id, poi]) => renderPoiContent(id, poi)))}
+  ${Object.entries(JURA_POINTS_OF_INTEREST).map(([id, poi]) => renderPoiContent(id, poi))}
 `;
 
-export default async (indexHtml: string): Promise<string> => {
+export default (indexHtml: string): string => {
   const noscriptContentTag = '{{NOSCRIPT_CONTENT}}';
-  const noscriptContent = await renderNoscriptContent();
+  const noscriptContent = renderNoscriptContent();
   return indexHtml.replace(noscriptContentTag, noscriptContent);
 };

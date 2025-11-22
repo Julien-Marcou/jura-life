@@ -1,4 +1,4 @@
-import { ParsedTrail, SerializedTrail } from '../models/serialized-trail';
+import type { ParsedTrail, SerializedTrail } from '../models/serialized-trail';
 
 export class TrailParserBrowserService {
 
@@ -18,9 +18,9 @@ export class TrailParserBrowserService {
       const longitude = parseFloat(trackPoint.getAttribute('lon') ?? '0');
       const elevation = parseFloat(trackPoint.querySelector('ele')?.textContent ?? '0');
       parsedTrail.points.push({
-        elevation: elevation,
-        latitude: latitude,
-        longitude: longitude,
+        elevation,
+        latitude,
+        longitude,
       });
       if (elevation < parsedTrail.minElevation) {
         parsedTrail.minElevation = elevation;

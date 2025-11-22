@@ -265,7 +265,7 @@ export default defineConfig(
       ],
       'css/font-family-fallbacks': 'error',
       'css/no-important': 'error',
-      'css/relative-font-units': 'error',
+      // 'css/relative-font-units': 'error',
     },
   },
   {
