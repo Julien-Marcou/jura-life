@@ -6,12 +6,12 @@ import type { PointOfInterest } from '../../models/point-of-interest';
 import type { SerializedPointOfInterest } from '../../models/serialized-point-of-interest';
 import type { Trail } from '../../models/trail';
 import type { KeyValue } from '@angular/common';
-import type { ElementRef, OnInit } from '@angular/core';
+import type { ElementRef, OnInit, WritableSignal } from '@angular/core';
 import type { SafeResourceUrl } from '@angular/platform-browser';
 
 import { KeyValuePipe } from '@angular/common';
 import { HttpParams } from '@angular/common/http';
-import { Component, inject, ViewChild } from '@angular/core';
+import { Component, inject, signal, viewChild } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -48,9 +48,9 @@ export class GoogleMapsComponent implements OnInit {
   private readonly sanitizer = inject(DomSanitizer);
   private readonly router = inject(Router);
 
-  @ViewChild('mapElement', { static: true }) private mapElement!: ElementRef<HTMLElement>;
+  private readonly mapElement = viewChild.required<ElementRef<HTMLElement>>('mapElement');
 
-  public mapOptions: google.maps.MapOptions = {
+  private readonly mapOptions: google.maps.MapOptions = {
     center: { lat: 46.4789051, lng: 5.8939042 },
     zoom: 11,
     clickableIcons: false,
@@ -82,28 +82,29 @@ export class GoogleMapsComponent implements OnInit {
     ],
   };
 
-  public photosphere?: SafeResourceUrl;
-  public displayFilters = false;
-  public filtersForm = new FormGroup({
+  public readonly SEASONS = SEASONS;
+  public readonly FEATURES = FEATURES;
+  public readonly PINS = PINS;
+
+  public readonly filtersForm = new FormGroup({
     season: new FormControl(SeasonType.None, { nonNullable: true }),
     features: new FormGroup(GoogleMapsComponent.getFeatureTypeControls()),
     categories: new FormGroup(GoogleMapsComponent.getPinTypeControls()),
   });
 
-  public pointOfInterestCountByPinType = GoogleMapsComponent.getPointOfInterestCountByPinType();
-  public seasons = SEASONS;
-  public features = FEATURES;
-  public pins = PINS;
-  public mapLoaded = false;
+  public readonly photosphere = signal<SafeResourceUrl | undefined>(undefined);
+  public readonly displayFilters = signal<boolean>(false);
+  public readonly pointOfInterestCountByPinType = GoogleMapsComponent.getPointOfInterestCountByPinType();
+  public readonly mapLoaded = signal<boolean>(false);
 
   private map!: google.maps.Map;
-  private pointsOfInterest = new Map<string, PointOfInterest>();
-  private contentTemplate = document.createElement('template');
-  private descriptionTemplate = document.createElement('template');
-  private trailsTemplate = document.createElement('template');
-  private trailTemplate = document.createElement('template');
-  private photospheresTemplate = document.createElement('template');
-  private photosphereTemplate = document.createElement('template');
+  private readonly pointsOfInterest = new Map<string, PointOfInterest>();
+  private readonly contentTemplate = document.createElement('template');
+  private readonly descriptionTemplate = document.createElement('template');
+  private readonly trailsTemplate = document.createElement('template');
+  private readonly trailTemplate = document.createElement('template');
+  private readonly photospheresTemplate = document.createElement('template');
+  private readonly photosphereTemplate = document.createElement('template');
   private readonly pointOfInterestAdded = new Subject<PointOfInterest>();
 
   constructor() {
@@ -138,9 +139,9 @@ export class GoogleMapsComponent implements OnInit {
       </li>`;
   }
 
-  private static getPointOfInterestCountByPinType(): Record<PinType, number> {
-    const iterablePointOfInterestCountByPinType = ALL_PIN_TYPES.map((pinType) => [pinType, 0] as const);
-    return Object.fromEntries(iterablePointOfInterestCountByPinType) as Record<PinType, number>;
+  private static getPointOfInterestCountByPinType(): Readonly<Record<PinType, WritableSignal<number>>> {
+    const iterablePointOfInterestCountByPinType = ALL_PIN_TYPES.map((pinType) => [pinType, signal<number>(0)] as const);
+    return Object.fromEntries(iterablePointOfInterestCountByPinType) as Record<PinType, WritableSignal<number>>;
   }
 
   private static getFeatureTypeControls(): Record<FeatureType, FormControl<boolean>> {
@@ -196,10 +197,10 @@ export class GoogleMapsComponent implements OnInit {
   }
 
   public toggleFilters(): void {
-    this.displayFilters = !this.displayFilters;
+    this.displayFilters.set(!this.displayFilters());
     const filtersForm: HTMLFormElement = document.querySelector('.filters')!;
     filtersForm.setAttribute('tabindex', '0');
-    if (this.displayFilters) {
+    if (this.displayFilters()) {
       requestAnimationFrame(() => {
         filtersForm.focus();
         filtersForm.removeAttribute('tabindex');
@@ -208,7 +209,7 @@ export class GoogleMapsComponent implements OnInit {
   }
 
   public closePhotosphere(): void {
-    this.photosphere = undefined;
+    this.photosphere.set(undefined);
   }
 
   public checkAllCategories(check: boolean): void {
@@ -220,19 +221,19 @@ export class GoogleMapsComponent implements OnInit {
   }
 
   public keyPressForm(event: KeyboardEvent): void {
-    if (event.key.toLowerCase() === 'escape' && this.displayFilters) {
+    if (event.key.toLowerCase() === 'escape' && this.displayFilters()) {
       this.toggleFilters();
     }
   }
 
   public keyPressPhotosphere(event: KeyboardEvent): void {
-    if (event.key.toLowerCase() === 'escape' && this.photosphere) {
+    if (event.key.toLowerCase() === 'escape' && this.photosphere()) {
       this.closePhotosphere();
     }
   }
 
   private initGoogleMap(): void {
-    this.map = new google.maps.Map(this.mapElement.nativeElement, this.mapOptions);
+    this.map = new google.maps.Map(this.mapElement().nativeElement, this.mapOptions);
     google.maps.event.addListenerOnce(this.map, 'projection_changed', () => {
       requestAnimationFrame(() => {
         this.openPointOfInterestFromQueryParams();
@@ -241,7 +242,7 @@ export class GoogleMapsComponent implements OnInit {
     });
     google.maps.event.addListenerOnce(this.map, 'idle', () => {
       requestAnimationFrame(() => {
-        this.mapLoaded = true;
+        this.mapLoaded.set(true);
       });
     });
   }
@@ -488,7 +489,9 @@ export class GoogleMapsComponent implements OnInit {
       poi.isAccessibleWithoutWalkingMuch = serializedPoi.isAccessibleWithoutWalkingMuch;
     }
     this.pointsOfInterest.set(id, poi);
-    this.pointOfInterestCountByPinType[poi.type]++;
+
+    const currentPoiTypeCount = this.pointOfInterestCountByPinType[poi.type];
+    currentPoiTypeCount.set(currentPoiTypeCount() + 1);
 
     marker.onFocus.subscribe(() => {
       this.focusPointOfInterest(poi);
@@ -689,7 +692,7 @@ export class GoogleMapsComponent implements OnInit {
         const labelElement = photosphereElement.querySelector('.label')!;
         const selectPhotosphereElement = photosphereElement.querySelector('.select-photosphere')!;
         selectPhotosphereElement.addEventListener('click', () => {
-          this.photosphere = this.sanitizer.bypassSecurityTrustResourceUrl(`https://www.google.com/maps/embed?pb=${photosphere}`);
+          this.photosphere.set(this.sanitizer.bypassSecurityTrustResourceUrl(`https://www.google.com/maps/embed?pb=${photosphere}`));
           requestAnimationFrame(() => {
             const closePhotosphereButton: HTMLButtonElement = document.querySelector('.close-photosphere-button')!;
             closePhotosphereButton.focus();

@@ -1,22 +1,22 @@
 <!-- eslint-disable-next-line @angular-eslint/template/interactive-supports-focus -->
-<div class="photosphere" [hidden]="!photosphere" (keydown)="keyPressPhotosphere($event)">
+<div class="photosphere" [hidden]="!photosphere()" (keydown)="keyPressPhotosphere($event)">
   <button class="close-photosphere-button" type="button" (click)="closePhotosphere()" aria-label="Fermer la photo">
     Fermer
     <span class="material-icons" aria-hidden="true">close</span>
   </button>
-  @if (photosphere) {
-    <iframe class="iframe" [src]="photosphere" allowfullscreen></iframe>
+  @if (photosphere()) {
+    <iframe class="iframe" [src]="photosphere()" allowfullscreen></iframe>
   }
 </div>
 
-<form class="filters" [hidden]="!displayFilters || !!photosphere" [formGroup]="filtersForm" (keydown)="keyPressForm($event)">
+<form class="filters" [hidden]="!displayFilters() || !!photosphere()" [formGroup]="filtersForm" (keydown)="keyPressForm($event)">
   <ng-container>
     <div class="seasons">
       <h2 class="title">
         <span class="material-icons" aria-hidden="true">thermostat</span>
         Saison :
       </h2>
-      @for (season of seasons | keyvalue: compareKeepOrder; track season.key) {
+      @for (season of SEASONS | keyvalue: compareKeepOrder; track season.key) {
         <label>
           <input type="radio" formControlName="season" [value]="season.key" />
           <span class="label">{{ season.value.label }}</span>
@@ -29,7 +29,7 @@
         <span class="material-icons" aria-hidden="true">auto_awesome</span>
         Caractéristiques :
       </h2>
-      @for (feature of features | keyvalue: compareKeepOrder; track feature.key) {
+      @for (feature of FEATURES | keyvalue: compareKeepOrder; track feature.key) {
         <label>
           <input type="checkbox" [formControlName]="feature.key" />
           <span class="label">{{ feature.value.label }}</span>
@@ -50,12 +50,12 @@
         Tout décocher
         <span class="material-icons" aria-hidden="true">check_box_outline_blank</span>
       </button>
-      @for (pin of pins | keyvalue: comparePin; track pin.key) {
+      @for (pin of PINS | keyvalue: comparePin; track pin.key) {
         <label>
           <input type="checkbox" [formControlName]="pin.key" />
           <span class="icon" aria-hidden="true" [style.backgroundColor]="pin.value.fillColor" [style.color]="pin.value.textColor">{{ pin.value.icon }}</span>
           <span class="label">{{ pin.value.label }}</span>
-          <span class="count">({{ pointOfInterestCountByPinType[pin.key] }})</span>
+          <span class="count">({{ pointOfInterestCountByPinType[pin.key]() }})</span>
         </label>
       }
     </div>
@@ -67,15 +67,15 @@
   </ng-container>
 </form>
 
-<div class="map-container" [hidden]="!!photosphere">
+<div class="map-container" [hidden]="!!photosphere()">
   <button
     class="toggle-filters-button"
     type="button"
     (click)="toggleFilters()"
-    [attr.aria-label]="displayFilters ? 'Masquer les filtres des Points d\'Intérêts' : 'Afficher les filtres des Points d\'Intérêts'"
+    [attr.aria-label]="displayFilters() ? 'Masquer les filtres des Points d\'Intérêts' : 'Afficher les filtres des Points d\'Intérêts'"
   >
     <span class="material-icons" aria-hidden="true">
-      {{ displayFilters ? 'chevron_left' : 'search' }}
+      {{ displayFilters() ? 'chevron_left' : 'search' }}
     </span>
     Filtres
   </button>
@@ -83,7 +83,7 @@
     <span class="material-icons" aria-hidden="true">adjust</span>
     Centrer
   </button>
-  <div class="map" #mapElement [class.loading]="!mapLoaded"></div>
+  <div class="map" #mapElement [class.loading]="!mapLoaded()"></div>
 </div>
 
 <!-- TODO : use this to transform "svg pin + icon font" markers to simple "webp" markers -->
