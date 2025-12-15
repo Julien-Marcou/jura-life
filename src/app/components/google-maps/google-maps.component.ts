@@ -11,7 +11,7 @@ import type { SafeResourceUrl } from '@angular/platform-browser';
 
 import { KeyValuePipe } from '@angular/common';
 import { HttpParams } from '@angular/common/http';
-import { Component, inject, signal, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal, viewChild } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -41,6 +41,7 @@ import { TrailPolylineService } from '../../services/trail-polyline.service';
     ReactiveFormsModule,
     KeyValuePipe,
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GoogleMapsComponent implements OnInit {
 
