@@ -52,11 +52,6 @@
             "styles": [
               "src/styles.scss"
             ],
-            "polyfills": [
-              "src/zone-flags.ts",
-              "zone.js"
-            ],
-            "scripts": [],
             "indexHtmlTransformer": "noscript.ts"
           },
           "configurations": {
