@@ -83,20 +83,20 @@ export class GoogleMapsComponent implements OnInit {
     ],
   };
 
-  public readonly SEASONS = SEASONS;
-  public readonly FEATURES = FEATURES;
-  public readonly PINS = PINS;
+  protected readonly SEASONS = SEASONS;
+  protected readonly FEATURES = FEATURES;
+  protected readonly PINS = PINS;
 
-  public readonly filtersForm = new FormGroup({
+  protected readonly filtersForm = new FormGroup({
     season: new FormControl(SeasonType.None, { nonNullable: true }),
     features: new FormGroup(GoogleMapsComponent.getFeatureTypeControls()),
     categories: new FormGroup(GoogleMapsComponent.getPinTypeControls()),
   });
 
-  public readonly photosphere = signal<SafeResourceUrl | undefined>(undefined);
-  public readonly displayFilters = signal<boolean>(false);
-  public readonly pointOfInterestCountByPinType = GoogleMapsComponent.getPointOfInterestCountByPinType();
-  public readonly mapLoaded = signal<boolean>(false);
+  protected readonly photosphere = signal<SafeResourceUrl | undefined>(undefined);
+  protected readonly displayFilters = signal<boolean>(false);
+  protected readonly pointOfInterestCountByPinType = GoogleMapsComponent.getPointOfInterestCountByPinType();
+  protected readonly mapLoaded = signal<boolean>(false);
 
   private map!: google.maps.Map;
   private readonly pointsOfInterest = new Map<string, PointOfInterest>();
@@ -189,15 +189,15 @@ export class GoogleMapsComponent implements OnInit {
     // }, 1000);
   }
 
-  public compareKeepOrder(): number {
+  protected compareKeepOrder(): number {
     return 0;
   }
 
-  public comparePin(pinA: KeyValue<PinType, Pin>, pinB: KeyValue<PinType, Pin>): number {
+  protected comparePin(pinA: KeyValue<PinType, Pin>, pinB: KeyValue<PinType, Pin>): number {
     return pinA.value.label.localeCompare(pinB.value.label);
   }
 
-  public toggleFilters(): void {
+  protected toggleFilters(): void {
     this.displayFilters.set(!this.displayFilters());
     const filtersForm: HTMLFormElement = document.querySelector('.filters')!;
     filtersForm.setAttribute('tabindex', '0');
@@ -209,11 +209,11 @@ export class GoogleMapsComponent implements OnInit {
     }
   }
 
-  public closePhotosphere(): void {
+  protected closePhotosphere(): void {
     this.photosphere.set(undefined);
   }
 
-  public checkAllCategories(check: boolean): void {
+  protected checkAllCategories(check: boolean): void {
     const categories = this.filtersForm.controls.categories.value as Record<PinType, boolean>;
     Object.keys(categories).forEach((pinType) => {
       categories[pinType as PinType] = check;
@@ -221,13 +221,13 @@ export class GoogleMapsComponent implements OnInit {
     this.filtersForm.controls.categories.setValue(categories);
   }
 
-  public keyPressForm(event: KeyboardEvent): void {
+  protected keyPressForm(event: KeyboardEvent): void {
     if (event.key.toLowerCase() === 'escape' && this.displayFilters()) {
       this.toggleFilters();
     }
   }
 
-  public keyPressPhotosphere(event: KeyboardEvent): void {
+  protected keyPressPhotosphere(event: KeyboardEvent): void {
     if (event.key.toLowerCase() === 'escape' && this.photosphere()) {
       this.closePhotosphere();
     }
@@ -514,7 +514,7 @@ export class GoogleMapsComponent implements OnInit {
     this.pointOfInterestAdded.next(poi);
   }
 
-  public centerMapOnAllPOIs(): void {
+  protected centerMapOnAllPOIs(): void {
     requestAnimationFrame(() => {
       const bounds = new google.maps.LatLngBounds();
       let hasVisiblePOIs = false;
