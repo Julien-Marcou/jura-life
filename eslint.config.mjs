@@ -161,6 +161,9 @@ export default defineConfig(
         {
           ignoreRestSiblings: true,
           destructuredArrayIgnorePattern: '^_',
+          enableAutofixRemoval: {
+            imports: true,
+          },
         },
       ],
       '@typescript-eslint/no-unused-private-class-members': 'error',
